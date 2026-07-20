@@ -7,7 +7,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght=400;600;700;800&family=Geist:wght=400;500;600&display=swap" rel="stylesheet">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
@@ -16,17 +16,46 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              bg: "#0B0E14",
-              bg2: "#110B25",
-              surface: "rgba(22, 30, 46, 0.60)",
-              field: "rgba(11, 14, 20, 0.80)",
-              muted: "#8A99AD",
-              orange: "#FF8400",
-              "orange-deep": "#9D1500",
-              cyan: "#00F0FF",
-              pink: "#FF60B5",
-              purple: "#9D4EDD",
+            // 💡 這裡已經完全載入妳提供的 search 設計系統顏色定義
+            primary: {
+              bg: "#23262B",
+              on: { primary: "rgba(234, 231, 213, 1)", minor: "rgba(234, 231, 213, 0.8)" }
+            },
+            basic: {
+              bg: { from: "#1C1E22", to: "#1C1E22" },
+              on: "rgba(234, 231, 213, 1)"
+            },
+            selected: {
+              bg: { from: "#E5DD9D", to: "#CCB66D" },
+              on: "rgba(28, 30, 34, 1)"
+            },
+            hover: {
+              bg: { from: "#50545C", to: "#3B4148" },
+              on: "rgba(234, 231, 213, 1)"
+            },
+            menu: { bg: "#19191d" },
+            minor: { bg: "#17181b", on: "rgba(234, 231, 213, 1)" },
+            footer: {
+              basic: { bg: "#1A1C20", on: { primary: "rgba(234, 231, 213, 1)", minor: "rgba(234, 231, 213, 0.8)" } },
+              selected: { bg: "#24262B", on: { primary: "rgba(234, 231, 213, 1)" } }
+            },
+            table: {
+              tab: {
+                basic: { bg: "#23262B", on: "rgba(234, 231, 213, 0.8)" },
+                selected: { bg: "#2D3035", on: "rgba(234, 231, 213, 1)" }
+              },
+              form: {
+                bg: "#1A1C20", hover: "#2D3035",
+                on: { primary: "rgba(234, 231, 213, 1)", minor: "rgba(234, 231, 213, 0.8)", highlight: "rgba(255, 191, 57, 1)" }
+              }
+            },
+            surface: {
+              bg: "#1C1E22",
+              on: { primary: "rgba(234, 231, 213, 1)", minor: "rgba(234, 231, 213, 0.8)" }
+            },
+            placeholder: {
+              normal: "#2D2F34", disable: "#2D2F34", selected: "#373A41", hover: "#373A41",
+              on: { primary: "rgba(255, 255, 255, 1)", minor: "rgba(255, 255, 255, 0.5)" }
             }
           },
           fontFamily: {
@@ -38,193 +67,213 @@
     }
   </script>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-[#0B0E14] to-[#110B25] text-white flex justify-center selection:bg-brand-orange selection:text-white">
+<!-- 背景套用 basic.bg 漸層，選擇區塊套用 selected 金色 -->
+<body class="min-h-screen bg-gradient-to-b from-[#1C1E22] to-[#121316] text-surface-on-primary flex justify-center selection:bg-selected-bg-from selection:text-selected-on">
   
   <div class="relative flex w-full max-w-[480px] min-h-screen flex-col">
-    <main class="flex flex-1 flex-col gap-6 px-0 pb-32 pt-3">
+    <main class="flex flex-1 flex-col gap-6 px-0 pb-32 pt-5">
       
-      <!-- Header + Greeting -->
-      <section class="flex flex-col gap-4 px-6">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col items-start gap-1">
-            <!-- 這裡完美呈現 111x24 高解析度 Logo -->
-            <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
-            <span class="font-geist text-xs text-brand-muted">Smart Spending, Elite Saving</span>
+      <!-- 頂欄：Logo & 玩家頭像（固定位置 + 磨砂面板） -->
+      <section class="flex flex-col gap-5 px-6">
+        <div class="flex items-center justify-between w-full">
+          <!-- 左側固定：Logo與副標題 -->
+          <div class="flex flex-col items-start gap-1 shrink-0">
+            <h1 class="font-outfit text-2xl font-extrabold tracking-wider bg-gradient-to-r from-selected-bg-from to-selected-bg-to bg-clip-text text-transparent">
+              Cardgini
+            </h1>
+            <span class="font-geist text-[10px] uppercase tracking-widest text-table-form-on-minor">Smart Spending, Elite Saving</span>
           </div>
-          <div class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-[28px] bg-brand-surface shadow-[0_6px_16px_-6px_rgba(0,240,255,0.35)]">
-            <span class="font-outfit text-sm font-bold text-white">Z</span>
+          <!-- 右側固定：頭像 -->
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-selected-bg-from to-selected-bg-to shadow-[0_4px_12px_rgba(229,221,157,0.2)]">
+            <span class="font-outfit text-sm font-bold text-selected-on">Z</span>
           </div>
         </div>
-        <div class="flex flex-col gap-1.5">
-          <h1 class="font-outfit text-2xl font-bold text-white">Hello, Zona 👋</h1>
-          <p class="font-geist text-sm text-brand-muted">今天也是離財富自由更近的一天！✨</p>
+
+        <!-- 歡迎詞 -->
+        <div class="flex flex-col gap-1">
+          <h2 class="font-outfit text-xl font-bold text-surface-on-primary">Hello, Zona 👋</h2>
+          <p class="font-geist text-xs text-table-form-on-minor">今天也是離財富自由更近的一天！✨</p>
         </div>
       </section>
 
-      <!-- Smart Calculator -->
+      <!-- 聰明計算機卡片（磨砂玻璃面板） -->
       <section class="flex flex-col gap-3 px-4">
-        <h2 class="font-outfit text-base font-semibold text-white">哪張卡最划算？</h2>
-        <div class="flex flex-col gap-3.5 rounded-[20px] border border-white/[0.08] bg-brand-surface p-4 backdrop-blur-md">
-          <div class="flex items-start gap-3">
+        <h3 class="font-outfit text-sm font-semibold tracking-wide text-table-form-on-minor px-2">哪張卡最划算？</h3>
+        <div class="flex flex-col gap-4 rounded-[24px] border border-placeholder-normal/30 bg-surface-bg/60 backdrop-blur-xl p-4.5 shadow-xl">
+          <div class="flex items-center gap-3">
+            <!-- 消費店家選擇 -->
             <label class="flex flex-1 flex-col gap-1.5">
-              <span class="font-geist text-xs font-semibold text-brand-muted">消費店家</span>
-              <div class="relative flex h-11 items-center rounded-xl border border-white/[0.08] bg-brand-field px-3">
-                <select id="merchant-select" class="w-full appearance-none bg-transparent font-geist text-sm text-white outline-none cursor-pointer">
-                  <option value="0" data-card="中信 LINE Pay 卡" data-rate="3" class="bg-[#0B0E14]">蝦皮購物</option>
-                  <option value="1" data-card="台新 FlyGo 卡" data-rate="2" class="bg-[#0B0E14]">全聯福利中心</option>
-                  <option value="2" data-card="Costco 聯名卡" data-rate="5" class="bg-[#0B0E14]">Costco 好市多</option>
-                  <option value="3" data-card="台新 FlyGo 卡" data-rate="5" class="bg-[#0B0E14]">海外刷卡消費</option>
+              <span class="font-geist text-[11px] font-medium text-table-form-on-minor">消費店家</span>
+              <div class="relative flex h-11 items-center rounded-xl border border-placeholder-normal bg-table-form-bg/80 px-3">
+                <select id="merchant-select" class="w-full appearance-none bg-transparent font-geist text-sm text-table-form-on-primary outline-none cursor-pointer pr-8 z-10">
+                  <option value="0" data-card="中信 LINE Pay 卡" data-rate="3" class="bg-menu-bg text-white">蝦皮購物</option>
+                  <option value="1" data-card="台新 FlyGo 卡" data-rate="2" class="bg-menu-bg text-white">全聯福利中心</option>
+                  <option value="2" data-card="Costco 聯名卡" data-rate="5" class="bg-menu-bg text-white">Costco 好市多</option>
+                  <option value="3" data-card="台新 FlyGo 卡" data-rate="5" class="bg-menu-bg text-white">海外刷卡消費</option>
                 </select>
-                <i data-lucide="chevron-down" class="pointer-events-none absolute right-3 h-[18px] w-[18px] text-brand-muted"></i>
+                <i data-lucide="chevron-down" class="pointer-events-none absolute right-3 h-[16px] w-[16px] text-table-form-on-minor"></i>
               </div>
             </label>
+            <!-- 消費金額輸入 -->
             <label class="flex flex-1 flex-col gap-1.5">
-              <span class="font-geist text-xs font-semibold text-brand-muted">消費金額</span>
-              <div class="flex h-11 items-center rounded-xl border border-white/[0.08] bg-brand-field px-3">
-                <span class="mr-1 font-geist text-sm text-white">NT$</span>
-                <input id="amount-input" type="number" min="0" value="1500" class="w-full bg-transparent font-geist text-sm text-white outline-none">
+              <span class="font-geist text-[11px] font-medium text-table-form-on-minor">消費金額</span>
+              <div class="flex h-11 items-center rounded-xl border border-placeholder-normal bg-table-form-bg/80 px-3">
+                <span class="mr-1 font-geist text-sm text-table-form-on-minor">NT$</span>
+                <input id="amount-input" type="number" min="0" value="1500" class="w-full bg-transparent font-geist text-sm text-table-form-on-primary outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
               </div>
             </label>
           </div>
 
-          <div class="flex items-center gap-3 rounded-2xl border border-brand-orange/20 bg-brand-field p-3 shadow-[0_2px_10px_-10px_rgba(255,132,0,0.20)] backdrop-blur-md">
-            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-orange/10">
-              <i data-lucide="credit-card" class="h-5 w-5 text-brand-orange"></i>
+          <!-- 推薦結果顯示區（磨砂高亮面板） -->
+          <div class="flex items-center gap-3.5 rounded-2xl border border-selected-bg-from/20 bg-table-form-bg/90 p-3.5 shadow-inner">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-selected-bg-from/20 to-selected-bg-to/10 border border-selected-bg-from/30">
+              <i data-lucide="credit-card" class="h-[18px] w-[18px] text-selected-bg-from"></i>
             </div>
             <div class="flex flex-1 flex-col items-start gap-1">
-              <span id="result-card" class="font-geist text-[13px] font-semibold text-white">中信 LINE Pay 卡</span>
-              <span class="inline-flex items-center gap-2 rounded-full border border-brand-orange/20 bg-brand-orange/[0.08] px-2.5 py-1.5">
-                <span id="result-reward" class="font-geist text-[13px] font-bold text-brand-orange">NT$ 45 回饋 (3%)</span>
+              <span id="result-card" class="font-geist text-[13px] font-semibold text-table-form-on-primary">中信 LINE Pay 卡</span>
+              <span class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-selected-bg-from to-selected-bg-to px-3 py-1 shadow-sm">
+                <span id="result-reward" class="font-geist text-[11px] font-bold text-selected-on">NT$ 45 回饋 (3%)</span>
               </span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Wallet -->
+      <!-- 我的錢包卡片 -->
       <section class="flex flex-col gap-3 px-4">
-        <h2 class="font-outfit text-base font-semibold text-white">我的卡片</h2>
-        <div class="flex flex-col gap-4">
-          <div class="flex w-full flex-col justify-center gap-2.5 overflow-hidden rounded-[18px] border border-brand-cyan/20 bg-[#0C1820] p-3.5 shadow-[0_5px_10px_-10px_rgba(0,240,255,0.40)]">
-            <div class="flex items-center gap-3">
-              <i data-lucide="credit-card" class="h-[18px] w-[18px] text-white"></i>
-              <span class="font-geist text-base font-bold text-white">中信 LINE Pay 卡</span>
+        <h3 class="font-outfit text-sm font-semibold tracking-wide text-table-form-on-minor px-2">我的卡片</h3>
+        <div class="grid grid-cols-1 gap-2.5">
+          <div class="flex w-full flex-col justify-center gap-2 overflow-hidden rounded-[18px] border border-placeholder-normal/40 bg-surface-bg/40 backdrop-blur-md p-4">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="credit-card" class="h-4 w-4 text-selected-bg-from"></i>
+              <span class="font-geist text-sm font-bold text-surface-on-primary">中信 LINE Pay 卡</span>
             </div>
-            <span class="font-geist text-[13px] text-white/80">備註：需轉換權益</span>
+            <span class="font-geist text-[11px] text-table-form-on-minor">備註：需轉換權益</span>
           </div>
-          <div class="flex w-full flex-col justify-center gap-2.5 overflow-hidden rounded-[18px] border border-brand-cyan/20 bg-[#0C1820] p-3.5 shadow-[0_5px_10px_-10px_rgba(0,240,255,0.40)]">
-            <div class="flex items-center gap-3">
-              <i data-lucide="credit-card" class="h-[18px] w-[18px] text-white"></i>
-              <span class="font-geist text-base font-bold text-white">台新 FlyGo 卡</span>
+          <div class="flex w-full flex-col justify-center gap-2 overflow-hidden rounded-[18px] border border-placeholder-normal/40 bg-surface-bg/40 backdrop-blur-md p-4">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="credit-card" class="h-4 w-4 text-selected-bg-from"></i>
+              <span class="font-geist text-sm font-bold text-surface-on-primary">台新 FlyGo 卡</span>
             </div>
-            <span class="font-geist text-[13px] text-white/80">備註：5% 海外消費</span>
+            <span class="font-geist text-[11px] text-table-form-on-minor">備註：5% 海外消費</span>
           </div>
         </div>
       </section>
 
-      <!-- Payment methods -->
+      <!-- 行動支付（磨砂方塊面板） -->
       <section class="flex flex-col gap-3 px-4">
-        <h2 class="font-outfit text-base font-semibold text-white">行動支付</h2>
-        <div class="flex items-stretch gap-2">
-          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
-            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-cyan/10">
-              <i data-lucide="message-circle" class="h-[18px] w-[18px] text-brand-cyan"></i>
+        <h3 class="font-outfit text-sm font-semibold tracking-wide text-table-form-on-minor px-2">行動支付</h3>
+        <div class="grid grid-cols-4 gap-2">
+          <!-- Line Pay -->
+          <div class="flex flex-col items-start gap-2 rounded-xl border border-placeholder-normal/30 bg-surface-bg/50 p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-selected-bg-from/10 border border-selected-bg-from/20">
+              <i data-lucide="message-circle" class="h-4 w-4 text-selected-bg-from"></i>
             </div>
-            <span class="font-geist text-[10px] text-white">Line Pay</span>
-            <span class="font-geist text-[9px] text-brand-muted">中信 LINE Pay 卡</span>
+            <div class="flex flex-col gap-0.5">
+              <span class="font-geist text-[11px] font-medium text-surface-on-primary">Line Pay</span>
+              <span class="font-geist text-[9px] text-table-form-on-minor truncate max-w-full">中信 LP</span>
+            </div>
           </div>
-          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
-            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-cyan/10">
-              <i data-lucide="apple" class="h-[18px] w-[18px] text-brand-cyan"></i>
+          <!-- Apple Pay -->
+          <div class="flex flex-col items-start gap-2 rounded-xl border border-placeholder-normal/30 bg-surface-bg/50 p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-selected-bg-from/10 border border-selected-bg-from/20">
+              <i data-lucide="apple" class="h-4 w-4 text-selected-bg-from"></i>
             </div>
-            <span class="font-geist text-[10px] text-white">Apple Pay</span>
-            <span class="font-geist text-[9px] text-brand-muted">台新 FlyGo</span>
+            <div class="flex flex-col gap-0.5">
+              <span class="font-geist text-[11px] font-medium text-surface-on-primary">Apple Pay</span>
+              <span class="font-geist text-[9px] text-table-form-on-minor truncate max-w-full">台新 FlyGo</span>
+            </div>
           </div>
-          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
-            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-pink/10">
-              <i data-lucide="shopping-bag" class="h-[18px] w-[18px] text-brand-pink"></i>
+          <!-- 街口支付 -->
+          <div class="flex flex-col items-start gap-2 rounded-xl border border-placeholder-normal/30 bg-surface-bg/50 p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-selected-bg-from/10 to-selected-bg-to/20 border border-selected-bg-from/20">
+              <i data-lucide="shopping-bag" class="h-4 w-4 text-selected-bg-to"></i>
             </div>
-            <span class="font-geist text-[10px] text-white">街口支付</span>
-            <span class="font-geist text-[9px] text-brand-muted">Costco聯名卡</span>
+            <div class="flex flex-col gap-0.5">
+              <span class="font-geist text-[11px] font-medium text-surface-on-primary">街口支付</span>
+              <span class="font-geist text-[9px] text-table-form-on-minor truncate max-w-full">Costco</span>
+            </div>
           </div>
-          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
-            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-purple/10">
-              <i data-lucide="circle-x" class="h-[18px] w-[18px] text-brand-purple"></i>
+          <!-- Google Pay -->
+          <div class="flex flex-col items-start gap-2 rounded-xl border border-placeholder-normal/30 bg-surface-bg/50 p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-selected-bg-from/10 border border-selected-bg-from/20">
+              <i data-lucide="circle-x" class="h-4 w-4 text-selected-bg-from"></i>
             </div>
-            <span class="font-geist text-[10px] text-white">Google Pay</span>
-            <span class="font-geist text-[9px] text-brand-muted">中信 LINE Pay 卡</span>
+            <div class="flex flex-col gap-0.5">
+              <span class="font-geist text-[11px] font-medium text-surface-on-primary">Google Pay</span>
+              <span class="font-geist text-[9px] text-table-form-on-minor truncate max-w-full">中信 LP</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Earnings -->
+      <!-- 利息面板 -->
       <section class="flex flex-col gap-3 px-4">
-        <h2 class="font-outfit text-base font-semibold text-white">本月利息</h2>
-        <div class="flex flex-col gap-3 rounded-[20px] border border-white/[0.08] bg-brand-surface p-5 backdrop-blur-md">
+        <h3 class="font-outfit text-sm font-semibold tracking-wide text-table-form-on-minor px-2">本月利息</h3>
+        <div class="flex flex-col gap-3 rounded-[24px] border border-placeholder-normal/30 bg-surface-bg/60 backdrop-blur-xl p-5 shadow-lg">
           <div class="flex items-center justify-between">
             <div class="flex flex-col items-start gap-1">
-              <span class="font-geist text-xs font-semibold uppercase text-white">王道銀行</span>
-              <div class="flex items-center gap-2.5">
-                <span class="font-outfit text-[28px] font-bold text-brand-orange">+NT$ 1,250</span>
-                <i data-lucide="trending-up" class="h-[18px] w-[18px] text-brand-orange"></i>
+              <span class="font-geist text-[10px] tracking-wider font-bold text-table-form-on-minor uppercase">王道銀行</span>
+              <div class="flex items-center gap-2">
+                <span class="font-outfit text-2xl font-extrabold bg-gradient-to-r from-selected-bg-from to-selected-bg-to bg-clip-text text-transparent">+NT$ 1,250</span>
+                <i data-lucide="trending-up" class="h-4 w-4 text-selected-bg-from"></i>
               </div>
             </div>
           </div>
-          <p class="font-geist text-[13px] text-brand-muted">基於活存利率與本月預估餘額計算。</p>
+          <p class="font-geist text-[11px] text-table-form-on-minor">基於活存利率與本月預估餘額計算。</p>
         </div>
       </section>
     </main>
 
-    <!-- Bottom Nav + FAB -->
+    <!-- 底部導覽列（磨砂玻璃 + 漂浮 AI 按鈕） -->
     <div class="fixed inset-x-0 bottom-0 z-40 flex justify-center">
       <div class="relative w-full max-w-[480px]">
-        <!-- 漂浮 AI 按鈕 -->
-        <button type="button" class="absolute bottom-[110px] right-4 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_18px_0_rgba(0,240,255,0.60)] bg-[radial-gradient(50%_50%_at_50%_50%,#9D1500_0%,#FF8400_100%)] z-50">
-          <i data-lucide="sparkles" class="h-[22px] w-[22px] text-white"></i>
+        <!-- 漂浮 AI 按鈕：套用 selected.bg 漸層 -->
+        <button type="button" class="absolute bottom-[96px] right-5 flex h-13 w-13 items-center justify-center rounded-full shadow-[0_4px_20px_rgba(229,221,157,0.35)] bg-gradient-to-br from-selected-bg-from to-selected-bg-to z-50 hover:opacity-90 transition-opacity active:scale-95 duration-200">
+          <i data-lucide="sparkles" class="h-5 w-5 text-selected-on"></i>
         </button>
         
         <!-- 背景磨砂玻璃面板 -->
-        <div class="relative flex flex-col bg-brand-surface backdrop-blur-md">
+        <div class="relative flex flex-col bg-footer-basic-bg/80 backdrop-blur-xl border-t border-placeholder-normal/20">
           
-          <!-- 修正後的導覽列：確保按鈕 z-index 頂天 (z-50)，且點擊範圍更寬敞 -->
-          <nav class="relative z-50 flex h-[72px] items-center justify-between px-4 w-full">
+          <nav class="relative z-50 flex h-[72px] items-center justify-between px-2 w-full">
             
-            <!-- 1. Overview (首頁) -->
-            <a href="index.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
-              <i data-lucide="home" class="h-[22px] w-[22px] text-brand-orange"></i>
-              <span class="font-geist text-[10px] font-semibold text-brand-orange">Overview</span>
-              <span class="h-0.5 w-4 rounded-full bg-brand-orange shadow-[0_0_4px_0_rgba(0,240,255,0.50)]"></span>
+            <!-- 1. Overview (作用中：亮金色) -->
+            <a href="index.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-2 cursor-pointer group">
+              <i data-lucide="home" class="h-[20px] w-[20px] text-selected-bg-from"></i>
+              <span class="font-geist text-[10px] font-semibold text-selected-bg-from">Overview</span>
+              <span class="h-0.5 w-3 rounded-full bg-selected-bg-from shadow-sm"></span>
             </a>
 
             <!-- 2. Search -->
-            <a href="search.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
-              <i data-lucide="search" class="h-[22px] w-[22px] text-brand-muted"></i>
-              <span class="font-geist text-[10px] font-medium text-brand-muted">Search</span>
+            <a href="search.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-2 cursor-pointer group">
+              <i data-lucide="search" class="h-[20px] w-[20px] text-table-form-on-minor group-hover:text-white transition-colors"></i>
+              <span class="font-geist text-[10px] font-medium text-table-form-on-minor group-hover:text-white transition-colors">Search</span>
             </a>
 
             <!-- 3. Credit Cards -->
-            <a href="cards.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
-              <i data-lucide="credit-card" class="h-[22px] w-[22px] text-brand-muted"></i>
-              <span class="font-geist text-[10px] font-medium text-brand-muted">Credit Cards</span>
+            <a href="cards.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-2 cursor-pointer group">
+              <i data-lucide="credit-card" class="h-[20px] w-[20px] text-table-form-on-minor group-hover:text-white transition-colors"></i>
+              <span class="font-geist text-[10px] font-medium text-table-form-on-minor group-hover:text-white transition-colors">Cards</span>
             </a>
 
             <!-- 4. Bank Rate -->
-            <a href="rates.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
-              <i data-lucide="landmark" class="h-[22px] w-[22px] text-brand-muted"></i>
-              <span class="font-geist text-[10px] font-medium text-brand-muted">Bank Rate</span>
+            <a href="rates.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-2 cursor-pointer group">
+              <i data-lucide="landmark" class="h-[20px] w-[20px] text-table-form-on-minor group-hover:text-white transition-colors"></i>
+              <span class="font-geist text-[10px] font-medium text-table-form-on-minor group-hover:text-white transition-colors">Rates</span>
             </a>
 
             <!-- 5. Settings -->
-            <a href="settings.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
-              <i data-lucide="settings" class="h-[22px] w-[22px] text-brand-muted"></i>
-              <span class="font-geist text-[10px] font-medium text-brand-muted">Settings</span>
+            <a href="settings.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-2 cursor-pointer group">
+              <i data-lucide="settings" class="h-[20px] w-[20px] text-table-form-on-minor group-hover:text-white transition-colors"></i>
+              <span class="font-geist text-[10px] font-medium text-table-form-on-minor group-hover:text-white transition-colors">Settings</span>
             </a>
             
           </nav>
           
-          <!-- 底部的模擬 Home 條區塊 (降低層級，絕對不擋路) -->
-          <div class="relative z-10 flex h-4 items-center justify-center bg-brand-bg">
-            <div class="h-[5px] w-[134px] rounded-full bg-[#4E5D73]"></div>
+          <!-- 底部的模擬 iOS Home 條區塊 -->
+          <div class="relative z-10 flex h-4 items-center justify-center bg-[#1A1C20]">
+            <div class="h-[4px] w-[120px] rounded-full bg-placeholder-normal"></div>
           </div>
           
         </div>
@@ -232,7 +281,7 @@
     </div>
   </div>
 
-  <!-- Calculator Script -->
+  <!-- 計算邏輯腳本 -->
   <script>
     lucide.createIcons();
 
