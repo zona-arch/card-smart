@@ -40,13 +40,13 @@
                     <div class="flex gap-2.5 w-full">
                         <div class="flex-1 flex flex-col gap-1.5">
                             <label class="text-xs font-semibold text-[#8A99AD]">國家</label>
-                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm">
+                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm cursor-pointer">
                                 <span>台灣</span><i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
                             </div>
                         </div>
                         <div class="flex-1 flex flex-col gap-1.5">
                             <label class="text-xs font-semibold text-[#8A99AD]">地區</label>
-                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm">
+                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm cursor-pointer">
                                 <span>台中</span><i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                 <section class="px-4">
                     <div class="bg-[#161E2E]/60 h-12 px-4 rounded-xl border border-white/5 flex items-center gap-3">
                         <i data-lucide="search" class="w-5 h-5 text-[#8A99AD]"></i>
-                        <input type="text" placeholder="搜尋店家、類別..." class="bg-transparent text-sm text-white placeholder-[#8A99AD] w-full focus:outline-none">
+                        <input type="text" placeholder="搜尋店家、類別 (例如：蝦皮)..." class="bg-transparent text-sm text-white placeholder-zinc-600 w-full focus:outline-none">
                     </div>
                 </section>
 
@@ -90,31 +90,38 @@
                     </div>
                 </section>
 
+                <!-- 動態試算金額輸入區 -->
                 <section class="px-4 flex flex-col gap-2">
-                    <span class="text-xs font-semibold text-[#8A99AD] px-2">預估消費金額</span>
-                    <div class="bg-[#161E2E]/60 rounded-[20px] p-4 border border-white/5 flex justify-between items-center">
-                        <span class="text-2xl font-extrabold text-orange-500">NT$ 3,000</span>
-                        <div class="bg-white/5 px-3 py-1.5 rounded-full text-xs font-semibold">修改金額</div>
+                    <span class="text-xs font-semibold text-[#8A99AD] px-2">預估消費金額 (可點擊修改數字)</span>
+                    <div class="bg-[#161E2E]/60 rounded-[20px] p-4 border border-white/5 flex justify-between items-center focus-within:border-orange-500/40 transition-all">
+                        <div class="flex items-center gap-1 text-2xl font-extrabold text-orange-500">
+                            <span>NT$</span>
+                            <input type="number" id="amt-input" value="3000" oninput="calculateReward()" class="bg-transparent w-32 focus:outline-none font-extrabold text-orange-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                        </div>
+                        <div class="bg-white/5 px-3 py-1.5 rounded-full text-xs font-semibold text-zinc-400">動態精算中</div>
                     </div>
                 </section>
 
-                <!-- 最佳選擇 -->
+                <!-- 最佳選擇高光卡片 -->
                 <section class="px-4 flex flex-col gap-3">
                     <h2 class="text-sm font-bold text-white/90 px-2">🏆 最佳選擇</h2>
                     <div class="bg-[#161E2E]/90 rounded-[24px] p-[18px] border-2 border-cyan-400/30 shadow-[0_8px_20px_0_rgba(0,240,255,0.15)] flex flex-col gap-4">
                         <div class="flex items-center gap-3.5">
                             <div class="w-[56px] h-[36px] rounded-md bg-gradient-to-tr from-cyan-400 to-blue-600 p-2 flex flex-col justify-between">
-                                <div class="w-2.5 h-2 bg-yellow-400 rounded-sm"></div>
+                                <div class="w-2 h-1.5 bg-yellow-400 rounded-sm"></div>
                                 <div class="flex justify-between items-center text-[5px] text-white"><span>LINE Pay</span><span>VISA</span></div>
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-sm font-bold">中信 LINE Pay 卡</span>
-                                <span class="text-[9px] bg-indigo-600/20 text-indigo-300 border border-indigo-400/30 px-1 rounded self-start">VISA</span>
+                                <span class="text-[9px] bg-indigo-600/20 text-indigo-300 border border-indigo-400/30 px-1 rounded self-start mt-0.5">VISA</span>
                             </div>
                         </div>
                         <div class="bg-[#0B0E14]/80 rounded-xl p-3.5 flex flex-col gap-2 text-xs">
-                            <div class="flex justify-between"><span>一般回饋</span><span class="font-bold text-cyan-400">3% 現金回饋</span></div>
-                            <div class="flex justify-between border-t border-white/5 pt-2"><span>本次預估回饋</span><span class="text-base font-extrabold text-emerald-400">NT$ 90</span></div>
+                            <div class="flex justify-between"><span>一般回饋</span><span class="font-bold text-cyan-400">3% LINE POINTS</span></div>
+                            <div class="flex justify-between border-t border-white/5 pt-2 items-center">
+                                <span>本次預估回饋</span>
+                                <span class="text-base font-extrabold text-emerald-400" id="reward-output">NT$ 90</span>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -153,13 +160,26 @@
             if (bool) {
                 home.classList.add('hidden');
                 result.classList.remove('hidden');
+                calculateReward(); // 切換時主動算一次
             } else {
                 home.classList.remove('hidden');
                 result.classList.add('hidden');
             }
         }
 
-        // 檢查網址參數，若從首頁點擊最優卡片則自動展示結果
+        // 即時 3% 智慧精算引擎
+        function calculateReward() {
+            const amtInput = document.getElementById('amt-input');
+            const rewardOutput = document.getElementById('reward-output');
+            
+            let val = parseFloat(amtInput.value) || 0;
+            if (val < 0) val = 0;
+            
+            // 計算 3% 回饋並四捨五入
+            const reward = Math.round(val * 0.03);
+            rewardOutput.innerText = `NT$ ${reward.toLocaleString()}`;
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('autoResult') === 'true') {
             showResult(true);
