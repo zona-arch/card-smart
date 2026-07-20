@@ -6,7 +6,7 @@
     <title>Cardgini - Search</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Outfit', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -25,59 +25,121 @@
             </div>
         </header>
 
-        <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-4 pt-3">
+        <!-- MAIN -->
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-5 pt-3">
+            
+            <!-- 搜尋輸入列 -->
             <section class="px-4">
-                <div class="bg-[#161E2E]/60 h-12 px-4 rounded-xl border border-white/5 flex items-center gap-3">
+                <div class="bg-[#161E2E]/60 h-12 px-4 rounded-xl border border-white/5 flex items-center gap-3 focus-within:border-orange-500/40">
                     <i data-lucide="search" class="w-5 h-5 text-[#8A99AD]"></i>
-                    <input type="text" placeholder="搜尋店家、通路類別..." class="bg-transparent text-sm text-white placeholder-[#8A99AD] w-full focus:outline-none">
+                    <input type="text" id="store-query" oninput="runEngine()" placeholder="請輸入您想刷的店家（例如：蝦皮、日本）..." class="bg-transparent text-sm text-white placeholder-zinc-600 w-full focus:outline-none">
                 </div>
             </section>
 
-            <section class="px-4 flex flex-col gap-2.5">
-                <span class="text-xs font-semibold text-[#8A99AD] px-2">常用推薦</span>
-                <div class="bg-[#161E2E]/60 p-4 rounded-xl border border-white/5 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="shopping-bag" class="text-orange-500 w-5 h-5"></i>
-                        <span class="text-sm font-medium">蝦皮購物</span>
+            <!-- 消費金額輸入 -->
+            <section class="px-4">
+                <div class="bg-[#161E2E]/40 rounded-[20px] p-4 border border-white/5 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-[#8A99AD]">預估消費金額</span>
+                    <div class="flex items-center text-xl font-extrabold text-orange-500">
+                        <span class="mr-1">NT$</span>
+                        <input type="number" id="spend-amt" value="2000" oninput="runEngine()" class="bg-transparent w-full focus:outline-none font-extrabold text-orange-500">
                     </div>
-                    <span class="text-xs text-emerald-400 font-bold">最高 3% 回饋</span>
+                </div>
+            </section>
+
+            <!-- 智慧精算核心看板 -->
+            <section class="px-4 flex flex-col gap-3">
+                <h2 class="text-sm font-bold text-[#8A99AD] px-1">🏆 依據皮夾算出的最優排序結果</h2>
+                <div id="search-engine-output" class="flex flex-col gap-3">
+                    <!-- JS 動態運算渲染 -->
                 </div>
             </section>
         </div>
 
-        <!-- ─── 核心功能 FOOTER (搜尋頁高亮) ─── -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <!-- 1. Overview -->
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Overview</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <!-- 2. Search (目前頁面：橘色高亮) -->
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
-                <i data-lucide="search" class="w-5 h-5"></i>
-                <span class="text-[10px] font-semibold">Search</span>
-                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
-            </button>
-            <!-- 3. Cards -->
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
-                <i data-lucide="credit-card" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Cards</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <!-- 4. 暫未開放功能 -->
-            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
-                <i data-lucide="landmark" class="w-5 h-5"></i>
-                <span class="text-[10px]">Rates</span>
-            </button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
-                <i data-lucide="settings" class="w-5 h-5"></i>
-                <span class="text-[10px]">Settings</span>
-            </button>
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Search</span><div class="w-4 h-[2px] bg-orange-500 rounded-full"></div></button>
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px]">Cards</span></button>
         </footer>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+
+        function runEngine() {
+            const query = document.getElementById('store-query').value.trim().toLowerCase();
+            const amt = parseFloat(document.getElementById('spend-amt').value) || 0;
+            const output = document.getElementById('search-engine-output');
+
+            const localCards = JSON.parse(localStorage.getItem('smart_cards')) || [];
+
+            if (localCards.length === 0) {
+                output.innerHTML = `
+                    <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-sm text-amber-400 text-center">
+                        ⚠️ 您的皮夾裡目前沒有任何卡片！請先至「Cards」頁面新增卡片，大腦才能為您做計算排序。
+                    </div>
+                `;
+                return;
+            }
+
+            // 比對排序系統
+            const scoredCards = localCards.map(card => {
+                let finalRate = card.rate;
+                let trigger加碼 = false;
+
+                // 如果使用者有打字，且卡片的通路關鍵字有對上的話，判定為指定通路加碼（模擬 AI 核心邏輯額外 +2% 網購回饋）
+                if (query.length > 0 && card.keywords) {
+                    const matched = card.keywords.some(k => query.includes(k.toLowerCase()) || k.toLowerCase().includes(query));
+                    if (matched) {
+                        finalRate += 2.0; 
+                        trigger加碼 = true;
+                    }
+                }
+                
+                return { ...card, finalRate, trigger加碼 };
+            });
+
+            // 回饋率由高到低排序
+            scoredCards.sort((a, b) => b.finalRate - a.finalRate);
+
+            output.innerHTML = "";
+            scoredCards.forEach((card, index) => {
+                const estEarn = Math.round(amt * (card.finalRate / 100));
+                let cardStyle = "from-cyan-400 to-blue-600";
+                if(card.org === "Mastercard") cardStyle = "from-purple-500 to-indigo-600";
+                if(card.org === "JCB") cardStyle = "from-rose-500 to-orange-600";
+
+                const isBest = index === 0;
+
+                const item = document.createElement('div');
+                item.className = isBest 
+                    ? "bg-[#161E2E]/90 rounded-[22px] p-[16px] border-2 border-cyan-400/30 shadow-[0_4px_16px_rgba(0,240,255,0.15)] flex flex-col gap-3"
+                    : "bg-[#161E2E]/40 rounded-[18px] p-[14px] border border-white/5 opacity-70 flex flex-col gap-2";
+
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-7 rounded bg-gradient-to-tr ${cardStyle} p-1 flex flex-col justify-between">
+                                <span class="text-[5px] text-white font-bold">${card.org}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-white">${card.name} ${isBest ? '🏆 首選' : ''}</span>
+                                <span class="text-[10px] text-[#8A99AD]">${card.trigger加碼 ? '🔥 已觸發指定通路加碼 (+2%)' : '適用基本回饋'}</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-black text-emerald-400">+ NT$ ${estEarn.toLocaleString()}</div>
+                            <div class="text-[10px] text-zinc-500">回饋率 ${card.finalRate}%</div>
+                        </div>
+                    </div>
+                `;
+                output.appendChild(item);
+            });
+        }
+
+        // 預先執行一次
+        runEngine();
+    </script>
 </body>
 </html>
