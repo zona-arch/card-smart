@@ -17,7 +17,7 @@
 
     <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
         
-        <!-- FIXED HEADER -->
+        <!-- HEADER -->
         <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
             <div class="flex flex-col gap-1">
                 <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
@@ -35,74 +35,55 @@
                 <p class="text-sm text-[#8A99AD]">今天也是離財富自由更近的一天！✨</p>
             </section>
 
-            <!-- 神算計算機 -->
+            <!-- 智慧計算機區塊 -->
             <section class="px-4 flex flex-col gap-3">
                 <h2 class="text-base font-semibold px-2">哪張卡最划算？</h2>
                 <div class="bg-[#161E2E]/60 backdrop-blur-[10px] rounded-[20px] p-4 border border-white/5 flex flex-col gap-3.5">
-                    <div class="flex gap-3 w-full">
-                        <div class="flex-1 flex flex-col gap-1.5">
-                            <label class="text-xs font-semibold text-[#8A99AD]">消費店家</label>
-                            <div onclick="window.location.href='search.html'" class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm cursor-pointer hover:border-orange-500/30 transition-all">
-                                <span>蝦皮購物</span>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
-                            </div>
-                        </div>
-                        <div class="flex-1 flex flex-col gap-1.5">
-                            <label class="text-xs font-semibold text-[#8A99AD]">消費金額</label>
-                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm cursor-pointer">
-                                <span>NT$ 1,500</span>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div onclick="window.location.href='search.html?autoResult=true'" class="bg-[#0B0E14]/80 p-3 rounded-xl border border-orange-500/20 flex items-center justify-between cursor-pointer hover:bg-[#0B0E14] transition-all">
+                    <div onclick="window.location.href='search.html'" class="bg-[#0B0E14]/80 p-3 rounded-xl border border-orange-500/20 flex items-center justify-between cursor-pointer hover:bg-[#0B0E14] transition-all">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                                <i data-lucide="credit-card" class="w-5 h-5 text-orange-500"></i>
+                                <i data-lucide="search" class="w-5 h-5 text-orange-500"></i>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-[#8A99AD]">最優推薦</span>
-                                <span class="text-sm font-semibold text-white">中信 LINE Pay 卡</span>
+                                <span class="text-xs text-[#8A99AD]">智慧試算通路</span>
+                                <span class="text-sm font-semibold text-white">點擊前往搜尋店家與試算</span>
                             </div>
                         </div>
-                        <div class="bg-orange-500/10 px-2.5 py-1.5 rounded-full border border-orange-500/20">
-                            <span class="text-xs font-bold text-orange-500">NT$ 45 (3%)</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 我的卡片 -->
-            <section class="px-4 flex flex-col gap-3">
-                <h2 class="text-base font-semibold px-2">我的卡片</h2>
-                <div class="flex flex-col gap-3">
-                    <div onclick="window.location.href='cards.html'" class="bg-[#0C1820] p-4 rounded-[18px] border border-cyan-400/20 flex flex-col gap-2.5 cursor-pointer hover:border-cyan-400/50 transition-all">
-                        <div class="flex items-center gap-3"><i data-lucide="credit-card" class="w-5 h-5 text-cyan-400"></i><span class="text-base font-bold">中信 LINE Pay 卡</span></div>
-                        <span class="text-xs text-white/60">備註：需轉換權益</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#8A99AD]"></i>
                     </div>
                 </div>
             </section>
         </div>
 
-        <!-- FIXED FOOTER NAV -->
+        <!-- ─── 核心功能 FOOTER (首頁高亮) ─── -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
+            <!-- 1. Overview (目前頁面：橘色高亮) -->
             <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
                 <i data-lucide="home" class="w-5 h-5"></i>
                 <span class="text-[10px] font-semibold">Overview</span>
                 <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
             </button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
+            <!-- 2. Search -->
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
                 <i data-lucide="search" class="w-5 h-5"></i>
                 <span class="text-[10px] font-medium">Search</span>
                 <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
             </button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
+            <!-- 3. Cards -->
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
                 <i data-lucide="credit-card" class="w-5 h-5"></i>
                 <span class="text-[10px] font-medium">Cards</span>
                 <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
             </button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i><span class="text-[10px] font-medium">Rates</span></button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i><span class="text-[10px] font-medium">Settings</span></button>
+            <!-- 4. 暫未開放功能 (變灰鎖定，避免點擊無反應) -->
+            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
+                <i data-lucide="landmark" class="w-5 h-5"></i>
+                <span class="text-[10px]">Rates</span>
+            </button>
+            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
+                <i data-lucide="settings" class="w-5 h-5"></i>
+                <span class="text-[10px]">Settings</span>
+            </button>
         </footer>
     </div>
 
