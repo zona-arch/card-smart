@@ -1,1 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardGini - Credit Cards</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #0B0C10; color: #FFFFFF; font-family: -apple-system, sans-serif; }
+        .glass-panel { background: rgba(22, 23, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.03); }
+        .card-glow { background: linear-gradient(135deg, #2E303F 0%, #1A1B24 100%); position: relative; overflow: hidden; }
+        .card-glow::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to top, rgba(11,12,16,0.9) 0%, transparent 100%); }
+    </style>
+</head>
+<body class="bg-[#0B0C10] min-h-screen pb-24">
+    <div class="max-w-md mx-auto px-5 pt-8">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-end mb-6">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight">我的皮夾</h1>
+                <p class="text-xs text-gray-500">已成功由 AI 託管 2 張實體權益</p>
+            </div>
+            <a href="add-card.html" class="bg-[#FF9800] text-[#0B0C10] text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg shadow-[#FF9800]/20">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> 新增卡片
+            </a>
+        </div>
 
+        <!-- 卡片列表區 -->
+        <div class="space-y-4">
+            
+            <!-- 卡片 1 (模擬上傳有照片的卡) -->
+            <div class="card-glow h-44 rounded-2xl p-5 flex flex-col justify-between border border-gray-800/80 shadow-xl">
+                <div class="flex justify-between items-start z-10">
+                    <div>
+                        <span class="bg-amber-500/10 text-[#FF9800] border border-[#FF9800]/30 text-[9px] uppercase font-bold px-2 py-0.5 rounded-md">Visa</span>
+                        <h3 class="text-lg font-bold mt-1 tracking-wide">玉山 Unicard</h3>
+                    </div>
+                    <div class="text-[10px] text-gray-400 bg-black/40 px-2 py-1 rounded-full border border-gray-800">Line Pay / Apple Pay</div>
+                </div>
+                
+                <div class="z-10 flex justify-between items-end">
+                    <div>
+                        <p class="text-[10px] text-gray-400">目前主打回饋</p>
+                        <p class="text-2xl font-black text-[#00F5D4]">最高 4.5% <span class="text-xs font-medium text-gray-300">e point</span></p>
+                    </div>
+                    <span class="text-[10px] font-medium text-[#FF5722] bg-[#FF5722]/10 border border-[#FF5722]/30 px-2 py-0.5 rounded-md flex items-center gap-0.5">
+                        <i data-lucide="sparkles" class="w-2.5 h-2.5"></i> ✨目前最頂
+                    </span>
+                </div>
+            </div>
+
+            <!-- 卡片 2 -->
+            <div class="card-glow h-44 rounded-2xl p-5 flex flex-col justify-between border border-gray-800/80 shadow-xl" style="background: linear-gradient(135deg, #1F2E3D 0%, #0F161E 100%);">
+                <div class="flex justify-between items-start z-10">
+                    <div>
+                        <span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 text-[9px] uppercase font-bold px-2 py-0.5 rounded-md">Mastercard</span>
+                        <h3 class="text-lg font-bold mt-1 tracking-wide">富邦 J卡</h3>
+                    </div>
+                    <div class="text-[10px] text-gray-400 bg-black/40 px-2 py-1 rounded-full border border-gray-800">Line Pay</div>
+                </div>
+                
+                <div class="z-10 flex justify-between items-end">
+                    <div>
+                        <p class="text-[10px] text-gray-400">日韓旅遊特化</p>
+                        <p class="text-2xl font-black text-white">實體消費 3%</p>
+                    </div>
+                    <span class="text-[10px] text-gray-400">權益已讀取完畢</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 說明文字 -->
+        <p class="text-center text-[11px] text-gray-600 mt-8 leading-relaxed">
+            💡 卡片回饋資訊由 AI 根據妳所提供的「官方權益備忘錄」進行本機閱讀與解析，無須承擔聯網爬蟲失效的風險。
+        </p>
+    </div>
+
+    <!-- 全局導航欄 -->
+    <div id="nav-placeholder"></div>
+</body>
+<script>
+    document.getElementById('nav-placeholder').innerHTML = `
+    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0C10]/90 backdrop-blur-md border-t border-[#1F2833] py-2 z-50">
+        <div class="max-w-md mx-auto flex justify-around items-center text-gray-500 text-[10px]">
+            <a href="index.html" class="flex flex-col items-center gap-1"><i data-lucide="home" class="w-5 h-5"></i>Overview</a>
+            <a href="search.html" class="flex flex-col items-center gap-1"><i data-lucide="search" class="w-5 h-5"></i>Search</a>
+            <a href="cards.html" class="flex flex-col items-center gap-1 text-[#FF9800]"><i data-lucide="credit-card" class="w-5 h-5 text-[#FF9800]"></i>Credit Cards</a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i>Bank Rate</a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
+        </div>
+    </div>`;
+    lucide.createIcons();
+</script>
+</html>
