@@ -11,64 +11,41 @@
         body { font-family: 'Outfit', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="bg-[#020205] flex justify-center items-center min-h-screen p-4">
 
     <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
         
-        <!-- FIXED HEADER -->
+        <!-- HEADER -->
         <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
             <div class="flex flex-col gap-1">
                 <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
                 <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
             </div>
-            <div class="w-10 h-10 rounded-full border border-cyan-400/30 shadow-[0_6px_16px_-6px_rgba(0,240,255,0.4)] overflow-hidden bg-slate-800 flex items-center justify-center">
-                <i data-lucide="user" class="w-5 h-5 text-cyan-400"></i>
-            </div>
         </header>
 
-        <!-- CONTENT CONTAINER -->
+        <!-- MAIN CONTENT -->
         <div class="flex-1 overflow-y-auto no-scrollbar pb-24">
             
-            <!-- 📄 SUB-PAGE A: SEARCH HOME -->
-            <div id="sub-search-home" class="flex flex-col gap-[22px] pt-3 animate-fade-in">
-                <section class="px-4 flex flex-col gap-3">
-                    <h2 class="text-base font-semibold px-2">店家地區</h2>
-                    <div class="flex gap-2.5 w-full">
-                        <div class="flex-1 flex flex-col gap-1.5">
-                            <label class="text-xs font-semibold text-[#8A99AD]">國家</label>
-                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm cursor-pointer">
-                                <span>台灣</span><i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
-                            </div>
-                        </div>
-                        <div class="flex-1 flex flex-col gap-1.5">
-                            <label class="text-xs font-semibold text-[#8A99AD]">地區</label>
-                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm cursor-pointer">
-                                <span>台中</span><i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
+            <!-- SUB-PAGE A: SEARCH HOME -->
+            <div id="sub-search-home" class="flex flex-col gap-[22px] pt-3">
                 <section class="px-4">
                     <div class="bg-[#161E2E]/60 h-12 px-4 rounded-xl border border-white/5 flex items-center gap-3">
                         <i data-lucide="search" class="w-5 h-5 text-[#8A99AD]"></i>
-                        <input type="text" placeholder="搜尋店家、類別 (例如：蝦皮)..." class="bg-transparent text-sm text-white placeholder-zinc-600 w-full focus:outline-none">
+                        <input type="text" placeholder="搜尋店家 (請點選下方蝦皮測試)..." class="bg-transparent text-sm text-white placeholder-zinc-600 w-full focus:outline-none" readonly>
                     </div>
                 </section>
 
                 <section class="px-4 flex flex-col gap-3">
-                    <h2 class="text-base font-semibold px-2">常用店家</h2>
+                    <h2 class="text-base font-semibold px-2">熱門網購通路</h2>
                     <div class="flex flex-col gap-2.5">
-                        <div onclick="showResult(true)" class="bg-[#161E2E]/60 p-3 rounded-xl border border-white/5 flex items-center justify-between cursor-pointer hover:border-cyan-400/40 transition-all">
+                        <div onclick="showResult(true)" class="bg-[#161E2E]/60 p-4 rounded-xl border border-white/5 flex items-center justify-between cursor-pointer hover:border-orange-500/40 transition-all">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center"><i data-lucide="shopping-bag" class="w-5 h-5 text-orange-500"></i></div>
                                 <div class="flex flex-col">
                                     <span class="text-sm font-semibold">蝦皮購物</span>
-                                    <span class="text-xs text-cyan-400">最佳: 中信 LINE Pay 卡 — 3%</span>
+                                    <span class="text-xs text-cyan-400">點擊即刻啟動智慧刷卡精算</span>
                                 </div>
                             </div>
                             <i data-lucide="chevron-right" class="w-4 h-4 text-[#8A99AD]"></i>
@@ -77,77 +54,43 @@
                 </section>
             </div>
 
-            <!-- 📄 SUB-PAGE B: SEARCH RESULT -->
-            <div id="sub-search-result" class="hidden flex flex-col gap-[22px] pt-3 animate-fade-in">
+            <!-- SUB-PAGE B: SEARCH RESULT -->
+            <div id="sub-search-result" class="hidden flex flex-col gap-[22px] pt-3">
                 <section class="flex items-center gap-4 px-5">
                     <button onclick="showResult(false)" class="bg-white/5 p-2 rounded-full border border-white/10"><i data-lucide="chevron-left" class="w-5 h-5 text-white"></i></button>
-                    <div class="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center border border-orange-500">
-                        <i data-lucide="shopping-bag" class="w-6 h-6 text-orange-500"></i>
-                    </div>
                     <div class="flex flex-col flex-1">
-                        <h1 class="text-xl font-bold text-white">蝦皮購物</h1>
-                        <span class="text-xs text-[#8A99AD]">網路購物平台 • 台灣熱門</span>
+                        <h1 class="text-xl font-bold text-white">蝦皮購物 精算結果</h1>
+                        <span class="text-xs text-[#8A99AD]">正在依據您的真實皮夾手牌進行動態權益計算</span>
                     </div>
                 </section>
 
-                <!-- 動態試算金額輸入區 -->
+                <!-- 金額輸入 -->
                 <section class="px-4 flex flex-col gap-2">
-                    <span class="text-xs font-semibold text-[#8A99AD] px-2">預估消費金額 (可點擊修改數字)</span>
+                    <span class="text-xs font-semibold text-[#8A99AD] px-2">任意修改消費金額試算 (元)</span>
                     <div class="bg-[#161E2E]/60 rounded-[20px] p-4 border border-white/5 flex justify-between items-center focus-within:border-orange-500/40 transition-all">
                         <div class="flex items-center gap-1 text-2xl font-extrabold text-orange-500">
                             <span>NT$</span>
-                            <input type="number" id="amt-input" value="3000" oninput="calculateReward()" class="bg-transparent w-32 focus:outline-none font-extrabold text-orange-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            <input type="number" id="spend-amt" value="2000" oninput="runMatchEngine()" class="bg-transparent w-40 focus:outline-none font-extrabold text-orange-500">
                         </div>
-                        <div class="bg-white/5 px-3 py-1.5 rounded-full text-xs font-semibold text-zinc-400">動態精算中</div>
                     </div>
                 </section>
 
-                <!-- 最佳選擇高光卡片 -->
+                <!-- 智慧精算引擎產出結果 -->
                 <section class="px-4 flex flex-col gap-3">
-                    <h2 class="text-sm font-bold text-white/90 px-2">🏆 最佳選擇</h2>
-                    <div class="bg-[#161E2E]/90 rounded-[24px] p-[18px] border-2 border-cyan-400/30 shadow-[0_8px_20px_0_rgba(0,240,255,0.15)] flex flex-col gap-4">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-[56px] h-[36px] rounded-md bg-gradient-to-tr from-cyan-400 to-blue-600 p-2 flex flex-col justify-between">
-                                <div class="w-2 h-1.5 bg-yellow-400 rounded-sm"></div>
-                                <div class="flex justify-between items-center text-[5px] text-white"><span>LINE Pay</span><span>VISA</span></div>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold">中信 LINE Pay 卡</span>
-                                <span class="text-[9px] bg-indigo-600/20 text-indigo-300 border border-indigo-400/30 px-1 rounded self-start mt-0.5">VISA</span>
-                            </div>
-                        </div>
-                        <div class="bg-[#0B0E14]/80 rounded-xl p-3.5 flex flex-col gap-2 text-xs">
-                            <div class="flex justify-between"><span>一般回饋</span><span class="font-bold text-cyan-400">3% LINE POINTS</span></div>
-                            <div class="flex justify-between border-t border-white/5 pt-2 items-center">
-                                <span>本次預估回饋</span>
-                                <span class="text-base font-extrabold text-emerald-400" id="reward-output">NT$ 90</span>
-                            </div>
-                        </div>
+                    <h2 class="text-sm font-bold text-white/90 px-2">🏆 最佳神卡推薦</h2>
+                    <div id="engine-result-slot">
+                        <!-- 由大腦動態生成 -->
                     </div>
                 </section>
             </div>
 
         </div>
 
-        <!-- FIXED FOOTER NAV -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Overview</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
-                <i data-lucide="search" class="w-5 h-5"></i>
-                <span class="text-[10px] font-semibold">Search</span>
-                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
-            </button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
-                <i data-lucide="credit-card" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Cards</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i><span class="text-[10px] font-medium">Rates</span></button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i><span class="text-[10px] font-medium">Settings</span></button>
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px]">Cards</span></button>
         </footer>
     </div>
 
@@ -155,35 +98,70 @@
         lucide.createIcons();
         
         function showResult(bool) {
-            const home = document.getElementById('sub-search-home');
-            const result = document.getElementById('sub-search-result');
-            if (bool) {
-                home.classList.add('hidden');
-                result.classList.remove('hidden');
-                calculateReward(); // 切換時主動算一次
-            } else {
-                home.classList.remove('hidden');
-                result.classList.add('hidden');
-            }
+            document.getElementById('sub-search-home').classList.toggle('hidden', bool);
+            document.getElementById('sub-search-result').classList.toggle('hidden', !bool);
+            if(bool) runMatchEngine();
         }
 
-        // 即時 3% 智慧精算引擎
-        function calculateReward() {
-            const amtInput = document.getElementById('amt-input');
-            const rewardOutput = document.getElementById('reward-output');
-            
-            let val = parseFloat(amtInput.value) || 0;
-            if (val < 0) val = 0;
-            
-            // 計算 3% 回饋並四捨五入
-            const reward = Math.round(val * 0.03);
-            rewardOutput.innerText = `NT$ ${reward.toLocaleString()}`;
+        // 🧠 核心大腦精算媒合引擎
+        function runMatchEngine() {
+            const amt = parseFloat(document.getElementById('spend-amt').value) || 0;
+            const slot = document.getElementById('engine-result-slot');
+            const localCards = JSON.parse(localStorage.getItem('user_cards')) || [];
+
+            if(localCards.length === 0) {
+                slot.innerHTML = `
+                    <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-center text-sm text-amber-300">
+                        ⚠️ 偵測到您的皮夾目前沒有任何卡片手牌！請先去「Cards」頁面新增卡片，大腦才能幫您算喔！
+                    </div>
+                `;
+                return;
+            }
+
+            // 智慧權益排序邏輯：跑出回饋率最高的卡片
+            // 模擬蝦皮網購加成：如果卡片有綁定 Line Pay，回饋額外 +2% 網購加碼！
+            const sorted = localCards.map(card => {
+                let finalRate = card.rate;
+                let isBonus = false;
+                if(card.pays.includes('Line Pay')) {
+                    finalRate += 2.0; // 模擬通路加碼
+                    isBonus = true;
+                }
+                return { ...card, finalRate, isBonus };
+            }).sort((a, b) => b.finalRate - a.finalRate);
+
+            const bestCard = sorted[0];
+            const estReward = Math.round(amt * (bestCard.finalRate / 100));
+
+            let cardGradient = "from-cyan-400 to-blue-600";
+            if(bestCard.org === "Mastercard") cardGradient = "from-purple-500 to-indigo-600";
+            if(bestCard.org === "JCB") cardGradient = "from-rose-500 to-orange-600";
+
+            slot.innerHTML = `
+                <div class="bg-[#161E2E]/90 rounded-[24px] p-[18px] border-2 border-emerald-400/30 shadow-[0_8px_20px_0_rgba(16,185,129,0.15)] flex flex-col gap-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-[56px] h-[36px] rounded-md bg-gradient-to-tr ${cardGradient} p-2 flex flex-col justify-between">
+                            <div class="w-2 h-1.5 bg-yellow-400 rounded-sm"></div>
+                            <span class="text-[5px] font-extrabold text-white">${bestCard.org}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-white">${bestCard.name}</span>
+                            <span class="text-[10px] text-emerald-400 font-medium">${bestCard.isBonus ? '🔥 觸發 Line Pay 網購加碼 2%' : '基本回饋適用'}</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#0B0E14]/80 rounded-xl p-3.5 flex flex-col gap-2 text-xs">
+                        <div class="flex justify-between"><span>計算回饋率</span><span class="font-bold text-cyan-400">${bestCard.finalRate}%</span></div>
+                        <div class="flex justify-between border-t border-white/5 pt-2 items-center">
+                            <span>預估賺回金</span>
+                            <span class="text-base font-extrabold text-emerald-400">NT$ ${estReward.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('autoResult') === 'true') {
-            showResult(true);
-        }
+        if (urlParams.get('autoResult') === 'true') showResult(true);
     </script>
 </body>
 </html>
