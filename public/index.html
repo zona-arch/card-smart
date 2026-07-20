@@ -175,50 +175,58 @@
       </section>
     </main>
 
-    <!-- Bottom Nav + FAB (這裡已經打通超連結囉！) -->
+    <!-- Bottom Nav + FAB -->
     <div class="fixed inset-x-0 bottom-0 z-40 flex justify-center">
       <div class="relative w-full max-w-[480px]">
-        <button type="button" class="absolute bottom-[110px] right-4 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_18px_0_rgba(0,240,255,0.60)] bg-[radial-gradient(50%_50%_at_50%_50%,#9D1500_0%,#FF8400_100%)]">
+        <!-- 漂浮 AI 按鈕 -->
+        <button type="button" class="absolute bottom-[110px] right-4 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_18px_0_rgba(0,240,255,0.60)] bg-[radial-gradient(50%_50%_at_50%_50%,#9D1500_0%,#FF8400_100%)] z-50">
           <i data-lucide="sparkles" class="h-[22px] w-[22px] text-white"></i>
         </button>
-        <div class="flex flex-col bg-brand-surface backdrop-blur-md">
-          <nav class="flex h-[72px] items-center justify-between px-4">
+        
+        <!-- 背景磨砂玻璃面板 -->
+        <div class="relative flex flex-col bg-brand-surface backdrop-blur-md">
+          
+          <!-- 修正後的導覽列：確保按鈕 z-index 頂天 (z-50)，且點擊範圍更寬敞 -->
+          <nav class="relative z-50 flex h-[72px] items-center justify-between px-4 w-full">
             
             <!-- 1. Overview (首頁) -->
-            <a href="index.html" class="flex w-[72px] flex-col items-center gap-1">
+            <a href="index.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
               <i data-lucide="home" class="h-[22px] w-[22px] text-brand-orange"></i>
               <span class="font-geist text-[10px] font-semibold text-brand-orange">Overview</span>
               <span class="h-0.5 w-4 rounded-full bg-brand-orange shadow-[0_0_4px_0_rgba(0,240,255,0.50)]"></span>
             </a>
 
             <!-- 2. Search -->
-            <a href="search.html" class="flex w-[72px] flex-col items-center gap-1">
+            <a href="search.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
               <i data-lucide="search" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Search</span>
             </a>
 
             <!-- 3. Credit Cards -->
-            <a href="cards.html" class="flex w-[72px] flex-col items-center gap-1">
+            <a href="cards.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
               <i data-lucide="credit-card" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Credit Cards</span>
             </a>
 
             <!-- 4. Bank Rate -->
-            <a href="rates.html" class="flex w-[72px] flex-col items-center gap-1">
+            <a href="rates.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
               <i data-lucide="landmark" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Bank Rate</span>
             </a>
 
             <!-- 5. Settings -->
-            <a href="settings.html" class="flex w-[72px] flex-col items-center gap-1">
+            <a href="settings.html" class="flex w-[72px] flex-col items-center justify-center gap-1 py-3 cursor-pointer">
               <i data-lucide="settings" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Settings</span>
             </a>
             
           </nav>
-          <div class="flex h-4 items-center justify-center bg-brand-bg">
+          
+          <!-- 底部的模擬 Home 條區塊 (降低層級，絕對不擋路) -->
+          <div class="relative z-10 flex h-4 items-center justify-center bg-brand-bg">
             <div class="h-[5px] w-[134px] rounded-full bg-[#4E5D73]"></div>
           </div>
+          
         </div>
       </div>
     </div>
