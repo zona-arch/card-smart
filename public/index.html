@@ -1,77 +1,241 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CardGini - Overview</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { background-color: #0B0C10; color: #FFFFFF; font-family: -apple-system, sans-serif; }
-        .glass-panel { background: rgba(22, 23, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.03); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardgini - Smart Spending, Elite Saving</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: "#0B0E14",
+              bg2: "#110B25",
+              surface: "rgba(22, 30, 46, 0.60)",
+              field: "rgba(11, 14, 20, 0.80)",
+              muted: "#8A99AD",
+              orange: "#FF8400",
+              "orange-deep": "#9D1500",
+              cyan: "#00F0FF",
+              pink: "#FF60B5",
+              purple: "#9D4EDD",
+            }
+          },
+          fontFamily: {
+            outfit: ["Outfit", "sans-serif"],
+            geist: ["Geist", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-[#0B0C10] min-h-screen pb-24">
-    <div class="max-w-md mx-auto px-5 pt-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
-            <div>
-                <h1 class="text-3xl font-bold text-[#FF9800] tracking-wide">Card<span class="text-white">Gini</span></h1>
-                <p class="text-[10px] text-gray-500 tracking-wider">Smart Spending, Elite Saving</p>
+<body class="min-h-screen bg-gradient-to-b from-[#0B0E14] to-[#110B25] text-white flex justify-center selection:bg-brand-orange selection:text-white">
+  
+  <div class="relative flex w-full max-w-[480px] min-h-screen flex-col">
+    <main class="flex flex-1 flex-col gap-6 px-0 pb-32 pt-3">
+      
+      <!-- Header + Greeting -->
+      <section class="flex flex-col gap-4 px-6">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col items-start gap-1">
+            <span class="font-outfit text-2xl font-extrabold tracking-tight text-white">Cardgini</span>
+            <span class="font-geist text-xs text-brand-muted">Smart Spending, Elite Saving</span>
+          </div>
+          <div class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-[28px] bg-brand-surface shadow-[0_6px_16px_-6px_rgba(0,240,255,0.35)]">
+            <span class="font-outfit text-sm font-bold text-white">Z</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <h1 class="font-outfit text-2xl font-bold text-white">Hello, Zona 👋</h1>
+          <p class="font-geist text-sm text-brand-muted">今天也是離財富自由更近的一天！✨</p>
+        </div>
+      </section>
+
+      <!-- Smart Calculator -->
+      <section class="flex flex-col gap-3 px-4">
+        <h2 class="font-outfit text-base font-semibold text-white">哪張卡最划算？</h2>
+        <div class="flex flex-col gap-3.5 rounded-[20px] border border-white/[0.08] bg-brand-surface p-4 backdrop-blur-md">
+          <div class="flex items-start gap-3">
+            <label class="flex flex-1 flex-col gap-1.5">
+              <span class="font-geist text-xs font-semibold text-brand-muted">消費店家</span>
+              <div class="relative flex h-11 items-center rounded-xl border border-white/[0.08] bg-brand-field px-3">
+                <select id="merchant-select" class="w-full appearance-none bg-transparent font-geist text-sm text-white outline-none cursor-pointer">
+                  <option value="0" data-card="中信 LINE Pay 卡" data-rate="3" class="bg-[#0B0E14]">蝦皮購物</option>
+                  <option value="1" data-card="台新 FlyGo 卡" data-rate="2" class="bg-[#0B0E14]">全聯福利中心</option>
+                  <option value="2" data-card="Costco 聯名卡" data-rate="5" class="bg-[#0B0E14]">Costco 好市多</option>
+                  <option value="3" data-card="台新 FlyGo 卡" data-rate="5" class="bg-[#0B0E14]">海外刷卡消費</option>
+                </select>
+                <i data-lucide="chevron-down" class="pointer-events-none absolute right-3 h-[18px] w-[18px] text-brand-muted"></i>
+              </div>
+            </label>
+            <label class="flex flex-1 flex-col gap-1.5">
+              <span class="font-geist text-xs font-semibold text-brand-muted">消費金額</span>
+              <div class="flex h-11 items-center rounded-xl border border-white/[0.08] bg-brand-field px-3">
+                <span class="mr-1 font-geist text-sm text-white">NT$</span>
+                <input id="amount-input" type="number" min="0" value="1500" class="w-full bg-transparent font-geist text-sm text-white outline-none">
+              </div>
+            </label>
+          </div>
+
+          <div class="flex items-center gap-3 rounded-2xl border border-brand-orange/20 bg-brand-field p-3 shadow-[0_2px_10px_-10px_rgba(255,132,0,0.20)] backdrop-blur-md">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-orange/10">
+              <i data-lucide="credit-card" class="h-5 w-5 text-brand-orange"></i>
             </div>
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-xs font-bold shadow-lg shadow-pink-500/20">G</div>
-        </div>
-
-        <!-- 總覽數據小卡 -->
-        <div class="glass-panel p-5 rounded-2xl mb-5 shadow-inner relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-28 h-28 bg-[#FF9800]/10 rounded-full blur-2xl"></div>
-            <p class="text-xs text-gray-400 mb-1">本月已透過 AI 省下</p>
-            <h2 class="text-3xl font-black text-[#00F5D4] tracking-tight">$1,480 <span class="text-xs font-normal text-gray-400">TWD</span></h2>
-            <div class="mt-4 pt-4 border-t border-gray-800/60 flex justify-between text-center text-xs">
-                <div><p class="text-gray-500 mb-0.5">已綁定卡片</p><p class="font-bold text-white text-sm">4 張</p></div>
-                <div><p class="text-gray-500 mb-0.5">最常使用通路</p><p class="font-bold text-white text-sm">蝦皮購物</p></div>
-                <div><p class="text-gray-500 mb-0.5">平均回饋率</p><p class="font-bold text-[#FF9800] text-sm">3.8 %</p></div>
+            <div class="flex flex-1 flex-col items-start gap-1">
+              <span id="result-card" class="font-geist text-[13px] font-semibold text-white">中信 LINE Pay 卡</span>
+              <span class="inline-flex items-center gap-2 rounded-full border border-brand-orange/20 bg-brand-orange/[0.08] px-2.5 py-1.5">
+                <span id="result-reward" class="font-geist text-[13px] font-bold text-brand-orange">NT$ 45 回饋 (3%)</span>
+              </span>
             </div>
+          </div>
         </div>
+      </section>
 
-        <!-- 捷徑區 -->
-        <h3 class="text-xs font-bold tracking-wider text-gray-500 uppercase mb-3">快捷功能</h3>
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <a href="search.html" class="glass-panel p-4 rounded-xl flex items-center gap-3 hover:border-[#00F5D4]/40 transition group">
-                <div class="p-2 bg-[#00F5D4]/10 rounded-lg text-[#00F5D4] group-hover:scale-105 transition"><i data-lucide="search" class="w-5 h-5"></i></div>
-                <div><p class="text-sm font-semibold">搜尋店家</p><p class="text-[10px] text-gray-400">查哪張卡最頂</p></div>
-            </a>
-            <a href="add-card.html" class="glass-panel p-4 rounded-xl flex items-center gap-3 hover:border-[#FF9800]/40 transition group">
-                <div class="p-2 bg-[#FF9800]/10 rounded-lg text-[#FF9800] group-hover:scale-105 transition"><i data-lucide="plus-circle" class="w-5 h-5"></i></div>
-                <div><p class="text-sm font-semibold">新增卡片</p><p class="text-[10px] text-gray-400">拍照/貼上權益</p></div>
-            </a>
+      <!-- Wallet -->
+      <section class="flex flex-col gap-3 px-4">
+        <h2 class="font-outfit text-base font-semibold text-white">我的卡片</h2>
+        <div class="flex flex-col gap-4">
+          <div class="flex w-full flex-col justify-center gap-2.5 overflow-hidden rounded-[18px] border border-brand-cyan/20 bg-[#0C1820] p-3.5 shadow-[0_5px_10px_-10px_rgba(0,240,255,0.40)]">
+            <div class="flex items-center gap-3">
+              <i data-lucide="credit-card" class="h-[18px] w-[18px] text-white"></i>
+              <span class="font-geist text-base font-bold text-white">中信 LINE Pay 卡</span>
+            </div>
+            <span class="font-geist text-[13px] text-white/80">備註：需轉換權益</span>
+          </div>
+          <div class="flex w-full flex-col justify-center gap-2.5 overflow-hidden rounded-[18px] border border-brand-cyan/20 bg-[#0C1820] p-3.5 shadow-[0_5px_10px_-10px_rgba(0,240,255,0.40)]">
+            <div class="flex items-center gap-3">
+              <i data-lucide="credit-card" class="h-[18px] w-[18px] text-white"></i>
+              <span class="font-geist text-base font-bold text-white">台新 FlyGo 卡</span>
+            </div>
+            <span class="font-geist text-[13px] text-white/80">備註：5% 海外消費</span>
+          </div>
         </div>
+      </section>
 
-        <!-- 推薦動態 -->
-        <h3 class="text-xs font-bold tracking-wider text-gray-500 uppercase mb-3">AI 每日神卡碎念</h3>
-        <div class="glass-panel p-4 rounded-xl flex gap-3 items-start relative border-l-2 border-[#00F5D4]">
-            <div class="mt-0.5 text-[#00F5D4]"><i data-lucide="sparkles" class="w-4 h-4 animate-pulse"></i></div>
-            <p class="text-xs text-gray-300 leading-relaxed">
-                「主人，今天便利商店有特別加碼喔！如果去 <span class="text-[#FF9800] font-medium">7-11</span> 記得刷妳新上傳的國泰卡，綁定 Apple Pay 實測回饋拿滿有 10% 喔！」
-            </p>
+      <!-- Payment methods -->
+      <section class="flex flex-col gap-3 px-4">
+        <h2 class="font-outfit text-base font-semibold text-white">行動支付</h2>
+        <div class="flex items-stretch gap-2">
+          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-cyan/10">
+              <i data-lucide="message-circle" class="h-[18px] w-[18px] text-brand-cyan"></i>
+            </div>
+            <span class="font-geist text-[10px] text-white">Line Pay</span>
+            <span class="font-geist text-[9px] text-brand-muted">中信 LINE Pay 卡</span>
+          </div>
+          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-cyan/10">
+              <i data-lucide="apple" class="h-[18px] w-[18px] text-brand-cyan"></i>
+            </div>
+            <span class="font-geist text-[10px] text-white">Apple Pay</span>
+            <span class="font-geist text-[9px] text-brand-muted">台新 FlyGo</span>
+          </div>
+          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-pink/10">
+              <i data-lucide="shopping-bag" class="h-[18px] w-[18px] text-brand-pink"></i>
+            </div>
+            <span class="font-geist text-[10px] text-white">街口支付</span>
+            <span class="font-geist text-[9px] text-brand-muted">Costco聯名卡</span>
+          </div>
+          <div class="flex flex-1 flex-col items-start gap-1.5 rounded-[14px] border border-white/[0.08] bg-brand-surface p-2.5 backdrop-blur-md">
+            <div class="flex h-7 w-7 items-center justify-center rounded-[10px] bg-brand-purple/10">
+              <i data-lucide="circle-x" class="h-[18px] w-[18px] text-brand-purple"></i>
+            </div>
+            <span class="font-geist text-[10px] text-white">Google Pay</span>
+            <span class="font-geist text-[9px] text-brand-muted">中信 LINE Pay 卡</span>
+          </div>
         </div>
+      </section>
+
+      <!-- Earnings -->
+      <section class="flex flex-col gap-3 px-4">
+        <h2 class="font-outfit text-base font-semibold text-white">本月利息</h2>
+        <div class="flex flex-col gap-3 rounded-[20px] border border-white/[0.08] bg-brand-surface p-5 backdrop-blur-md">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col items-start gap-1">
+              <span class="font-geist text-xs font-semibold uppercase text-white">王道銀行</span>
+              <div class="flex items-center gap-2.5">
+                <span class="font-outfit text-[28px] font-bold text-brand-orange">+NT$ 1,250</span>
+                <i data-lucide="trending-up" class="h-[18px] w-[18px] text-brand-orange"></i>
+              </div>
+            </div>
+          </div>
+          <p class="font-geist text-[13px] text-brand-muted">基於活存利率與本月預估餘額計算。</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Nav + FAB -->
+    <div class="fixed inset-x-0 bottom-0 z-40 flex justify-center">
+      <div class="relative w-full max-w-[480px]">
+        <button type="button" class="absolute bottom-[110px] right-4 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_18px_0_rgba(0,240,255,0.60)] bg-[radial-gradient(50%_50%_at_50%_50%,#9D1500_0%,#FF8400_100%)]">
+          <i data-lucide="sparkles" class="h-[22px] w-[22px] text-white"></i>
+        </button>
+        <div class="flex flex-col bg-brand-surface backdrop-blur-md">
+          <nav class="flex h-[72px] items-center justify-between px-4">
+            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+              <i data-lucide="home" class="h-[22px] w-[22px] text-brand-orange"></i>
+              <span class="font-geist text-[10px] font-semibold text-brand-orange">Overview</span>
+              <span class="h-0.5 w-4 rounded-full bg-brand-orange shadow-[0_0_4px_0_rgba(0,240,255,0.50)]"></span>
+            </button>
+            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+              <i data-lucide="search" class="h-[22px] w-[22px] text-brand-muted"></i>
+              <span class="font-geist text-[10px] font-medium text-brand-muted">Search</span>
+            </button>
+            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+              <i data-lucide="credit-card" class="h-[22px] w-[22px] text-brand-muted"></i>
+              <span class="font-geist text-[10px] font-medium text-brand-muted">Credit Cards</span>
+            </button>
+            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+              <i data-lucide="landmark" class="h-[22px] w-[22px] text-brand-muted"></i>
+              <span class="font-geist text-[10px] font-medium text-brand-muted">Bank Rate</span>
+            </button>
+            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+              <i data-lucide="settings" class="h-[22px] w-[22px] text-brand-muted"></i>
+              <span class="font-geist text-[10px] font-medium text-brand-muted">Settings</span>
+            </button>
+          </nav>
+          <div class="flex h-4 items-center justify-center bg-brand-bg">
+            <div class="h-[5px] w-[134px] rounded-full bg-[#4E5D73]"></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- 全局導航欄 -->
-    <div id="nav-placeholder"></div>
-</body>
-<script>
-    // 注入全域底部導航
-    document.getElementById('nav-placeholder').innerHTML = `
-    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0C10]/90 backdrop-blur-md border-t border-[#1F2833] py-2 z-50">
-        <div class="max-w-md mx-auto flex justify-around items-center text-gray-500 text-[10px]">
-            <a href="index.html" class="flex flex-col items-center gap-1 text-[#FF9800]"><i data-lucide="home" class="w-5 h-5 text-[#FF9800]"></i>Overview</a>
-            <a href="search.html" class="flex flex-col items-center gap-1"><i data-lucide="search" class="w-5 h-5"></i>Search</a>
-            <a href="cards.html" class="flex flex-col items-center gap-1"><i data-lucide="credit-card" class="w-5 h-5"></i>Credit Cards</a>
-            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i>Bank Rate</a>
-            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
-        </div>
-    </div>`;
+  <!-- Calculator Script -->
+  <script>
     lucide.createIcons();
-</script>
+
+    const selectEl = document.getElementById('merchant-select');
+    const inputEl = document.getElementById('amount-input');
+    const resultCardEl = document.getElementById('result-card');
+    const resultRewardEl = document.getElementById('result-reward');
+
+    function calculate() {
+      const selectedOption = selectEl.options[selectEl.selectedIndex];
+      const cardName = selectedOption.getAttribute('data-card');
+      const rate = Number(selectedOption.getAttribute('data-rate'));
+      const amount = Number(inputEl.value) || 0;
+      
+      const reward = Math.round((amount * rate) / 100);
+      const formattedReward = `NT$ ${reward.toLocaleString("en-US")} 回饋 (${rate}%)`;
+      
+      resultCardEl.textContent = cardName;
+      resultRewardEl.textContent = formattedReward;
+    }
+
+    selectEl.addEventListener('change', calculate);
+    inputEl.addEventListener('input', calculate);
+  </script>
+</body>
 </html>
