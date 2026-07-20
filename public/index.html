@@ -23,67 +23,33 @@
                 <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
                 <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
             </div>
-            <div class="w-10 h-10 rounded-full border border-cyan-400/30 shadow-[0_6px_16px_-6px_rgba(0,240,255,0.4)] overflow-hidden bg-slate-800 flex items-center justify-center">
-                <i data-lucide="user" class="w-5 h-5 text-cyan-400"></i>
-            </div>
         </header>
 
         <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3">
-            <section class="px-6 flex flex-col gap-1.5">
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3 px-6">
+            <section class="flex flex-col gap-1.5 mt-2">
                 <h1 class="text-2xl font-bold text-white">Hello, Zona 👋</h1>
-                <p class="text-sm text-[#8A99AD]">今天也是離財富自由更近的一天！✨</p>
+                <p class="text-xs text-[#8A99AD]">今天想賺取多少刷卡回饋呢？🔥</p>
             </section>
 
-            <!-- 智慧計算機區塊 -->
-            <section class="px-4 flex flex-col gap-3">
-                <h2 class="text-base font-semibold px-2">哪張卡最划算？</h2>
-                <div class="bg-[#161E2E]/60 backdrop-blur-[10px] rounded-[20px] p-4 border border-white/5 flex flex-col gap-3.5">
-                    <div onclick="window.location.href='search.html'" class="bg-[#0B0E14]/80 p-3 rounded-xl border border-orange-500/20 flex items-center justify-between cursor-pointer hover:bg-[#0B0E14] transition-all">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                                <i data-lucide="search" class="w-5 h-5 text-orange-500"></i>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-xs text-[#8A99AD]">智慧試算通路</span>
-                                <span class="text-sm font-semibold text-white">點擊前往搜尋店家與試算</span>
-                            </div>
-                        </div>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-[#8A99AD]"></i>
-                    </div>
+            <!-- 智慧引導區 -->
+            <section class="flex flex-col gap-3">
+                <div class="bg-[#161E2E]/60 backdrop-blur-[10px] rounded-[24px] p-5 border border-white/5 flex flex-col gap-4">
+                    <h3 class="text-sm font-bold text-orange-500">⚡️ 快速神算精算入口</h3>
+                    <p class="text-xs text-zinc-400 leading-relaxed">我們已經為您的應用程式裝上了 LocalStorage 在地資料庫大腦！現在點擊下方按鈕即可開始精算。</p>
+                    
+                    <button onclick="window.location.href='search.html'" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 h-11 rounded-xl text-center text-xs font-bold text-white shadow-lg active:scale-95 transition-transform">
+                        立即前往 Search 頁面體驗真搜尋
+                    </button>
                 </div>
             </section>
         </div>
 
-        <!-- ─── 核心功能 FOOTER (首頁高亮) ─── -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <!-- 1. Overview (目前頁面：橘色高亮) -->
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span class="text-[10px] font-semibold">Overview</span>
-                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
-            </button>
-            <!-- 2. Search -->
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
-                <i data-lucide="search" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Search</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <!-- 3. Cards -->
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
-                <i data-lucide="credit-card" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Cards</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <!-- 4. 暫未開放功能 (變灰鎖定，避免點擊無反應) -->
-            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
-                <i data-lucide="landmark" class="w-5 h-5"></i>
-                <span class="text-[10px]">Rates</span>
-            </button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
-                <i data-lucide="settings" class="w-5 h-5"></i>
-                <span class="text-[10px]">Settings</span>
-            </button>
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Overview</span><div class="w-4 h-[2px] bg-orange-500 rounded-full"></div></button>
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px]">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px]">Cards</span></button>
         </footer>
     </div>
 
