@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡聰明 | CardSmart</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen pb-12">
+
+    <header class="bg-blue-600 text-white shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wide">💳 卡聰明 CardSmart</h1>
+            <span class="text-xs bg-blue-700 px-2 py-1 rounded-full">2026 下半年版</span>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4 space-y-6">
+
+        <!-- 區塊一：消費試算 -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="text-lg font-bold mb-3 text-blue-600 flex items-center gap-1">🔍 哪張卡最划算？</h2>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">消費金額 (TWD)</label>
+                    <input type="number" id="spendAmount" placeholder="例如：1000" class="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">消費類別</label>
+                    <select id="spendCategory" class="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="general">一般消費</option>
+                        <option value="restaurant">餐飲美食</option>
+                        <option value="online">網路購物</option>
+                        <option value="travel">旅遊交通</option>
+                    </select>
+                </div>
+                <button onclick="calculateBestCard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm cursor-pointer">
+                    立即試算
+                </button>
+            </div>
+            <div id="calcResult" class="mt-4 p-3 bg-blue-50 rounded-xl hidden border border-blue-100"></div>
+        </section>
+
+        <!-- 區塊二：AI 消費顧問 -->
+        <section class="bg-gradient-to-br from-indigo-50 to-purple-50 p-5 rounded-2xl shadow-sm border border-indigo-100">
+            <h2 class="text-lg font-bold mb-1 text-indigo-700">🤖 AI 消費顧問</h2>
+            <p class="text-xs text-gray-500 mb-3">輸入你的消費習慣，讓 Workers AI 幫你做最佳卡片組合規劃。</p>
+            <div class="space-y-3">
+                <textarea id="aiPrompt" rows="3" placeholder="例如：我每個月通勤費約2000，喜歡網購，請推薦我怎麼分配卡片？" class="w-full p-2.5 border border-indigo-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"></textarea>
+                <button onclick="askAIConsultant()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm cursor-pointer">
+                    詢問 AI 顧問
+                </button>
+            </div>
+            <div id="aiResult" class="mt-4 p-3 bg-white rounded-xl hidden border border-indigo-100 text-sm leading-relaxed whitespace-pre-line"></div>
+        </section>
+
+        <!-- 區塊三：我的卡片清單 -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-lg font-bold text-gray-800">📋 我的卡片庫</h2>
+                <button onclick="toggleCardForm()" class="text-sm text-blue-600 font-medium cursor-pointer">+ 新增卡片</button>
+            </div>
+            
+            <div id="cardForm" class="hidden mb-4 p-3 bg-gray-50 rounded-xl border space-y-3">
+                <input type="text" id="cardName" placeholder="卡片/銀行名稱" class="w-full p-2 border bg-white rounded-lg text-sm">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="number" id="generalRate" placeholder="一般回饋 %" class="p-2 border bg-white rounded-lg text-sm">
+                    <input type="number" id="specialRate" placeholder="特仕回饋 %" class="p-2 border bg-white rounded-lg text-sm">
+                </div>
+                <input type="text" id="cardNote" placeholder="備註（例如：網購上限300）" class="w-full p-2 border bg-white rounded-lg text-sm">
+                <button onclick="saveCard()" class="w-full bg-green-600 text-white py-1.5 rounded-lg text-sm font-medium cursor-pointer">儲存卡片</button>
+            </div>
+
+            <div id="cardsList" class="space-y-2 text-sm">
+                <p class="text-sm text-gray-400 text-center py-4">載入中...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 頁面載入時自動抓取卡片
+        document.addEventListener('DOMContentLoaded', loadCards);
+
+        function toggleCardForm() {
+            document.getElementById('cardForm').classList.toggle('hidden');
+        }
+
+        // 1. 撈取資料庫所有的卡片
+        async function loadCards() {
+            try {
+                const res = await fetch('/api/cards');
+                const cards = await res.json();
+                const list = document.getElementById('cardsList');
+                
+                if (cards.length === 0) {
+                    list.innerHTML = '<p class="text-gray-400 text-center py-4">目前沒有卡片資料，請先新增。</p>';
+                    return;
+                }
+                
+                window.myCards = cards; // 存入全域變數方便試算
+                list.innerHTML = cards.map(c => `
+                    <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold">${c.card_name}</div>
+                            <div class="text-xs text-gray-500">一般: ${c.general_rate}% | 特仕: ${c.special_rate}%</div>
+                            ${c.note ? `<div class="text-xs text-gray-400 mt-0.5">${c.note}</div>` : ''}
+                        </div>
+                        <button onclick="deleteCard(${c.id})" class="text-xs text-red-500 hover:text-red-700 cursor-pointer">刪除</button>
+                    </div>
+                `).join('');
+            } catch (err) {
+                document.getElementById('cardsList').innerHTML = '<p class="text-red-500 text-center py-4">資料載入失敗</p>';
+            }
+        }
+
+        // 2. 新增卡片到資料庫
+        async function saveCard() {
+            const card_name = document.getElementById('cardName').value;
+            const general_rate = parseFloat(document.getElementById('generalRate').value) || 0;
+            const special_rate = parseFloat(document.getElementById('specialRate').value) || 0;
+            const note = document.getElementById('cardNote').value;
+
+            if (!card_name) return alert('請填寫卡片名稱');
+
+            await fetch('/api/cards', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ card_name, general_rate, special_rate, note })
+            });
+
+            // 清空並隱藏表單，重新載入
+            document.getElementById('cardName').value = '';
+            document.getElementById('generalRate').value = '';
+            document.getElementById('specialRate').value = '';
+            document.getElementById('cardNote').value = '';
+            toggleCardForm();
+            loadCards();
+        }
+
+        // 3. 刪除卡片
+        async function deleteCard(id) {
+            if (!confirm('確定要刪除這張卡片嗎？')) return;
+            await fetch(`/api/cards?id=${id}`, { method: 'DELETE' });
+            loadCards();
+        }
+
+        // 4. 本地核心消費試算邏輯
+        function calculateBestCard() {
+            const amount = parseFloat(document.getElementById('spendAmount').value);
+            const category = document.getElementById('spendCategory').value;
+            const resultBox = document.getElementById('calcResult');
+            
+            if (!amount) return alert('請輸入金額');
+            if (!window.myCards || window.myCards.length === 0) {
+                return alert('請先在下方卡片庫新增卡片資料喔！');
+            }
+
+            let bestCard = null;
+            let maxReward = -1;
+
+            window.myCards.forEach(card => {
+                // 如果是特定消費類別用 special_rate，一般消費用 general_rate
+                const rate = (category === 'general') ? card.general_rate : card.special_rate;
+                const reward = (amount * rate) / 100;
+                if (reward > maxReward) {
+                    maxReward = reward;
+                    bestCard = card;
+                }
+            });
+
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `
+                <div class="font-bold text-blue-800">💡 最佳刷卡建議：</div>
+                <div class="mt-1">推薦使用 <span class="font-bold text-lg text-blue-600">【${bestCard.card_name}】</span></div>
+                <div class="text-sm text-gray-600 mt-1">預估回饋：<span class="font-bold text-green-600">${maxReward.toFixed(1)}</span> 元 (回饋率約 ${category === 'general' ? bestCard.general_rate : bestCard.special_rate}%)</div>
+            `;
+        }
+
+        // 5. 串接 Workers AI 顧問
+        async function askAIConsultant() {
+            const prompt = document.getElementById('aiPrompt').value;
+            const resultBox = document.getElementById('aiResult');
+            if (!prompt) return alert('請輸入你想問的問題');
+
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `⏳ AI 顧問正在為您規劃 2026 最新組合，請稍候...`;
+
+            try {
+                const res = await fetch('/api/advisor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt, cards: window.myCards || [] })
+                });
+                const data = await res.json();
+                resultBox.innerHTML = `<strong>🤖 AI 顧問的回覆：</strong><br><br>${data.answer}`;
+            } catch (err) {
+                resultBox.innerHTML = `❌ 顧問暫時離線，請等等再試。`;
+            }
+        }
+    </script>
+</body>
+</html>
