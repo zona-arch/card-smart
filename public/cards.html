@@ -32,115 +32,97 @@
 
         <!-- CONTENT -->
         <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3 animate-fade-in">
-            <!-- 鏡頭上傳區域 -->
             <section class="flex flex-col items-center px-6 pt-2">
-                <div class="bg-white/5 w-[280px] h-[177px] rounded-2xl border-2 border-dashed border-zinc-600 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 transition-colors shadow-lg">
-                    <div class="bg-white/5 p-2.5 rounded-full">
-                        <i data-lucide="camera" class="w-6 h-6 text-zinc-400"></i>
-                    </div>
+                <div class="bg-white/5 w-[280px] h-[177px] rounded-2xl border-2 border-dashed border-zinc-600 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 shadow-lg">
+                    <div class="bg-white/5 p-2.5 rounded-full"><i data-lucide="camera" class="w-6 h-6 text-zinc-400"></i></div>
                     <span class="text-xs text-zinc-400">點擊拍攝或上傳實體卡面</span>
                 </div>
             </section>
 
-            <!-- 輸入表單群組 -->
+            <!-- 表單輸入區 -->
             <section class="px-6 flex flex-col gap-5">
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-semibold text-zinc-400">卡片名稱</label>
-                    <input type="text" id="card-name-input" placeholder="請輸入銀行與卡片名稱" class="bg-[#1A1A24] h-11 px-4 rounded-xl border border-[#2A2235] text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
+                    <input type="text" id="card-name" placeholder="例如：富邦 J 卡、台新 @GoGo" class="bg-[#1A1A24] h-11 px-4 rounded-xl border border-[#2A2235] text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
                 </div>
 
-                <!-- 發卡組織 (解鎖點選邏輯) -->
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-semibold text-zinc-400">發卡組織</label>
                     <div class="flex gap-2 w-full" id="org-group">
-                        <div onclick="selectOrg(this)" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-orange-500 text-center text-sm font-bold text-white shadow-[0_0_8px_rgba(255,131,0,0.2)] cursor-pointer transition-all">Visa</div>
-                        <div onclick="selectOrg(this)" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer transition-all">Mastercard</div>
-                        <div onclick="selectOrg(this)" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer transition-all">JCB</div>
+                        <div onclick="selectOrg(this)" data-org="Visa" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-orange-500 text-center text-sm font-bold text-white shadow-[0_0_8px_rgba(255,131,0,0.2)] cursor-pointer">Visa</div>
+                        <div onclick="selectOrg(this)" data-org="Mastercard" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer">Mastercard</div>
+                        <div onclick="selectOrg(this)" data-org="JCB" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer">JCB</div>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <div class="flex flex-col gap-1">
-                        <label class="text-sm font-bold text-white">權益方案備忘錄</label>
-                        <span class="text-[11px] text-orange-500">直接複製官網權益貼在下方，AI 搜尋時會自動閱讀！</span>
-                    </div>
-                    <!-- 換成真正可輸入的 textarea -->
-                    <textarea placeholder="請在此處直接複製貼上官方權益，例如：&#10;【CUBE卡 趣旅行方案】&#10;- 日本/韓國/泰國 實體消費 3%" class="bg-[#12121A] h-28 p-4 rounded-xl border border-[#2A2235] text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40 resize-none no-scrollbar leading-relaxed"></textarea>
+                    <label class="text-sm font-semibold text-zinc-400">一般消費回饋率 (%)</label>
+                    <input type="number" id="card-rate" placeholder="例如輸入 3 代表 3%" step="0.1" class="bg-[#1A1A24] h-11 px-4 rounded-xl border border-[#2A2235] text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
                 </div>
 
-                <!-- 綁定支付標籤 (解鎖多選開關) -->
                 <div class="flex flex-col gap-2.5">
-                    <label class="text-sm font-semibold text-zinc-400">這張卡已綁定哪些支付？</label>
-                    <div class="flex flex-wrap gap-2">
-                        <span onclick="togglePayTag(this)" class="pay-tag bg-orange-500/15 border border-orange-500 text-orange-500 text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer transition-all"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>Line Pay</span>
-                        <span onclick="togglePayTag(this)" class="pay-tag bg-orange-500/15 border border-orange-500 text-orange-500 text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer transition-all"><i data-lucide="apple" class="w-3.5 h-3.5"></i>Apple Pay</span>
-                        <span onclick="togglePayTag(this)" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">街口支付</span>
-                        <span onclick="togglePayTag(this)" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">Google Pay</span>
+                    <label class="text-sm font-semibold text-zinc-400">這張卡已綁定哪些支付？(可複選)</label>
+                    <div class="flex flex-wrap gap-2" id="pay-group">
+                        <span onclick="togglePayTag(this)" data-pay="Line Pay" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">Line Pay</span>
+                        <span onclick="togglePayTag(this)" data-pay="Apple Pay" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">Apple Pay</span>
+                        <span onclick="togglePayTag(this)" data-pay="街口支付" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">街口支付</span>
                     </div>
                 </div>
 
-                <!-- 按鈕列 -->
-                <div class="flex gap-3 pt-1">
-                    <button onclick="window.location.href='cards.html'" class="flex-1 bg-white/5 py-3 rounded-xl border border-white/20 text-center text-sm font-semibold text-white/80 active:scale-95 transition-transform">取消</button>
-                    <button onclick="handleSave()" class="flex-1 bg-gradient-to-r from-teal-400 to-purple-600 py-3 rounded-xl text-center text-sm font-bold text-white shadow-[0_4px_12px_rgba(0,245,212,0.3)] active:scale-95 transition-transform">儲存卡片</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="window.location.href='cards.html'" class="flex-1 bg-white/5 py-3 rounded-xl border border-white/20 text-center text-sm font-semibold text-white/80 active:scale-95">取消</button>
+                    <button onclick="saveCardData()" class="flex-1 bg-gradient-to-r from-teal-400 to-purple-600 py-3 rounded-xl text-center text-sm font-bold text-white shadow-[0_4px_12px_rgba(0,245,212,0.3)] active:scale-95">儲存卡片</button>
                 </div>
             </section>
         </div>
 
-        <!-- FIXED FOOTER NAV -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Overview</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
-                <i data-lucide="search" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Search</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
-                <i data-lucide="credit-card" class="w-5 h-5"></i>
-                <span class="text-[10px] font-semibold">Cards</span>
-                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
-            </button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i><span class="text-[10px] font-medium">Rates</span></button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i><span class="text-[10px] font-medium">Settings</span></button>
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px]">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Cards</span></button>
         </footer>
     </div>
 
     <script>
         lucide.createIcons();
+        let selectedOrg = "Visa";
 
-        // 單選組織邏輯
-        function selectOrg(element) {
-            const buttons = document.querySelectorAll('.org-btn');
-            buttons.forEach(btn => {
-                btn.className = "org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer transition-all";
+        function selectOrg(el) {
+            document.querySelectorAll('.org-btn').forEach(btn => {
+                btn.className = "org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer";
                 btn.style.boxShadow = "none";
             });
-            element.className = "org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-orange-500 text-center text-sm font-bold text-white cursor-pointer transition-all";
-            element.style.boxShadow = "0 0 8px rgba(255, 131, 0, 0.2)";
+            el.className = "org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-orange-500 text-center text-sm font-bold text-white cursor-pointer";
+            el.style.boxShadow = "0 0 8px rgba(255, 131, 0, 0.2)";
+            selectedOrg = el.getAttribute('data-org');
         }
 
-        // 多選標籤開關邏輯
-        function togglePayTag(element) {
-            const isActive = element.classList.contains('border-orange-500');
-            if (isActive) {
-                // 改為不選取狀態
-                element.classList.remove('border-orange-500', 'text-orange-500', 'bg-orange-500/15');
-                element.classList.add('bg-[#1A1A24]', 'border-[#2A2235]', 'text-[#8A99AD]');
-                element.style.fontWeight = "500";
-            } else {
-                // 改為選取狀態
-                element.classList.remove('bg-[#1A1A24]', 'border-[#2A2235]', 'text-[#8A99AD]');
-                element.classList.add('border-orange-500', 'text-orange-500', 'bg-orange-500/15');
-                element.style.fontWeight = "600";
-            }
+        function togglePayTag(el) {
+            el.classList.toggle('border-orange-500');
+            el.classList.toggle('text-orange-500');
+            el.classList.toggle('bg-orange-500/15');
         }
 
-        function handleSave() {
-            alert('卡片資料已暫存至瀏覽器（Mock 儲存成功）！');
+        // 核心資料庫寫入程式碼
+        function saveCardData() {
+            const name = document.getElementById('card-name').value.trim();
+            const rate = parseFloat(document.getElementById('card-rate').value) || 1.0;
+            
+            if(!name) { alert('請填寫卡片名稱！'); return; }
+
+            const pays = [];
+            document.querySelectorAll('.pay-tag.border-orange-500').forEach(el => {
+                pays.push(el.getAttribute('data-pay'));
+            });
+
+            const newCard = { id: Date.now(), name, org: selectedOrg, rate, pays };
+
+            // 從資料庫抓出舊手牌，塞入新手牌，再存回去
+            const localCards = JSON.parse(localStorage.getItem('user_cards')) || [];
+            localCards.push(newCard);
+            localStorage.setItem('user_cards', JSON.stringify(localCards));
+
             window.location.href = 'cards.html';
         }
     </script>
