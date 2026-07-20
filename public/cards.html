@@ -26,91 +26,55 @@
         </header>
 
         <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3">
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-4 pt-3">
             <section class="flex justify-between items-center px-6">
                 <h1 class="text-lg font-bold text-white">我的卡片</h1>
-                <button onclick="window.location.href='add-card.html'" class="bg-[#161E2E]/60 flex items-center gap-1 px-4 py-2 rounded-full border border-orange-500 text-orange-500 text-sm font-semibold shadow-[0_0_12px_rgba(255,131,0,0.2)]">
-                    <span>+ 新增手牌</span>
+                <!-- 跳轉到新增頁面 -->
+                <button onclick="window.location.href='add-card.html'" class="bg-[#161E2E]/60 flex items-center gap-1 px-4 py-2 rounded-full border border-orange-500 text-orange-500 text-sm font-semibold hover:bg-orange-500/10 transition-colors shadow-[0_0_12px_rgba(255,131,0,0.2)]">
+                    <span>+ 新增</span>
                 </button>
             </section>
 
-            <!-- 動態渲染卡片皮夾容器 -->
-            <section class="px-4 flex flex-col gap-4" id="wallet-container">
-                <!-- 由 JavaScript 自動繪製 -->
+            <section class="px-4">
+                <div class="bg-[#161E2E]/60 p-4 rounded-[20px] border border-white/5 flex flex-col gap-2 text-zinc-400 text-sm text-center py-8">
+                    <i data-lucide="wallet" class="w-6 h-6 mx-auto mb-1 text-zinc-500"></i>
+                    尚未綁定個人卡片，請點選右上角新增。
+                </div>
             </section>
         </div>
 
-        <!-- FOOTER NAV -->
+        <!-- ─── 核心功能 FOOTER (卡片頁高亮) ─── -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px]">Search</span></button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Cards</span></button>
+            <!-- 1. Overview -->
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Overview</span>
+                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
+            </button>
+            <!-- 2. Search -->
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
+                <i data-lucide="search" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Search</span>
+                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
+            </button>
+            <!-- 3. Cards (目前頁面：橘色高亮) -->
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
+                <i data-lucide="credit-card" class="w-5 h-5"></i>
+                <span class="text-[10px] font-semibold">Cards</span>
+                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
+            </button>
+            <!-- 4. 暫未開放功能 -->
+            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
+                <i data-lucide="landmark" class="w-5 h-5"></i>
+                <span class="text-[10px]">Rates</span>
+            </button>
+            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
+                <i data-lucide="settings" class="w-5 h-5"></i>
+                <span class="text-[10px]">Settings</span>
+            </button>
         </footer>
     </div>
 
-    <script>
-        // 初始化載入並繪製卡片
-        function renderWallet() {
-            const container = document.getElementById('wallet-container');
-            const localCards = JSON.parse(localStorage.getItem('user_cards')) || [];
-
-            if(localCards.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-zinc-500 text-sm flex flex-col items-center gap-2">
-                        <i data-lucide="wallet" class="w-8 h-8 opacity-40"></i>
-                        <span>卡包空空如也，快點擊右上角新增手牌！</span>
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
-            }
-
-            container.innerHTML = "";
-            localCards.forEach(card => {
-                // 根據組織決定卡片卡面漸層
-                let gradient = "from-cyan-400 to-blue-600";
-                if(card.org === "Mastercard") gradient = "from-purple-500 to-indigo-600";
-                if(card.org === "JCB") gradient = "from-rose-500 to-orange-600";
-
-                const tagHTML = card.pays.map(p => `<span class="bg-white/5 px-2 py-0.5 rounded text-[9px] text-white">${p}</span>`).join('');
-
-                const cardBox = document.createElement('div');
-                cardBox.className = "bg-[#161E2E]/60 p-4 rounded-[20px] border border-white/5 flex flex-col gap-3 relative group";
-                cardBox.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center gap-3">
-                            <div class="w-14 h-9 rounded-md bg-gradient-to-tr ${gradient} p-2 flex flex-col justify-between">
-                                <div class="w-2.5 h-2 bg-yellow-400 rounded-sm"></div>
-                                <span class="text-[5px] font-extrabold text-white text-right">${card.org}</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold">${card.name}</span>
-                                <span class="text-[10px] text-[#8A99AD]">${card.org}</span>
-                            </div>
-                        </div>
-                        <button onclick="deleteCard(${card.id})" class="text-zinc-600 hover:text-rose-500 p-1 transition-colors">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    <div class="flex justify-between items-center text-xs text-[#8A99AD]">
-                        <span>一般基本回饋率: ${card.rate}%</span>
-                        <div class="flex gap-1">${tagHTML}</div>
-                    </div>
-                `;
-                container.appendChild(cardBox);
-            });
-            lucide.createIcons();
-        }
-
-        function deleteCard(id) {
-            if(!confirm('確定要刪除這張卡片手牌嗎？')) return;
-            let localCards = JSON.parse(localStorage.getItem('user_cards')) || [];
-            localCards = localCards.filter(c => c.id !== id);
-            localStorage.setItem('user_cards', JSON.stringify(localCards));
-            renderWallet();
-        }
-
-        renderWallet();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
