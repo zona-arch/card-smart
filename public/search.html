@@ -1,118 +1,169 @@
-<div class="min-h-screen bg-surface-bg text-surface-on-primary p-6 font-sans">
-  <!-- 搜尋頂欄 -->
-  <div class="max-w-4xl mx-auto mb-8">
-    <div class="flex items-center justify-between mb-6">
-      <div class="flex items-center gap-3">
-        <!-- 搜尋 Logo 區塊 -->
-        <div class="w-8 h-8 flex items-center justify-center text-selected-bg-from">
-          <!-- 💡 這裡替換成妳從 Figma 導出的 Search Logo SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
-          </svg>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardgini - Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-[#020205] flex justify-center items-center min-h-screen p-4">
+
+    <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
+        
+        <!-- FIXED HEADER -->
+        <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
+            <div class="flex flex-col gap-1">
+                <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
+                <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
+            </div>
+            <div class="w-10 h-10 rounded-full border border-cyan-400/30 shadow-[0_6px_16px_-6px_rgba(0,240,255,0.4)] overflow-hidden bg-slate-800 flex items-center justify-center">
+                <i data-lucide="user" class="w-5 h-5 text-cyan-400"></i>
+            </div>
+        </header>
+
+        <!-- CONTENT CONTAINER -->
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24">
+            
+            <!-- 📄 SUB-PAGE A: SEARCH HOME -->
+            <div id="sub-search-home" class="flex flex-col gap-[22px] pt-3 animate-fade-in">
+                <section class="px-4 flex flex-col gap-3">
+                    <h2 class="text-base font-semibold px-2">店家地區</h2>
+                    <div class="flex gap-2.5 w-full">
+                        <div class="flex-1 flex flex-col gap-1.5">
+                            <label class="text-xs font-semibold text-[#8A99AD]">國家</label>
+                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm">
+                                <span>台灣</span><i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 flex flex-col gap-1.5">
+                            <label class="text-xs font-semibold text-[#8A99AD]">地區</label>
+                            <div class="bg-[#0B0E14]/80 h-11 px-3 rounded-xl border border-white/5 flex justify-between items-center text-sm">
+                                <span>台中</span><i data-lucide="chevron-down" class="w-4 h-4 text-[#8A99AD]"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="px-4">
+                    <div class="bg-[#161E2E]/60 h-12 px-4 rounded-xl border border-white/5 flex items-center gap-3">
+                        <i data-lucide="search" class="w-5 h-5 text-[#8A99AD]"></i>
+                        <input type="text" placeholder="搜尋店家、類別..." class="bg-transparent text-sm text-white placeholder-[#8A99AD] w-full focus:outline-none">
+                    </div>
+                </section>
+
+                <section class="px-4 flex flex-col gap-3">
+                    <h2 class="text-base font-semibold px-2">常用店家</h2>
+                    <div class="flex flex-col gap-2.5">
+                        <div onclick="showResult(true)" class="bg-[#161E2E]/60 p-3 rounded-xl border border-white/5 flex items-center justify-between cursor-pointer hover:border-cyan-400/40 transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center"><i data-lucide="shopping-bag" class="w-5 h-5 text-orange-500"></i></div>
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-semibold">蝦皮購物</span>
+                                    <span class="text-xs text-cyan-400">最佳: 中信 LINE Pay 卡 — 3%</span>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-[#8A99AD]"></i>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 📄 SUB-PAGE B: SEARCH RESULT -->
+            <div id="sub-search-result" class="hidden flex flex-col gap-[22px] pt-3 animate-fade-in">
+                <section class="flex items-center gap-4 px-5">
+                    <button onclick="showResult(false)" class="bg-white/5 p-2 rounded-full border border-white/10"><i data-lucide="chevron-left" class="w-5 h-5 text-white"></i></button>
+                    <div class="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center border border-orange-500">
+                        <i data-lucide="shopping-bag" class="w-6 h-6 text-orange-500"></i>
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <h1 class="text-xl font-bold text-white">蝦皮購物</h1>
+                        <span class="text-xs text-[#8A99AD]">網路購物平台 • 台灣熱門</span>
+                    </div>
+                </section>
+
+                <section class="px-4 flex flex-col gap-2">
+                    <span class="text-xs font-semibold text-[#8A99AD] px-2">預估消費金額</span>
+                    <div class="bg-[#161E2E]/60 rounded-[20px] p-4 border border-white/5 flex justify-between items-center">
+                        <span class="text-2xl font-extrabold text-orange-500">NT$ 3,000</span>
+                        <div class="bg-white/5 px-3 py-1.5 rounded-full text-xs font-semibold">修改金額</div>
+                    </div>
+                </section>
+
+                <!-- 最佳選擇 -->
+                <section class="px-4 flex flex-col gap-3">
+                    <h2 class="text-sm font-bold text-white/90 px-2">🏆 最佳選擇</h2>
+                    <div class="bg-[#161E2E]/90 rounded-[24px] p-[18px] border-2 border-cyan-400/30 shadow-[0_8px_20px_0_rgba(0,240,255,0.15)] flex flex-col gap-4">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-[56px] h-[36px] rounded-md bg-gradient-to-tr from-cyan-400 to-blue-600 p-2 flex flex-col justify-between">
+                                <div class="w-2.5 h-2 bg-yellow-400 rounded-sm"></div>
+                                <div class="flex justify-between items-center text-[5px] text-white"><span>LINE Pay</span><span>VISA</span></div>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold">中信 LINE Pay 卡</span>
+                                <span class="text-[9px] bg-indigo-600/20 text-indigo-300 border border-indigo-400/30 px-1 rounded self-start">VISA</span>
+                            </div>
+                        </div>
+                        <div class="bg-[#0B0E14]/80 rounded-xl p-3.5 flex flex-col gap-2 text-xs">
+                            <div class="flex justify-between"><span>一般回饋</span><span class="font-bold text-cyan-400">3% 現金回饋</span></div>
+                            <div class="flex justify-between border-t border-white/5 pt-2"><span>本次預估回饋</span><span class="text-base font-extrabold text-emerald-400">NT$ 90</span></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
         </div>
-        <h1 class="text-2xl font-bold tracking-wide bg-gradient-to-r from-selected-bg-from to-selected-bg-to bg-clip-text text-transparent">
-          搜尋遊戲
-        </h1>
-      </div>
+
+        <!-- FIXED FOOTER NAV -->
+        <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Overview</span>
+                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
+            </button>
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
+                <i data-lucide="search" class="w-5 h-5"></i>
+                <span class="text-[10px] font-semibold">Search</span>
+                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
+            </button>
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]">
+                <i data-lucide="credit-card" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Cards</span>
+                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
+            </button>
+            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i><span class="text-[10px] font-medium">Rates</span></button>
+            <button class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i><span class="text-[10px] font-medium">Settings</span></button>
+        </footer>
     </div>
 
-    <!-- 搜尋輸入框 -->
-    <div class="relative">
-      <input 
-        type="text" 
-        id="game-search"
-        placeholder="輸入遊戲名稱或關鍵字..." 
-        class="w-full bg-table-form-bg text-table-form-on-primary placeholder-placeholder-on-minor pl-12 pr-4 py-3.5 rounded-xl border border-placeholder-normal focus:outline-none focus:border-selected-bg-to focus:ring-1 focus:ring-selected-bg-to transition-all"
-      />
-      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-placeholder-on-minor">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
-        </svg>
-      </span>
-    </div>
-  </div>
+    <script>
+        lucide.createIcons();
+        
+        function showResult(bool) {
+            const home = document.getElementById('sub-search-home');
+            const result = document.getElementById('sub-search-result');
+            if (bool) {
+                home.classList.add('hidden');
+                result.classList.remove('hidden');
+            } else {
+                home.classList.remove('hidden');
+                result.classList.add('hidden');
+            }
+        }
 
-  <!-- 熱門標籤 / 推薦店家 -->
-  <div class="max-w-4xl mx-auto mb-10">
-    <h3 class="text-sm font-semibold text-surface-on-minor uppercase tracking-wider mb-3">熱門推薦</h3>
-    <div class="flex flex-wrap gap-2.5" id="tag-container">
-      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-selected-bg-from to-selected-bg-to text-selected-on transition-all shadow-md">
-        全部遊戲
-      </button>
-      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-table-form-bg text-table-form-on-minor hover:bg-table-form-hover hover:text-table-form-on-primary transition-all">
-        CardGini 嚴選
-      </button>
-      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-table-form-bg text-table-form-on-minor hover:bg-table-form-hover hover:text-table-form-on-primary transition-all">
-        高爆擊率
-      </button>
-      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-table-form-bg text-table-form-on-minor hover:bg-table-form-hover hover:text-table-form-on-primary transition-all">
-        最新上架
-      </button>
-    </div>
-  </div>
-
-  <!-- 遊戲結果網格 -->
-  <div class="max-w-4xl mx-auto">
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="game-grid">
-      
-      <!-- 遊戲卡片 1 (範例：帶有 Hot 標籤) -->
-      <div class="group bg-primary-bg rounded-xl overflow-hidden border border-placeholder-normal hover:border-selected-bg-to transition-all duration-300 flex flex-col cursor-pointer" data-tags="全部遊戲,CardGini 嚴選,高爆擊率">
-        <div class="relative aspect-[4/3] bg-neutral-800 overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-          <!-- 標籤套用 icontag.hot 的漸層色 -->
-          <span class="absolute top-2 left-2 z-20 px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-gradient-to-r from-icontag-hot-bg-from to-icontag-hot-bg-to text-icontag-hot-on-primary shadow">
-            HOT
-          </span>
-          <div class="absolute bottom-2 right-2 z-20 bg-jackpot-bg/80 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-mono text-jackpot-on-highlight font-bold">
-            97.8% RTP
-          </div>
-        </div>
-        <div class="p-3 flex-1 flex flex-col justify-between">
-          <h4 class="font-medium text-primary-on-primary text-sm line-clamp-1 group-hover:text-selected-bg-from transition-colors">
-            宙斯之雷霆
-          </h4>
-          <p class="text-xs text-primary-on-minor mt-1">Pragmatic Play</p>
-        </div>
-      </div>
-
-      <!-- 遊戲卡片 2 (範例：帶有 New 標籤) -->
-      <div class="group bg-primary-bg rounded-xl overflow-hidden border border-placeholder-normal hover:border-selected-bg-to transition-all duration-300 flex flex-col cursor-pointer" data-tags="全部遊戲,最新上架">
-        <div class="relative aspect-[4/3] bg-neutral-800 overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-          <!-- 標籤套用 icontag.new 的漸層色 -->
-          <span class="absolute top-2 left-2 z-20 px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-gradient-to-r from-icontag-new-bg-from to-icontag-new-bg-to text-icontag-new-on-primary shadow">
-            NEW
-          </span>
-          <div class="absolute bottom-2 right-2 z-20 bg-jackpot-bg/80 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-mono text-jackpot-on-highlight font-bold">
-            96.5% RTP
-          </div>
-        </div>
-        <div class="p-3 flex-1 flex flex-col justify-between">
-          <h4 class="font-medium text-primary-on-primary text-sm line-clamp-1 group-hover:text-selected-bg-from transition-colors">
-            糖果繽紛樂
-          </h4>
-          <p class="text-xs text-primary-on-minor mt-1">Pocket Games Soft</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- 互動邏輯 JavaScript -->
-<script>
-  document.getElementById('game-search').addEventListener('input', function(e) {
-    const keyword = e.target.value.toLowerCase();
-    const cards = document.querySelectorAll('#game-grid > div');
-    
-    cards.forEach(card => {
-      const title = card.querySelector('h4').textContent.toLowerCase();
-      const provider = card.querySelector('p').textContent.toLowerCase();
-      if (title.includes(keyword) || provider.includes(keyword)) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  });
-</script>
+        // 檢查網址參數，若從首頁點擊最優卡片則自動展示結果
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('autoResult') === 'true') {
+            showResult(true);
+        }
+    </script>
+</body>
+</html>
