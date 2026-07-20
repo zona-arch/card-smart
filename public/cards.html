@@ -26,55 +26,91 @@
         </header>
 
         <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-4 pt-3">
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3">
             <section class="flex justify-between items-center px-6">
-                <h1 class="text-lg font-bold text-white">我的卡片</h1>
-                <!-- 跳轉到新增頁面 -->
-                <button onclick="window.location.href='add-card.html'" class="bg-[#161E2E]/60 flex items-center gap-1 px-4 py-2 rounded-full border border-orange-500 text-orange-500 text-sm font-semibold hover:bg-orange-500/10 transition-colors shadow-[0_0_12px_rgba(255,131,0,0.2)]">
-                    <span>+ 新增</span>
+                <h1 class="text-lg font-bold text-white">我的手牌卡包</h1>
+                <button onclick="window.location.href='add-card.html'" class="bg-[#161E2E]/60 flex items-center gap-1 px-4 py-2 rounded-full border border-orange-500 text-orange-500 text-sm font-semibold shadow-[0_0_12px_rgba(255,131,0,0.2)]">
+                    <span>+ 新增卡片</span>
                 </button>
             </section>
 
-            <section class="px-4">
-                <div class="bg-[#161E2E]/60 p-4 rounded-[20px] border border-white/5 flex flex-col gap-2 text-zinc-400 text-sm text-center py-8">
-                    <i data-lucide="wallet" class="w-6 h-6 mx-auto mb-1 text-zinc-500"></i>
-                    尚未綁定個人卡片，請點選右上角新增。
-                </div>
+            <!-- 真正由資料庫生成的卡片卡槽 -->
+            <section class="px-4 flex flex-col gap-4" id="cards-list-slot">
+                <!-- JS 動態生成區 -->
             </section>
         </div>
 
-        <!-- ─── 核心功能 FOOTER (卡片頁高亮) ─── -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <!-- 1. Overview -->
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
-                <i data-lucide="home" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Overview</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <!-- 2. Search -->
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD] hover:text-white transition-colors">
-                <i data-lucide="search" class="w-5 h-5"></i>
-                <span class="text-[10px] font-medium">Search</span>
-                <div class="w-4 h-[2px] bg-transparent rounded-full"></div>
-            </button>
-            <!-- 3. Cards (目前頁面：橘色高亮) -->
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500">
-                <i data-lucide="credit-card" class="w-5 h-5"></i>
-                <span class="text-[10px] font-semibold">Cards</span>
-                <div class="w-4 h-[2px] bg-orange-500 rounded-full"></div>
-            </button>
-            <!-- 4. 暫未開放功能 -->
-            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
-                <i data-lucide="landmark" class="w-5 h-5"></i>
-                <span class="text-[10px]">Rates</span>
-            </button>
-            <button class="flex w-[72px] flex-col items-center gap-1 text-zinc-600 cursor-not-allowed" disabled>
-                <i data-lucide="settings" class="w-5 h-5"></i>
-                <span class="text-[10px]">Settings</span>
-            </button>
+            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px]">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Cards</span><div class="w-4 h-[2px] bg-orange-500 rounded-full"></div></button>
         </footer>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        function loadWallet() {
+            const slot = document.getElementById('cards-list-slot');
+            const localCards = JSON.parse(localStorage.getItem('smart_cards')) || [];
+
+            if (localCards.length === 0) {
+                slot.innerHTML = `
+                    <div class="bg-[#161E2E]/40 border border-white/5 rounded-2xl p-8 text-center text-sm text-zinc-500 flex flex-col items-center gap-2">
+                        <i data-lucide="wallet" class="w-8 h-8 opacity-30"></i>
+                        <span>皮夾空空的，點擊右上角新增第一張真卡片！</span>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            slot.innerHTML = "";
+            localCards.forEach(card => {
+                let cardStyle = "from-cyan-400 to-blue-600";
+                if(card.org === "Mastercard") cardStyle = "from-purple-500 to-indigo-600";
+                if(card.org === "JCB") cardStyle = "from-rose-500 to-orange-600";
+
+                const keywordTags = card.keywords && card.keywords.length > 0 
+                    ? card.keywords.map(k => `<span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-[10px] text-[#8A99AD]">${k}</span>`).join('')
+                    : `<span class="text-[10px] text-zinc-600">無指定通路</span>`;
+
+                const cardDiv = document.createElement('div');
+                cardDiv.className = "bg-[#161E2E]/60 p-4 rounded-[20px] border border-white/5 flex flex-col gap-3 relative";
+                cardDiv.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-14 h-9 rounded-md bg-gradient-to-tr ${cardStyle} p-1.5 flex flex-col justify-between shadow-md">
+                                <div class="w-2 h-1.5 bg-yellow-400 rounded-xs"></div>
+                                <span class="text-[6px] font-bold text-white tracking-wider">${card.org}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-white">${card.name}</span>
+                                <span class="text-[10px] text-[#8A99AD]">${card.org}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeCard(${card.id})" class="text-zinc-500 hover:text-rose-400 transition-colors p-1">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center border-t border-white/5 pt-2">
+                        <span class="text-xs font-medium text-emerald-400">基本回饋: ${card.rate}%</span>
+                        <div class="flex gap-1.5 flex-wrap max-w-[200px] justify-end">${keywordTags}</div>
+                    </div>
+                `;
+                slot.appendChild(cardDiv);
+            });
+            lucide.createIcons();
+        }
+
+        function removeCard(id) {
+            if(!confirm('確認要將這張卡片從皮夾移除嗎？')) return;
+            let localCards = JSON.parse(localStorage.getItem('smart_cards')) || [];
+            localCards = localCards.filter(c => c.id !== id);
+            localStorage.setItem('smart_cards', JSON.stringify(localCards));
+            loadWallet();
+        }
+
+        loadWallet();
+    </script>
 </body>
 </html>
