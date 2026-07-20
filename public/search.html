@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardGini - Search Store</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #0B0C10; color: #FFFFFF; font-family: -apple-system, sans-serif; }
+        .glass-panel { background: rgba(22, 23, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.03); }
+        .glow-btn { box-shadow: 0 0 15px rgba(0, 245, 212, 0.2); }
+    </style>
+</head>
+<body class="bg-[#0B0C10] min-h-screen pb-24">
+    <div class="max-w-md mx-auto px-5 pt-8">
+        
+        <!-- 頂部切換 (國家/地區) -->
+        <div class="flex justify-center mb-6">
+            <div class="bg-[#16171E] p-1 rounded-full flex gap-1 border border-gray-800">
+                <button class="bg-[#FF9800] text-[#0B0C10] text-xs font-bold px-4 py-1.5 rounded-full">🇹🇼 台灣本地</button>
+                <button class="text-gray-400 text-xs px-4 py-1.5 rounded-full opacity-50 cursor-not-allowed">🇯🇵 日本海外</button>
+            </div>
+        </div>
 
+        <!-- 搜尋輸入框 -->
+        <div class="relative mb-6">
+            <i data-lucide="search" class="w-5 h-5 text-gray-500 absolute left-4 top-3.5"></i>
+            <input id="store-input" type="text" placeholder="輸入你想消費的店家（例：蝦皮、星巴克）" class="w-full bg-[#16171E] border border-[#22222B] rounded-full py-3.5 pl-12 pr-6 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#00F5D4] transition">
+        </div>
+
+        <!-- 模擬操作按鈕 -->
+        <button onclick="startAiSearch()" class="glow-btn w-full bg-gradient-to-r from-[#00F5D4] to-[#00bfa5] text-[#0B0C10] text-sm font-bold py-3.5 rounded-full flex items-center justify-center gap-2 mb-6 transition active:scale-98">
+            <i data-lucide="sparkles" class="w-4 h-4"></i> 讓精靈幫我算哪張最划算
+        </button>
+
+        <!-- 動態搜尋結果展示區 -->
+        <div id="search-status" class="hidden text-center py-6">
+            <div class="animate-spin text-[#00F5D4] inline-block mb-2"><i data-lucide="loader" class="w-6 h-6"></i></div>
+            <p class="text-xs text-gray-400">正在分析妳上傳的備忘錄文本內容...</p>
+        </div>
+
+        <div id="results-area" class="space-y-4">
+            <!-- 預設常用店家快捷標籤 -->
+            <div>
+                <h4 class="text-xs text-gray-500 font-bold mb-2 uppercase tracking-wider">熱門搜尋通路</h4>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="fillStore('蝦皮購物')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">蝦皮購物</button>
+                    <button onclick="fillStore('星巴克')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">星巴克</button>
+                    <button onclick="fillStore('7-11')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">7-11</button>
+                    <button onclick="fillStore('Uber Eats')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">Uber Eats</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 全局導航欄 -->
+    <div id="nav-placeholder"></div>
+</body>
+<script>
+    document.getElementById('nav-placeholder').innerHTML = `
+    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0C10]/90 backdrop-blur-md border-t border-[#1F2833] py-2 z-50">
+        <div class="max-w-md mx-auto flex justify-around items-center text-gray-500 text-[10px]">
+            <a href="index.html" class="flex flex-col items-center gap-1"><i data-lucide="home" class="w-5 h-5"></i>Overview</a>
+            <a href="search.html" class="flex flex-col items-center gap-1 text-[#FF9800]"><i data-lucide="search" class="w-5 h-5 text-[#FF9800]"></i>Search</a>
+            <a href="cards.html" class="flex flex-col items-center gap-1"><i data-lucide="credit-card" class="w-5 h-5"></i>Credit Cards</a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i>Bank Rate</a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
+        </div>
+    </div>`;
+    lucide.createIcons();
+
+    function fillStore(name) {
+        document.getElementById('store-input').value = name;
+    }
+
+    function startAiSearch() {
+        const store = document.getElementById('store-input').value;
+        if(!store) { alert("請先填寫或點選要消費的店家名稱喔！"); return; }
+        
+        document.getElementById('search-status').classList.remove('hidden');
+        document.getElementById('results-area').innerHTML = '';
+
+        setTimeout(() => {
+            document.getElementById('search-status').classList.add('hidden');
+            document.getElementById('results-area').innerHTML = `
+                <div class="glass-panel p-5 rounded-2xl border-l-4 border-[#00F5D4] shadow-lg relative">
+                    <span class="absolute right-4 top-4 bg-[#00F5D4]/10 text-[#00F5D4] text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                        <i data-lucide="check" class="w-3 h-3"></i> AI 最佳首選
+                    </span>
+                    <h3 class="text-xs text-gray-400 font-medium">在 ${store} 消費建議使用</h3>
+                    <h2 class="text-xl font-bold mt-1 text-white">玉山 Unicard</h2>
+                    <p class="text-sm text-[#00F5D4] font-black mt-2">指定回饋率：4.5% e point</p>
+                    <div class="mt-3 pt-3 border-t border-gray-800 text-[11px] text-gray-400">
+                        📌 <span class="text-amber-500 font-medium">支付管道限制：</span>必須綁定 <span class="underline">Line Pay</span> 進行付款才享有加碼。
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }, 800);
+    }
+</script>
+</html>
