@@ -4,89 +4,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>卡聰明 | CardSmart</title>
+    <!-- 引入 Tailwind CSS v4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-gray-50 text-gray-800 min-h-screen pb-12">
+    <style>
+        /* 1. 全域顏色變數定義（參考卡省 App 與極簡設計） */
+        :root {
+            /* 預設深色版 (Dark Mode) */
+            --bg-main: #0B0B0C;
+            --bg-card: #161618;
+            --bg-input: #1C1C1E;
+            --border-color: #2C2C2E;
+            --text-main: #FFFFFF;
+            --text-muted: #8E8E93;
+            --primary: #34C759; /* 卡省綠 */
+            --accent: #2F80ED;  /* 精緻藍 */
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
 
-    <header class="bg-blue-600 text-white shadow-md p-4 sticky top-0 z-50">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wide">💳 卡聰明 CardSmart</h1>
-            <span class="text-xs bg-blue-700 px-2 py-1 rounded-full">2026 下半年版</span>
+        [data-theme="light"] {
+            /* 淺色版 (Light Mode) */
+            --bg-main: #F4F4F6;
+            --bg-card: #FFFFFF;
+            --bg-input: #E5E5EA;
+            --border-color: #E5E5EA;
+            --text-main: #1C1C1E;
+            --text-muted: #8E8E93;
+            --primary: #248A3D;
+            --accent: #007AFF;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        /* 2. 基礎綁定與流暢動畫 */
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .custom-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .custom-input, .custom-select, .custom-textarea {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .custom-input:focus, .custom-select:focus, .custom-textarea:focus {
+            border-color: var(--accent);
+            background-color: var(--bg-card);
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20 antialiased">
+
+    <!-- 右上角精緻的深淺色切換鈕 -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="themeToggle" class="custom-card text-xs font-medium px-3 py-1.5 rounded-full cursor-pointer transition active:scale-95 flex items-center gap-1.5">
+            <span id="themeIcon">🌙</span> <span id="themeText">深色模式</span>
+        </button>
+    </div>
+
+    <!-- 頁首：App 化極簡標題列 -->
+    <header class="p-6 sticky top-0 z-40 backdrop-blur-md bg-[var(--bg-main)]/80 border-b border-[var(--border-color)]">
+        <div class="max-w-md mx-auto flex justify-between items-end">
+            <div>
+                <span class="text-xs font-semibold tracking-wider text-[var(--accent)] uppercase">CardSmart App</span>
+                <h1 class="text-2xl font-black tracking-tight mt-0.5">卡聰明</h1>
+            </div>
+            <span class="text-[10px] font-mono border border-[var(--border-color)] px-2 py-0.5 rounded-md text-muted">2026.H2</span>
         </div>
     </header>
 
+    <!-- 主區塊：限制 500px 打造黃金比例手機 App 感 -->
     <main class="max-w-md mx-auto p-4 space-y-6">
 
         <!-- 區塊一：消費試算 -->
-        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-            <h2 class="text-lg font-bold mb-3 text-blue-600 flex items-center gap-1">🔍 哪張卡最划算？</h2>
-            <div class="space-y-3">
+        <section class="custom-card p-5 rounded-2xl transition">
+            <h2 class="text-base font-bold mb-4 flex items-center gap-2">
+                <span class="p-1 rounded-lg bg-[var(--accent)]/10 text-[var(--accent)] text-sm">🔍</span>
+                哪張卡最划算？
+            </h2>
+            <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">消費金額 (TWD)</label>
-                    <input type="number" id="spendAmount" placeholder="例如：1000" class="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-xs font-medium text-muted mb-1.5">消費金額 (TWD)</label>
+                    <input type="number" id="spendAmount" placeholder="請輸入金額，例如：1000" class="custom-input w-full p-3 rounded-xl text-sm focus:outline-none transition">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">消費類別</label>
-                    <select id="spendCategory" class="w-full p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="general">一般消費</option>
-                        <option value="restaurant">餐飲美食</option>
-                        <option value="online">網路購物</option>
-                        <option value="travel">旅遊交通</option>
+                    <label class="block text-xs font-medium text-muted mb-1.5">消費類別</label>
+                    <select id="spendCategory" class="custom-select w-full p-3 rounded-xl text-sm focus:outline-none transition cursor-pointer">
+                        <option value="general">💼 一般消費</option>
+                        <option value="restaurant">🍕 餐飲美食</option>
+                        <option value="online">📱 網路購物</option>
+                        <option value="travel">✈️ 旅遊交通</option>
                     </select>
                 </div>
-                <button onclick="calculateBestCard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm cursor-pointer">
-                    立即試算
+                <button onclick="calculateBestCard()" class="w-full bg-[var(--accent)] hover:opacity-90 text-white font-bold py-3 rounded-xl transition shadow-md active:scale-[0.99] cursor-pointer text-sm">
+                    立即試算最佳回饋
                 </button>
             </div>
-            <div id="calcResult" class="mt-4 p-3 bg-blue-50 rounded-xl hidden border border-blue-100"></div>
+            <div id="calcResult" class="mt-4 p-4 bg-[var(--accent)]/5 rounded-xl hidden border border-[var(--accent)]/20 text-sm"></div>
         </section>
 
         <!-- 區塊二：AI 消費顧問 -->
-        <section class="bg-gradient-to-br from-indigo-50 to-purple-50 p-5 rounded-2xl shadow-sm border border-indigo-100">
-            <h2 class="text-lg font-bold mb-1 text-indigo-700">🤖 AI 消費顧問</h2>
-            <p class="text-xs text-gray-500 mb-3">輸入你的消費習慣，讓 Workers AI 幫你做最佳卡片組合規劃。</p>
+        <section class="custom-card p-5 rounded-2xl relative overflow-hidden">
+            <!-- 裝飾微光 -->
+            <div class="absolute -top-12 -right-12 w-24 height-24 bg-purple-500/10 rounded-full blur-2xl"></div>
+            
+            <h2 class="text-base font-bold mb-1 flex items-center gap-2">
+                <span class="p-1 rounded-lg bg-purple-500/10 text-purple-400 text-sm">🤖</span>
+                AI 消費顧問
+            </h2>
+            <p class="text-[11px] text-muted mb-4">輸入你的消費習慣，讓 Cloudflare Workers AI 幫你做最佳規劃。</p>
             <div class="space-y-3">
-                <textarea id="aiPrompt" rows="3" placeholder="例如：我每個月通勤費約2000，喜歡網購，請推薦我怎麼分配卡片？" class="w-full p-2.5 border border-indigo-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"></textarea>
-                <button onclick="askAIConsultant()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm cursor-pointer">
+                <textarea id="aiPrompt" rows="3" placeholder="例如：我每個月通勤費約 2000 元，喜歡網購，請推薦我怎麼分配卡片？" class="custom-textarea w-full p-3 rounded-xl text-sm focus:outline-none transition leading-relaxed"></textarea>
+                <button onclick="askAIConsultant()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition shadow-md active:scale-[0.99] cursor-pointer text-sm">
                     詢問 AI 顧問
                 </button>
             </div>
-            <div id="aiResult" class="mt-4 p-3 bg-white rounded-xl hidden border border-indigo-100 text-sm leading-relaxed whitespace-pre-line"></div>
+            <div id="aiResult" class="mt-4 p-4 bg-white/5 rounded-xl hidden border border-white/10 text-sm leading-relaxed whitespace-pre-line"></div>
         </section>
 
-        <!-- 區塊三：我的卡片清單 -->
-        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-lg font-bold text-gray-800">📋 我的卡片庫</h2>
-                <button onclick="toggleCardForm()" class="text-sm text-blue-600 font-medium cursor-pointer">+ 新增卡片</button>
+        <!-- 區塊三：我的卡片庫（清單參考卡省卡片重疊與色塊質感） -->
+        <section class="custom-card p-5 rounded-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-base font-bold flex items-center gap-2">
+                    <span class="p-1 rounded-lg bg-[var(--primary)]/10 text-[var(--primary)] text-sm">💳</span>
+                    我的卡片庫
+                </h2>
+                <button onclick="toggleCardForm()" id="addBtn" class="text-xs bg-[var(--primary)]/10 text-[var(--primary)] px-3 py-1.5 rounded-lg font-bold hover:bg-[var(--primary)]/20 transition cursor-pointer">+ 新增卡片</button>
             </div>
             
-            <div id="cardForm" class="hidden mb-4 p-3 bg-gray-50 rounded-xl border space-y-3">
-                <input type="text" id="cardName" placeholder="卡片/銀行名稱" class="w-full p-2 border bg-white rounded-lg text-sm">
+            <!-- 表單優化 -->
+            <div id="cardForm" class="hidden mb-5 p-4 rounded-xl border border-[var(--border-color)] bg-[var(--bg-input)] space-y-3">
+                <input type="text" id="cardName" placeholder="卡片/銀行名稱" class="w-full p-2.5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg text-sm text-[var(--text-main)] focus:outline-none">
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="generalRate" placeholder="一般回饋 %" class="p-2 border bg-white rounded-lg text-sm">
-                    <input type="number" id="specialRate" placeholder="特仕回饋 %" class="p-2 border bg-white rounded-lg text-sm">
+                    <input type="number" id="generalRate" placeholder="一般回饋 %" class="p-2.5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg text-sm text-[var(--text-main)] focus:outline-none">
+                    <input type="number" id="specialRate" placeholder="特仕回饋 %" class="p-2.5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg text-sm text-[var(--text-main)] focus:outline-none">
                 </div>
-                <input type="text" id="cardNote" placeholder="備註（例如：網購上限300）" class="w-full p-2 border bg-white rounded-lg text-sm">
-                <button onclick="saveCard()" class="w-full bg-green-600 text-white py-1.5 rounded-lg text-sm font-medium cursor-pointer">儲存卡片</button>
+                <input type="text" id="cardNote" placeholder="備註（例如：網購上限 300）" class="w-full p-2.5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg text-sm text-[var(--text-main)] focus:outline-none">
+                <button onclick="saveCard()" class="w-full bg-[var(--primary)] text-white py-2 rounded-lg text-sm font-bold cursor-pointer transition hover:opacity-90">儲存此卡片</button>
             </div>
 
-            <div id="cardsList" class="space-y-2 text-sm">
-                <p class="text-sm text-gray-400 text-center py-4">載入中...</p>
+            <!-- 卡片清單：渲染成具有高質感的 App 元件 -->
+            <div id="cardsList" class="space-y-3">
+                <p class="text-xs text-muted text-center py-6">正在同步 Cloudflare D1 資料庫...</p>
             </div>
         </section>
 
     </main>
 
     <script>
+        // --- 深淺色模式切換邏輯 ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = document.body.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                document.body.removeAttribute('data-theme');
+                themeIcon.innerText = '🌙';
+                themeText.innerText = '深色模式';
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                themeIcon.innerText = '☀️';
+                themeText.innerText = '淺色模式';
+            }
+        });
+
         // 頁面載入時自動抓取卡片
         document.addEventListener('DOMContentLoaded', loadCards);
 
         function toggleCardForm() {
-            document.getElementById('cardForm').classList.toggle('hidden');
+            const form = document.getElementById('cardForm');
+            const btn = document.getElementById('addBtn');
+            form.classList.toggle('hidden');
+            if(form.classList.contains('hidden')) {
+                btn.innerText = "+ 新增卡片";
+            } else {
+                btn.innerText = "取消關閉";
+            }
         }
 
-        // 1. 撈取資料庫所有的卡片
+        // 1. 撈取資料庫所有的卡片 (卡片 UI 渲染精緻化)
         async function loadCards() {
             try {
                 const res = await fetch('/api/cards');
@@ -94,23 +202,40 @@
                 const list = document.getElementById('cardsList');
                 
                 if (cards.length === 0) {
-                    list.innerHTML = '<p class="text-gray-400 text-center py-4">目前沒有卡片資料，請先新增。</p>';
+                    list.innerHTML = '<p class="text-muted text-center py-6 text-xs">目前卡片庫空空如也，請先新增卡片。</p>';
                     return;
                 }
                 
-                window.myCards = cards; // 存入全域變數方便試算
-                list.innerHTML = cards.map(c => `
-                    <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 flex justify-between items-center">
-                        <div>
-                            <div class="font-bold">${c.card_name}</div>
-                            <div class="text-xs text-gray-500">一般: ${c.general_rate}% | 特仕: ${c.special_rate}%</div>
-                            ${c.note ? `<div class="text-xs text-gray-400 mt-0.5">${c.note}</div>` : ''}
+                window.myCards = cards; 
+                list.innerHTML = cards.map((c, index) => {
+                    // 根據索引給予卡片不同的左側擬真微幅漸層，模擬精緻信用卡的質感
+                    const gradients = [
+                        'from-emerald-500 to-teal-600',
+                        'from-blue-500 to-indigo-600',
+                        'from-purple-500 to-pink-600',
+                        'from-amber-500 to-orange-600'
+                    ];
+                    const grad = gradients[index % gradients.length];
+
+                    return `
+                        <div class="p-4 bg-[var(--bg-input)] rounded-xl border border-[var(--border-color)] flex justify-between items-center transition hover:border-gray-500">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-6 rounded bg-gradient-to-br ${grad} opacity-80 shadow-inner hidden sm:block"></div>
+                                <div>
+                                    <div class="font-bold text-sm tracking-wide">${c.card_name}</div>
+                                    <div class="text-[11px] text-muted mt-0.5">
+                                        一般: <span class="text-[var(--text-main)] font-semibold">${c.general_rate}%</span> | 
+                                        特仕: <span class="text-[var(--primary)] font-semibold">${c.special_rate}%</span>
+                                    </div>
+                                    ${c.note ? `<div class="text-[10px] text-gray-400 mt-1 bg-black/10 dark:bg-white/5 px-1.5 py-0.5 rounded inline-block">${c.note}</div>` : ''}
+                                </div>
+                            </div>
+                            <button onclick="deleteCard(${c.id})" class="text-xs text-red-400 hover:text-red-500 font-medium cursor-pointer p-1.5 rounded transition hover:bg-red-500/10">刪除</button>
                         </div>
-                        <button onclick="deleteCard(${c.id})" class="text-xs text-red-500 hover:text-red-700 cursor-pointer">刪除</button>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             } catch (err) {
-                document.getElementById('cardsList').innerHTML = '<p class="text-red-500 text-center py-4">資料載入失敗</p>';
+                document.getElementById('cardsList').innerHTML = '<p class="text-red-500 text-center py-4 text-xs">❌ 資料載入失敗</p>';
             }
         }
 
@@ -129,7 +254,6 @@
                 body: JSON.stringify({ card_name, general_rate, special_rate, note })
             });
 
-            // 清空並隱藏表單，重新載入
             document.getElementById('cardName').value = '';
             document.getElementById('generalRate').value = '';
             document.getElementById('specialRate').value = '';
@@ -145,7 +269,7 @@
             loadCards();
         }
 
-        // 4. 本地核心消費試算邏輯
+        // 4. 本地核心消費試算邏輯 (UI 優化)
         function calculateBestCard() {
             const amount = parseFloat(document.getElementById('spendAmount').value);
             const category = document.getElementById('spendCategory').value;
@@ -160,7 +284,6 @@
             let maxReward = -1;
 
             window.myCards.forEach(card => {
-                // 如果是特定消費類別用 special_rate，一般消費用 general_rate
                 const rate = (category === 'general') ? card.general_rate : card.special_rate;
                 const reward = (amount * rate) / 100;
                 if (reward > maxReward) {
@@ -169,11 +292,14 @@
                 }
             });
 
+            const currentRate = category === 'general' ? bestCard.general_rate : bestCard.special_rate;
+
             resultBox.classList.remove('hidden');
             resultBox.innerHTML = `
-                <div class="font-bold text-blue-800">💡 最佳刷卡建議：</div>
-                <div class="mt-1">推薦使用 <span class="font-bold text-lg text-blue-600">【${bestCard.card_name}】</span></div>
-                <div class="text-sm text-gray-600 mt-1">預估回饋：<span class="font-bold text-green-600">${maxReward.toFixed(1)}</span> 元 (回饋率約 ${category === 'general' ? bestCard.general_rate : bestCard.special_rate}%)</div>
+                <div class="font-bold text-[var(--accent)] flex items-center gap-1">💡 最佳刷卡建議：</div>
+                <div class="mt-2 text-sm">推薦使用 <span class="font-black text-base border-b-2 border-[var(--primary)] pb-0.5 text-[var(--text-main)]">【${bestCard.card_name}】</span></div>
+                <div class="text-xs text-muted mt-2">預估可拿回饋：<span class="font-black text-sm text-[var(--primary)]">${maxReward.toFixed(1)}</span> 元</div>
+                <div class="text-[11px] text-gray-400 mt-1">此類別回饋率約為 ${currentRate}%</div>
             `;
         }
 
@@ -184,7 +310,7 @@
             if (!prompt) return alert('請輸入你想問的問題');
 
             resultBox.classList.remove('hidden');
-            resultBox.innerHTML = `⏳ AI 顧問正在為您規劃 2026 最新組合，請稍候...`;
+            resultBox.innerHTML = `<span class="inline-block animate-pulse text-xs text-purple-400">⏳ AI 顧問正在調閱 2026 最新大數據回饋資料，請稍候...</span>`;
 
             try {
                 const res = await fetch('/api/advisor', {
@@ -193,7 +319,7 @@
                     body: JSON.stringify({ prompt, cards: window.myCards || [] })
                 });
                 const data = await res.json();
-                resultBox.innerHTML = `<strong>🤖 AI 顧問的回覆：</strong><br><br>${data.answer}`;
+                resultBox.innerHTML = `<strong class="text-purple-400">🤖 AI 顧問的精準分析：</strong><br><div class="mt-2 text-xs text-gray-200">${data.answer}</div>`;
             } catch (err) {
                 resultBox.innerHTML = `❌ 顧問暫時離線，請等等再試。`;
             }
