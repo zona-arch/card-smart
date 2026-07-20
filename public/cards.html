@@ -3,114 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardgini - Wallet</title>
+    <title>CardGini - Credit Cards</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'Outfit', sans-serif; background-color: #020205; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .app-bg { background: linear-gradient(180deg, #0C0E14 0%, #0E0B1E 50%, #07050F 100%); }
     </style>
 </head>
-<body class="bg-[#020205] flex justify-center items-center min-h-screen p-4">
+<body class="flex justify-center items-center min-h-screen p-2 select-none">
 
-    <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
+    <div class="w-[393px] h-[852px] rounded-[50px] app-bg text-white overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.8)] relative flex flex-col border border-zinc-800">
         
         <!-- HEADER -->
-        <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
-            <div class="flex flex-col gap-1">
-                <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
-                <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
+        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E14]/60 backdrop-blur-md sticky top-0 z-40">
+            <div class="flex flex-col">
+                <div class="flex items-baseline gap-0.5">
+                    <span class="text-2xl font-extrabold text-orange-500 tracking-wide">C</span>
+                    <span class="text-xl font-bold text-white tracking-wide -ml-0.5">ardGini</span>
+                </div>
+                <span class="text-[10px] text-[#5A6E85] tracking-wider font-medium mt-0.5">Smart Spending, Elite Saving</span>
+            </div>
+            <div class="w-9 h-9 rounded-full border border-orange-400/40 bg-[#FFF9E6] overflow-hidden flex items-center justify-center shadow-lg">
+                <span class="text-lg">⚡️</span>
             </div>
         </header>
 
-        <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3">
-            <section class="flex justify-between items-center px-6">
-                <h1 class="text-lg font-bold text-white">我的手牌卡包</h1>
-                <button onclick="window.location.href='add-card.html'" class="bg-[#161E2E]/60 flex items-center gap-1 px-4 py-2 rounded-full border border-orange-500 text-orange-500 text-sm font-semibold shadow-[0_0_12px_rgba(255,131,0,0.2)]">
-                    <span>+ 新增卡片</span>
+        <!-- CONTENT CONTAINER -->
+        <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-28 pt-2 flex flex-col gap-4">
+            
+            <div class="flex justify-between items-center px-1 mt-1">
+                <h1 class="text-xl font-bold tracking-wide">我的卡片</h1>
+                <button onclick="window.location.href='add-card.html'" class="bg-[#1C1612] border border-orange-500/50 text-orange-400 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 hover:bg-orange-500/10 transition-colors">
+                    <span>+ 新增</span>
                 </button>
-            </section>
+            </div>
 
-            <!-- 真正由資料庫生成的卡片卡槽 -->
-            <section class="px-4 flex flex-col gap-4" id="cards-list-slot">
-                <!-- JS 動態生成區 -->
-            </section>
+            <!-- 卡片動態清單列表槽 -->
+            <div id="figma-cards-list" class="flex flex-col gap-4">
+                <!-- 由 JavaScript 動態生成真卡片 -->
+            </div>
+
         </div>
 
-        <!-- FOOTER NAV -->
-        <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px]">Search</span></button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Cards</span><div class="w-4 h-[2px] bg-orange-500 rounded-full"></div></button>
+        <!-- 浮動 AI 鈕 -->
+        <div class="absolute bottom-[90px] right-5 w-12 h-12 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(249,115,22,0.5)] border border-white/20 z-40">
+            <i data-lucide="sparkles" class="w-5 h-5 text-white animate-pulse"></i>
+        </div>
+
+        <!-- FOOTER NAV (5選單，Credit Cards 高亮) -->
+        <footer class="flex h-[76px] px-2 justify-between items-center bg-[#07050F]/95 backdrop-blur-xl border-t border-zinc-900 sticky bottom-0 z-50">
+            <button onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="home" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="search" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex flex-col items-center gap-1 w-16 text-orange-500"><i data-lucide="credit-card" class="w-[22px] h-[22px]"></i><span class="text-[9px] font-bold">Credit Cards</span><div class="w-4 h-[2px] bg-orange-500 rounded-full mt-0.5"></div></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="landmark" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Bank Rate</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="settings" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Settings</span></button>
         </footer>
     </div>
 
     <script>
-        function loadWallet() {
-            const slot = document.getElementById('cards-list-slot');
-            const localCards = JSON.parse(localStorage.getItem('smart_cards')) || [];
+        function renderFigmaWallet() {
+            const container = document.getElementById('figma-cards-list');
+            const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
 
-            if (localCards.length === 0) {
-                slot.innerHTML = `
-                    <div class="bg-[#161E2E]/40 border border-white/5 rounded-2xl p-8 text-center text-sm text-zinc-500 flex flex-col items-center gap-2">
-                        <i data-lucide="wallet" class="w-8 h-8 opacity-30"></i>
-                        <span>皮夾空空的，點擊右上角新增第一張真卡片！</span>
+            if (db.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-[#12121A]/60 border border-zinc-800 rounded-3xl p-8 text-center text-xs text-zinc-500 flex flex-col items-center gap-2 mt-4">
+                        <i data-lucide="credit-card" class="w-8 h-8 opacity-20"></i>
+                        <span>皮夾內尚無真實卡片，請點右上角「+ 新增」開始建立。</span>
                     </div>
                 `;
                 lucide.createIcons();
                 return;
             }
 
-            slot.innerHTML = "";
-            localCards.forEach(card => {
-                let cardStyle = "from-cyan-400 to-blue-600";
-                if(card.org === "Mastercard") cardStyle = "from-purple-500 to-indigo-600";
-                if(card.org === "JCB") cardStyle = "from-rose-500 to-orange-600";
+            container.innerHTML = "";
+            db.forEach(card => {
+                // 生成綁定支付的小標籤（精緻灰色小底圓角）
+                const payTagsHtml = card.pays && card.pays.length > 0
+                    ? card.pays.map(p => `<span class="bg-[#1C1F2A] text-zinc-400 text-[10px] px-2 py-0.5 rounded-md font-medium">${p}</span>`).join('')
+                    : `<span class="text-zinc-600 text-[10px]">無綁定支付</span>`;
 
-                const keywordTags = card.keywords && card.keywords.length > 0 
-                    ? card.keywords.map(k => `<span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-[10px] text-[#8A99AD]">${k}</span>`).join('')
-                    : `<span class="text-[10px] text-zinc-600">無指定通路</span>`;
+                // 處理卡片預覽圖（如果沒上傳就用高質感預設極光卡面）
+                const cardImgSrc = card.image !== "default" ? card.image : "https://images.unsplash.com/photo-1613243555988-441166d4d6fd?w=150&auto=format&fit=crop&q=60";
 
-                const cardDiv = document.createElement('div');
-                cardDiv.className = "bg-[#161E2E]/60 p-4 rounded-[20px] border border-white/5 flex flex-col gap-3 relative";
-                cardDiv.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-14 h-9 rounded-md bg-gradient-to-tr ${cardStyle} p-1.5 flex flex-col justify-between shadow-md">
-                                <div class="w-2 h-1.5 bg-yellow-400 rounded-xs"></div>
-                                <span class="text-[6px] font-bold text-white tracking-wider">${card.org}</span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold text-white">${card.name}</span>
-                                <span class="text-[10px] text-[#8A99AD]">${card.org}</span>
-                            </div>
+                const cardBox = document.createElement('div');
+                cardBox.className = "bg-[#111422]/90 border border-zinc-800/80 rounded-[24px] p-4 flex flex-col gap-3 relative shadow-xl hover:border-zinc-700 transition-all";
+                
+                cardBox.innerHTML = `
+                    <!-- 上半部：實體卡圖與名稱資訊 -->
+                    <div class="flex gap-4 items-center">
+                        <div class="w-[96px] h-[60px] rounded-lg overflow-hidden border border-zinc-700/50 shadow-md bg-zinc-900 flex-shrink-0">
+                            <img src="${cardImgSrc}" class="w-full h-full object-cover">
                         </div>
-                        <button onclick="removeCard(${card.id})" class="text-zinc-500 hover:text-rose-400 transition-colors p-1">
+                        <div class="flex flex-col flex-1">
+                            <h3 class="text-sm font-bold text-white tracking-wide">${card.name}</h3>
+                            <span class="text-[10px] text-zinc-500 font-medium mt-0.5">${card.org}</span>
+                        </div>
+                        <button onclick="deleteFigmaCard(${card.id})" class="text-zinc-600 hover:text-rose-400 absolute top-4 right-4 transition-colors">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
-                    <div class="flex justify-between items-center border-t border-white/5 pt-2">
-                        <span class="text-xs font-medium text-emerald-400">基本回饋: ${card.rate}%</span>
-                        <div class="flex gap-1.5 flex-wrap max-w-[200px] justify-end">${keywordTags}</div>
+
+                    <!-- 下半部：詳細欄位資訊 (100% 復刻 Figma 細節排版) -->
+                    <div class="flex flex-col gap-1.5 pt-1 border-t border-zinc-900">
+                        <div class="flex justify-between items-center text-[11px]">
+                            <span class="text-zinc-400 font-medium">上限: NT$ ${card.limit} / 月</span>
+                            <div class="flex gap-1">${payTagsHtml}</div>
+                        </div>
+
+                        <div class="text-[11px] text-zinc-400 mt-0.5">${card.benefitName}</div>
+                        
+                        <div class="flex justify-between items-baseline -mt-1">
+                            <span class="text-[11px] text-zinc-500 font-bold">卡片權益</span>
+                            <!-- 翠綠色強烈發光感回饋率字體 -->
+                            <span class="text-sm font-extrabold text-[#00F3A2] drop-shadow-[0_0_10px_rgba(0,243,162,0.4)] tracking-tight">${card.rewardDesc}</span>
+                        </div>
+
+                        <!-- 串接 AI 智慧分析展示區 -->
+                        <div class="bg-[#090B15] border border-cyan-500/10 p-2 rounded-xl mt-1 flex items-center gap-1.5">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
+                            <span class="text-[10px] text-zinc-300 font-medium leading-tight">${card.aiHighlight}</span>
+                        </div>
                     </div>
                 `;
-                slot.appendChild(cardDiv);
+                container.appendChild(cardBox);
             });
             lucide.createIcons();
         }
 
-        function removeCard(id) {
-            if(!confirm('確認要將這張卡片從皮夾移除嗎？')) return;
-            let localCards = JSON.parse(localStorage.getItem('smart_cards')) || [];
-            localCards = localCards.filter(c => c.id !== id);
-            localStorage.setItem('smart_cards', JSON.stringify(localCards));
-            loadWallet();
+        function deleteFigmaCard(id) {
+            if(!confirm('確定要移除這張卡片嗎？')) return;
+            let db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
+            db = db.filter(c => c.id !== id);
+            localStorage.setItem('figma_wallet', JSON.stringify(db));
+            renderFigmaWallet();
         }
 
-        loadWallet();
+        renderFigmaWallet();
     </script>
 </body>
 </html>
