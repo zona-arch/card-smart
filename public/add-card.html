@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardGini - Add Card</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background-color: #0B0C10; color: #FFFFFF; font-family: -apple-system, sans-serif; }
+        .glass-panel { background: rgba(22, 23, 30, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.03); }
+    </style>
+</head>
+<body class="bg-[#0B0C10] min-h-screen pb-24">
+    <div class="max-w-md mx-auto px-5 pt-8">
+        
+        <!-- Header -->
+        <div class="flex items-center gap-2 mb-6">
+            <a href="cards.html" class="text-gray-400 hover:text-white"><i data-lucide="chevron-left" class="w-6 h-6"></i></a>
+            <h1 class="text-xl font-bold">手動託管新權益</h1>
+        </div>
 
+        <!-- 虛線真實卡面區 -->
+        <div class="glass-panel h-44 rounded-2xl border-dashed border-2 border-gray-800 flex flex-col justify-center items-center cursor-pointer hover:border-[#FF9800] transition mb-6">
+            <i data-lucide="camera" class="w-8 h-8 text-gray-600 mb-2"></i>
+            <span class="text-xs text-gray-400">點擊拍攝或上傳實體卡面照片</span>
+        </div>
+
+        <!-- 表單輸入 -->
+        <div class="space-y-5">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">卡片自訂名稱</label>
+                <input type="text" placeholder="例如：台新 FlyGo 卡" class="w-full bg-[#16171E] border border-[#22222B] rounded-xl p-3 text-sm text-white focus:outline-none focus:border-[#FF9800]">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">發卡組織</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button class="bg-[#FF9800]/10 border border-[#FF9800] text-[#FF9800] rounded-full py-2 text-xs font-bold">Visa</button>
+                    <button class="bg-[#16171E] border border-[#22222B] text-gray-400 rounded-full py-2 text-xs">Mastercard</button>
+                    <button class="bg-[#16171E] border border-[#22222B] text-gray-400 rounded-full py-2 text-xs">JCB</button>
+                    <button class="bg-[#16171E] border border-[#22222B] text-gray-400 rounded-full py-2 text-xs">其他</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wide">官方權益方案文字</label>
+                <p class="text-[10px] text-[#FF5722] mb-2 font-medium">⚠️ 無須整理，直接從官網整段「複製貼上」到下方即可！</p>
+                <textarea rows="5" placeholder="【貼上官方文字範例】&#10;精選通路最高5%回饋...&#10;適用華航、長榮、高鐵、大都會計程車...&#10;每期帳單回饋上限1,500元..." class="w-full bg-[#16171E] border border-[#22222B] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[#FF9800] leading-relaxed"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">此卡已綁定之行動支付</label>
+                <div class="flex flex-wrap gap-2">
+                    <button class="border border-[#FF9800] text-[#FF9800] bg-amber-500/5 px-4 py-1.5 rounded-full text-xs">Line Pay</button>
+                    <button class="border border-[#FF9800] text-[#FF9800] bg-amber-500/5 px-4 py-1.5 rounded-full text-xs">Apple Pay</button>
+                    <button class="border border-[#22222B] text-gray-500 bg-[#16171E] px-4 py-1.5 rounded-full text-xs">街口支付</button>
+                    <button class="border border-[#22222B] text-gray-500 bg-[#16171E] px-4 py-1.5 rounded-full text-xs">Google Pay</button>
+                </div>
+            </div>
+
+            <!-- 按鈕組 -->
+            <div class="flex gap-3 pt-4">
+                <button onclick="window.location.href='cards.html'" class="flex-1 bg-[#16171E] text-gray-400 text-xs font-medium py-3.5 rounded-full hover:bg-gray-800 transition">取消返回</button>
+                <button onclick="saveAndGo()" class="flex-1 bg-gradient-to-r from-[#00F5D4] to-[#00bfa5] text-[#0B0C10] text-xs font-bold py-3.5 rounded-full shadow-lg shadow-[#00F5D4]/15 hover:brightness-105 transition">確認交給 AI 解析</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全局導航欄 -->
+    <div id="nav-placeholder"></div>
+</body>
+<script>
+    document.getElementById('nav-placeholder').innerHTML = `
+    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0C10]/90 backdrop-blur-md border-t border-[#1F2833] py-2 z-50">
+        <div class="max-w-md mx-auto flex justify-around items-center text-gray-500 text-[10px]">
+            <a href="index.html" class="flex flex-col items-center gap-1"><i data-lucide="home" class="w-5 h-5"></i>Overview</a>
+            <a href="search.html" class="flex flex-col items-center gap-1"><i data-lucide="search" class="w-5 h-5"></i>Search</a>
+            <a href="cards.html" class="flex flex-col items-center gap-1 text-[#FF9800]"><i data-lucide="credit-card" class="w-5 h-5 text-[#FF9800]"></i>Credit Cards</a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i>Bank Rate</a>
+            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
+        </div>
+    </div>`;
+    lucide.createIcons();
+
+    function saveAndGo() {
+        alert("🎉 儲存成功！AI 精靈已將該卡片文字納入資料庫。");
+        window.location.href = 'cards.html';
+    }
+</script>
+</html>
