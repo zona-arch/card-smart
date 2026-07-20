@@ -47,6 +47,7 @@
       <section class="flex flex-col gap-4 px-6">
         <div class="flex items-center justify-between">
           <div class="flex flex-col items-start gap-1">
+            <!-- 這裡完美呈現 111x24 高解析度 Logo -->
             <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
             <span class="font-geist text-xs text-brand-muted">Smart Spending, Elite Saving</span>
           </div>
@@ -174,7 +175,7 @@
       </section>
     </main>
 
-    <!-- Bottom Nav + FAB -->
+    <!-- Bottom Nav + FAB (這裡已經打通超連結囉！) -->
     <div class="fixed inset-x-0 bottom-0 z-40 flex justify-center">
       <div class="relative w-full max-w-[480px]">
         <button type="button" class="absolute bottom-[110px] right-4 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_0_18px_0_rgba(0,240,255,0.60)] bg-[radial-gradient(50%_50%_at_50%_50%,#9D1500_0%,#FF8400_100%)]">
@@ -182,27 +183,38 @@
         </button>
         <div class="flex flex-col bg-brand-surface backdrop-blur-md">
           <nav class="flex h-[72px] items-center justify-between px-4">
-            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+            
+            <!-- 1. Overview (首頁) -->
+            <a href="index.html" class="flex w-[72px] flex-col items-center gap-1">
               <i data-lucide="home" class="h-[22px] w-[22px] text-brand-orange"></i>
               <span class="font-geist text-[10px] font-semibold text-brand-orange">Overview</span>
               <span class="h-0.5 w-4 rounded-full bg-brand-orange shadow-[0_0_4px_0_rgba(0,240,255,0.50)]"></span>
-            </button>
-            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+            </a>
+
+            <!-- 2. Search -->
+            <a href="search.html" class="flex w-[72px] flex-col items-center gap-1">
               <i data-lucide="search" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Search</span>
-            </button>
-            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+            </a>
+
+            <!-- 3. Credit Cards -->
+            <a href="cards.html" class="flex w-[72px] flex-col items-center gap-1">
               <i data-lucide="credit-card" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Credit Cards</span>
-            </button>
-            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+            </a>
+
+            <!-- 4. Bank Rate -->
+            <a href="rates.html" class="flex w-[72px] flex-col items-center gap-1">
               <i data-lucide="landmark" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Bank Rate</span>
-            </button>
-            <button type="button" class="flex w-[72px] flex-col items-center gap-1">
+            </a>
+
+            <!-- 5. Settings -->
+            <a href="settings.html" class="flex w-[72px] flex-col items-center gap-1">
               <i data-lucide="settings" class="h-[22px] w-[22px] text-brand-muted"></i>
               <span class="font-geist text-[10px] font-medium text-brand-muted">Settings</span>
-            </button>
+            </a>
+            
           </nav>
           <div class="flex h-4 items-center justify-center bg-brand-bg">
             <div class="h-[5px] w-[134px] rounded-full bg-[#4E5D73]"></div>
