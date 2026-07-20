@@ -11,17 +11,15 @@
         body { font-family: 'Outfit', sans-serif; background-color: #020205; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* 復刻 Figma 的暗紫黑色調背景 */
         .app-bg { background: linear-gradient(180deg, #0C0E14 0%, #0E0B1E 50%, #07050F 100%); }
     </style>
 </head>
 <body class="flex justify-center items-center min-h-screen p-2 select-none">
 
-    <!-- 裝置外框 -->
     <div class="w-[393px] h-[852px] rounded-[50px] app-bg text-white overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.8)] relative flex flex-col border border-zinc-800">
         
-        <!-- HEADER (包含商標與右側精緻大頭貼) -->
-        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E14]/60 backdrop-blur-md sticky top-0 z-50">
+        <!-- HEADER -->
+        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E14]/60 backdrop-blur-md sticky top-0 z-40">
             <div class="flex flex-col">
                 <div class="flex items-baseline gap-0.5">
                     <span class="text-2xl font-extrabold text-orange-500 tracking-wide">C</span>
@@ -29,112 +27,108 @@
                 </div>
                 <span class="text-[10px] text-[#5A6E85] tracking-wider font-medium mt-0.5">Smart Spending, Elite Saving</span>
             </div>
-            <!-- 右側大頭貼 -->
             <div class="w-9 h-9 rounded-full border border-orange-400/40 bg-[#FFF9E6] overflow-hidden flex items-center justify-center shadow-lg">
-                <span class="text-lg">">⚡️</span>
+                <span class="text-lg">⚡️</span>
             </div>
         </header>
 
-        <!-- 主滾動內容區 -->
-        <div class="flex-1 overflow-y-auto no-scrollbar px-6 pb-28 pt-2 flex flex-col gap-5">
+        <!-- CONTENT -->
+        <div class="flex-1 overflow-y-auto no-scrollbar px-6 pb-28 pt-2 flex flex-col gap-4">
             
-            <!-- 1. 真實影像/卡片上傳區 -->
+            <!-- 卡片上傳區 -->
             <section class="flex flex-col items-center justify-center mt-1">
                 <input type="file" id="card-image-input" accept="image/*" class="hidden" onchange="previewCardImage(this)">
-                <div onclick="document.getElementById('card-image-input').click()" id="upload-box" class="w-full h-[170px] rounded-2xl border border-dashed border-zinc-700 bg-[#12121A]/60 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 transition-all group relative overflow-hidden">
+                <div onclick="document.getElementById('card-image-input').click()" id="upload-box" class="w-full h-[160px] rounded-2xl border border-dashed border-zinc-700 bg-[#12121A]/60 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 transition-all group relative overflow-hidden">
                     <div id="upload-placeholder" class="flex flex-col items-center gap-2 text-center">
                         <i data-lucide="camera" class="w-6 h-6 text-zinc-500 group-hover:text-orange-500 transition-colors"></i>
                         <span class="text-xs text-zinc-400 font-medium">點擊拍攝或上傳實體卡面</span>
                     </div>
-                    <!-- 預覽圖容器 -->
                     <img id="card-preview-img" class="absolute inset-0 w-full h-full object-cover hidden">
                 </div>
             </section>
 
-            <!-- 2. 卡片名稱 -->
+            <!-- 卡片名稱 -->
             <section class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-zinc-300 tracking-wide">卡片名稱</label>
-                <input type="text" id="inp-name" placeholder="請輸入銀行與卡片名稱" class="w-full bg-[#14141F] h-12 px-4 rounded-xl border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40 transition-colors">
+                <input type="text" id="inp-name" placeholder="請輸入銀行與卡片名稱" class="w-full bg-[#14141F] h-11 px-4 rounded-xl border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
             </section>
 
-            <!-- 3. 發卡組織 (單選) -->
+            <!-- 發卡組織 -->
             <section class="flex flex-col gap-1.5">
                 <label class="text-xs font-bold text-zinc-300 tracking-wide">發卡組織</label>
                 <div class="flex gap-2 w-full text-xs font-bold">
-                    <div onclick="selectOrg(this, 'Visa')" class="org-btn flex-1 bg-[#1A1A26] py-3 rounded-full border border-orange-500 text-center text-white shadow-[0_0_10px_rgba(249,115,22,0.15)] cursor-pointer transition-all">Visa</div>
-                    <div onclick="selectOrg(this, 'Mastercard')" class="org-btn flex-1 bg-[#14141F] py-3 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer transition-all">Mastercard</div>
-                    <div onclick="selectOrg(this, 'JCB')" class="org-btn flex-1 bg-[#14141F] py-3 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer transition-all">JCB</div>
-                    <div onclick="selectOrg(this, '其他')" class="org-btn flex-1 bg-[#14141F] py-3 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer transition-all">其他</div>
+                    <div onclick="selectOrg(this, 'Visa')" class="org-btn flex-1 bg-[#1A1A26] py-2.5 rounded-full border border-orange-500 text-center text-white shadow-[0_0_10px_rgba(249,115,22,0.15)] cursor-pointer">Visa</div>
+                    <div onclick="selectOrg(this, 'Mastercard')" class="org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer">Mastercard</div>
+                    <div onclick="selectOrg(this, 'JCB')" class="org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer">JCB</div>
+                    <div onclick="selectOrg(this, '其他')" class="org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer">其他</div>
                 </div>
             </section>
 
-            <!-- 4. 權益方案備忘錄 (真串接 AI 比對引擎) -->
+            <!-- 刷卡上限與預設一般回饋率 -->
+            <section class="grid grid-cols-2 gap-3">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-zinc-300">刷卡上限 / 月 (NT$)</label>
+                    <input type="number" id="inp-limit" placeholder="例如: 50000" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-zinc-300">基本權益名稱</label>
+                    <input type="text" id="inp-benefit-name" placeholder="例如: 一般回饋" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                </div>
+            </section>
+
+            <section class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-zinc-300">自訂刷卡回饋敘述 (會顯示在卡片右側)</label>
+                <input type="text" id="inp-reward-desc" placeholder="例如: 3% 現金回饋" class="w-full bg-[#14141F] h-10 px-4 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+            </section>
+
+            <!-- 權益方案備忘錄 -->
             <section class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-zinc-300 tracking-wide">權益方案備忘錄</label>
                 <span class="text-[10px] text-orange-500 font-medium">直接複製官網權益貼在下方，AI 搜尋時會自動閱讀！</span>
-                <textarea id="inp-memo" placeholder="請在此處直接複製貼上官方權益，例如：&#10;【CUBE卡 趣旅行方案】&#10;- 日本/韓國/泰國 實體消費 3%&#10;- 國內叫車/高鐵 3%&#10;- 方案每日可切換一次&#10;&#10;【街口聯名卡】&#10;- 綁定街口支付外送消費 2%" class="w-full bg-[#0D0D15] h-36 p-4 rounded-xl border border-zinc-800/80 text-xs text-white placeholder-zinc-700 focus:outline-none focus:border-orange-500/40 resize-none leading-relaxed"></textarea>
+                <textarea id="inp-memo" placeholder="請在此處直接複製貼上官方權益，例如：&#10;【CUBE卡】日本消費 3%&#10;【聯名卡】綁定街口支付外送消費 2%" class="w-full bg-[#0D0D15] h-24 p-3 rounded-xl border border-zinc-800/80 text-xs text-white placeholder-zinc-700 focus:outline-none resize-none leading-relaxed"></textarea>
             </section>
 
-            <!-- 5. 綁定支付方式 (多選) -->
+            <!-- 綁定支付方式 -->
             <section class="flex flex-col gap-2">
                 <label class="text-xs font-bold text-zinc-300 tracking-wide">這張卡已綁定哪些支付？</label>
-                <div class="flex flex-wrap gap-2 text-xs font-semibold">
-                    <span onclick="togglePayTag(this, 'Line Pay')" class="pay-tag flex items-center gap-1.5 bg-[#1A1A26] border border-orange-500 text-white px-3.5 py-2 rounded-full cursor-pointer transition-all shadow-[0_0_8px_rgba(249,115,22,0.1)]"><i data-lucide="message-square" class="w-3.5 h-3.5 text-orange-400"></i>Line Pay</span>
-                    <span onclick="togglePayTag(this, 'Apple Pay')" class="pay-tag flex items-center gap-1.5 bg-[#1A1A26] border border-orange-500 text-white px-3.5 py-2 rounded-full cursor-pointer transition-all shadow-[0_0_8px_rgba(249,115,22,0.1)]"><i data-lucide="smartphone" class="w-3.5 h-3.5 text-orange-400"></i>Apple Pay</span>
-                    <span onclick="togglePayTag(this, '街口支付')" class="pay-tag flex items-center gap-1.5 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3.5 py-2 rounded-full cursor-pointer transition-all">街口支付</span>
-                    <span onclick="togglePayTag(this, 'Google Pay')" class="pay-tag flex items-center gap-1.5 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3.5 py-2 rounded-full cursor-pointer transition-all">Google Pay</span>
-                    <span onclick="togglePayTag(this, '全支付')" class="pay-tag flex items-center gap-1.5 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3.5 py-2 rounded-full cursor-pointer transition-all">全支付</span>
-                    <span onclick="togglePayTag(this, '悠遊付')" class="pay-tag flex items-center gap-1.5 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3.5 py-2 rounded-full cursor-pointer transition-all">悠遊付</span>
+                <div class="flex flex-wrap gap-1.5 text-[11px] font-semibold">
+                    <span onclick="togglePayTag(this, 'line pay')" class="pay-tag flex items-center gap-1 bg-[#1A1A26] border border-orange-500 text-white px-3 py-1.5 rounded-full cursor-pointer shadow-[0_0_8px_rgba(249,115,22,0.1)]">line pay</span>
+                    <span onclick="togglePayTag(this, 'Apple Pay')" class="pay-tag flex items-center gap-1 bg-[#1A1A26] border border-orange-500 text-white px-3 py-1.5 rounded-full cursor-pointer shadow-[0_0_8px_rgba(249,115,22,0.1)]">Apple Pay</span>
+                    <span onclick="togglePayTag(this, '街口支付')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">街口支付</span>
+                    <span onclick="togglePayTag(this, 'Google Pay')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">Google Pay</span>
+                    <span onclick="togglePayTag(this, '全支付')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">全支付</span>
+                    <span onclick="togglePayTag(this, '悠遊付')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">悠遊付</span>
                 </div>
             </section>
 
-            <!-- 6. 按鈕操控組 (取消 / 霓虹漸層儲存) -->
-            <div class="flex gap-4 pt-2">
-                <button onclick="window.location.href='cards.html'" class="flex-1 bg-[#14141F] py-3.5 rounded-xl border border-zinc-800 text-center text-sm font-bold text-zinc-400 active:scale-95 transition-transform">取消</button>
-                <button onclick="saveFigmaCard()" class="flex-1 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF00F5] py-3.5 rounded-xl text-center text-sm font-black text-white shadow-[0_4px_20px_rgba(112,0,255,0.4)] active:scale-95 transition-transform">儲存卡片</button>
+            <!-- 按鈕操控組 -->
+            <div class="flex gap-4 pt-1">
+                <button onclick="window.location.href='cards.html'" class="flex-1 bg-[#14141F] py-3 rounded-xl border border-zinc-800 text-center text-sm font-bold text-zinc-400">取消</button>
+                <button onclick="saveFigmaCard()" class="flex-1 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF00F5] py-3 rounded-xl text-center text-sm font-black text-white shadow-[0_4px_20px_rgba(112,0,255,0.4)]">儲存卡片</button>
             </div>
-
         </div>
 
-        <!-- 右下角浮動 AI 繽紛發光鈕 (100% 復刻 Figma) -->
-        <div class="absolute bottom-[90px] right-5 w-12 h-12 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(249,115,22,0.5)] border border-white/20 hover:scale-105 transition-transform active:scale-95 z-50">
+        <!-- 浮動 AI 鈕 -->
+        <div class="absolute bottom-[90px] right-5 w-12 h-12 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(249,115,22,0.5)] border border-white/20 z-40">
             <i data-lucide="sparkles" class="w-5 h-5 text-white animate-pulse"></i>
         </div>
 
-        <!-- FOOTER NAV (5個選單，對應 Overview 高亮) -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[76px] px-2 justify-between items-center bg-[#07050F]/95 backdrop-blur-xl border-t border-zinc-900 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 w-16 text-orange-500">
-                <i data-lucide="home" class="w-[22px] h-[22px]"></i>
-                <span class="text-[9px] font-bold">Overview</span>
-                <div class="w-4 h-[2px] bg-orange-500 rounded-full mt-0.5"></div>
-            </button>
-            <button onclick="window.location.href='search.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85] hover:text-white transition-colors">
-                <i data-lucide="search" class="w-[22px] h-[22px]"></i>
-                <span class="text-[9px] font-medium">Search</span>
-            </button>
-            <button onclick="window.location.href='cards.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85] hover:text-white transition-colors">
-                <i data-lucide="credit-card" class="w-[22px] h-[22px]"></i>
-                <span class="text-[9px] font-medium">Credit Cards</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled>
-                <i data-lucide="landmark" class="w-[22px] h-[22px]"></i>
-                <span class="text-[9px] font-medium">Bank Rate</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled>
-                <i data-lucide="settings" class="w-[22px] h-[22px]"></i>
-                <span class="text-[9px] font-medium">Settings</span>
-            </button>
+            <button onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="home" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="search" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex flex-col items-center gap-1 w-16 text-orange-500"><i data-lucide="credit-card" class="w-[22px] h-[22px]"></i><span class="text-[9px] font-bold">Credit Cards</span><div class="w-4 h-[2px] bg-orange-500 rounded-full mt-0.5"></div></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="landmark" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Bank Rate</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="settings" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Settings</span></button>
         </footer>
     </div>
 
     <script>
         lucide.createIcons();
-        
         let selectedOrg = "Visa";
         let uploadedImageBase64 = "";
-        let activePays = ["Line Pay", "Apple Pay"]; // 預設照 Figma 勾選前兩項
+        let activePays = ["line pay", "Apple Pay"];
 
-        // 照片即時讀取轉換
         function previewCardImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -142,80 +136,64 @@
                     document.getElementById('card-preview-img').src = e.target.result;
                     document.getElementById('card-preview-img').classList.remove('hidden');
                     document.getElementById('upload-placeholder').classList.add('hidden');
-                    uploadedImageBase64 = e.target.result; // 圖檔轉為字串存入 LocalStorage
+                    uploadedImageBase64 = e.target.result;
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // 組織單選
         function selectOrg(el, org) {
-            document.querySelectorAll('.org-btn').forEach(btn => {
-                btn.className = "org-btn flex-1 bg-[#14141F] py-3 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer transition-all";
-                btn.style.boxShadow = "none";
-            });
-            el.className = "org-btn flex-1 bg-[#1A1A26] py-3 rounded-full border border-orange-500 text-center text-white cursor-pointer transition-all";
-            el.style.boxShadow = "0 0 10px rgba(249,115,22,0.15)";
+            document.querySelectorAll('.org-btn').forEach(btn => btn.className = "org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer");
+            el.className = "org-btn flex-1 bg-[#1A1A26] py-2.5 rounded-full border border-orange-500 text-center text-white cursor-pointer";
             selectedOrg = org;
         }
 
-        // 支付方式複選開關
         function togglePayTag(el, payName) {
             if (activePays.includes(payName)) {
                 activePays = activePays.filter(p => p !== payName);
-                el.className = "pay-tag flex items-center gap-1.5 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3.5 py-2 rounded-full cursor-pointer transition-all";
-                const icon = el.querySelector('i');
-                if(icon) icon.className = "w-3.5 h-3.5 text-zinc-600";
+                el.className = "pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer";
             } else {
                 activePays.push(payName);
-                el.className = "pay-tag flex items-center gap-1.5 bg-[#1A1A26] border border-orange-500 text-white px-3.5 py-2 rounded-full cursor-pointer transition-all shadow-[0_0_8px_rgba(249,115,22,0.1)]";
-                const icon = el.querySelector('i');
-                if(icon) icon.className = "w-3.5 h-3.5 text-orange-400";
+                el.className = "pay-tag flex items-center gap-1 bg-[#1A1A26] border border-orange-500 text-white px-3 py-1.5 rounded-full cursor-pointer shadow-[0_0_8px_rgba(249,115,22,0.1)]";
             }
         }
 
-        // 🧠 儲存手牌 + AI 前端大腦剖析器
         function saveFigmaCard() {
             const name = document.getElementById('inp-name').value.trim();
+            const limit = document.getElementById('inp-limit').value || "50,000";
+            const benefitName = document.getElementById('inp-benefit-name').value || "一般回饋";
+            const rewardDesc = document.getElementById('inp-reward-desc').value || "3% 現金回饋";
             const memo = document.getElementById('inp-memo').value;
 
             if(!name) { alert('請輸入卡片名稱！'); return; }
 
-            // AI 自動閱讀解析器邏輯：掃描備忘錄文字中的通路與對應最高數字 %
-            // 例如輸入「日本實體消費 3%」 -> 抓出關鍵字: 日本, 回饋: 3
-            const rules = [];
-            const lines = memo.split('\n');
-            lines.forEach(line => {
-                const matchPercent = line.match(/(\d+(\.\d+)?)\s*%/);
-                if (matchPercent) {
-                    const rate = parseFloat(matchPercent[1]);
-                    // 提取可能的地點或通路關鍵字
-                    let keyword = line.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, ' ')
-                                      .replace(matchPercent[0], '')
-                                      .replace(/消費|回饋|最高|方案|實體/g, '')
-                                      .trim().split(/\s+/)[0];
-                    if(keyword && keyword.length > 1) {
-                        rules.push({ keyword, rate });
-                    }
-                }
-            });
+            // 🤖 輕量前端 AI 分析器（模擬從備忘錄中抓出亮點）
+            let aiHighlight = "由卡片基本權益提供高額加碼";
+            if (memo.includes("最高")) {
+                const match = memo.match(/通路.*?\d+%/);
+                if (match) aiHighlight = `目前最頂：${match[0]}回饋`;
+            } else if (memo.length > 5) {
+                // 如果有填備忘錄，取前 18 個字作為 AI 分析亮點
+                aiHighlight = `目前最頂：${memo.substring(0, 18).replace(/\n/g, ' ')}...`;
+            }
 
-            // 打包成真實結構卡片
             const figmaCard = {
                 id: Date.now(),
                 name: name,
                 org: selectedOrg,
-                image: uploadedImageBase64 || "default", // 存入真實卡片樣式
+                image: uploadedImageBase64 || "default", 
+                limit: parseFloat(limit).toLocaleString(),
+                benefitName: benefitName,
+                rewardDesc: rewardDesc,
                 memo: memo,
                 pays: activePays,
-                aiRules: rules // 供搜尋精算引擎使用
+                aiHighlight: aiHighlight
             };
 
             const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
             db.push(figmaCard);
             localStorage.setItem('figma_wallet', JSON.stringify(db));
 
-            // 跳轉至卡片管理頁面
             window.location.href = 'cards.html';
         }
     </script>
