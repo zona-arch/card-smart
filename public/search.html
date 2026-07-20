@@ -1,104 +1,118 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CardGini - Search Store</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { background-color: #0B0C10; color: #FFFFFF; font-family: -apple-system, sans-serif; }
-        .glass-panel { background: rgba(22, 23, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.03); }
-        .glow-btn { box-shadow: 0 0 15px rgba(0, 245, 212, 0.2); }
-    </style>
-</head>
-<body class="bg-[#0B0C10] min-h-screen pb-24">
-    <div class="max-w-md mx-auto px-5 pt-8">
-        
-        <!-- 頂部切換 (國家/地區) -->
-        <div class="flex justify-center mb-6">
-            <div class="bg-[#16171E] p-1 rounded-full flex gap-1 border border-gray-800">
-                <button class="bg-[#FF9800] text-[#0B0C10] text-xs font-bold px-4 py-1.5 rounded-full">🇹🇼 台灣本地</button>
-                <button class="text-gray-400 text-xs px-4 py-1.5 rounded-full opacity-50 cursor-not-allowed">🇯🇵 日本海外</button>
-            </div>
+<div class="min-h-screen bg-surface-bg text-surface-on-primary p-6 font-sans">
+  <!-- 搜尋頂欄 -->
+  <div class="max-w-4xl mx-auto mb-8">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <!-- 搜尋 Logo 區塊 -->
+        <div class="w-8 h-8 flex items-center justify-center text-selected-bg-from">
+          <!-- 💡 這裡替換成妳從 Figma 導出的 Search Logo SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
+          </svg>
         </div>
-
-        <!-- 搜尋輸入框 -->
-        <div class="relative mb-6">
-            <i data-lucide="search" class="w-5 h-5 text-gray-500 absolute left-4 top-3.5"></i>
-            <input id="store-input" type="text" placeholder="輸入你想消費的店家（例：蝦皮、星巴克）" class="w-full bg-[#16171E] border border-[#22222B] rounded-full py-3.5 pl-12 pr-6 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#00F5D4] transition">
-        </div>
-
-        <!-- 模擬操作按鈕 -->
-        <button onclick="startAiSearch()" class="glow-btn w-full bg-gradient-to-r from-[#00F5D4] to-[#00bfa5] text-[#0B0C10] text-sm font-bold py-3.5 rounded-full flex items-center justify-center gap-2 mb-6 transition active:scale-98">
-            <i data-lucide="sparkles" class="w-4 h-4"></i> 讓精靈幫我算哪張最划算
-        </button>
-
-        <!-- 動態搜尋結果展示區 -->
-        <div id="search-status" class="hidden text-center py-6">
-            <div class="animate-spin text-[#00F5D4] inline-block mb-2"><i data-lucide="loader" class="w-6 h-6"></i></div>
-            <p class="text-xs text-gray-400">正在分析妳上傳的備忘錄文本內容...</p>
-        </div>
-
-        <div id="results-area" class="space-y-4">
-            <!-- 預設常用店家快捷標籤 -->
-            <div>
-                <h4 class="text-xs text-gray-500 font-bold mb-2 uppercase tracking-wider">熱門搜尋通路</h4>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="fillStore('蝦皮購物')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">蝦皮購物</button>
-                    <button onclick="fillStore('星巴克')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">星巴克</button>
-                    <button onclick="fillStore('7-11')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">7-11</button>
-                    <button onclick="fillStore('Uber Eats')" class="bg-[#16171E] border border-gray-800 text-xs px-3 py-1.5 rounded-lg text-gray-300 hover:border-gray-600">Uber Eats</button>
-                </div>
-            </div>
-        </div>
-
+        <h1 class="text-2xl font-bold tracking-wide bg-gradient-to-r from-selected-bg-from to-selected-bg-to bg-clip-text text-transparent">
+          搜尋遊戲
+        </h1>
+      </div>
     </div>
 
-    <!-- 全局導航欄 -->
-    <div id="nav-placeholder"></div>
-</body>
-<script>
-    document.getElementById('nav-placeholder').innerHTML = `
-    <div class="fixed bottom-0 left-0 right-0 bg-[#0B0C10]/90 backdrop-blur-md border-t border-[#1F2833] py-2 z-50">
-        <div class="max-w-md mx-auto flex justify-around items-center text-gray-500 text-[10px]">
-            <a href="index.html" class="flex flex-col items-center gap-1"><i data-lucide="home" class="w-5 h-5"></i>Overview</a>
-            <a href="search.html" class="flex flex-col items-center gap-1 text-[#FF9800]"><i data-lucide="search" class="w-5 h-5 text-[#FF9800]"></i>Search</a>
-            <a href="cards.html" class="flex flex-col items-center gap-1"><i data-lucide="credit-card" class="w-5 h-5"></i>Credit Cards</a>
-            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="landmark" class="w-5 h-5"></i>Bank Rate</a>
-            <a href="#" class="flex flex-col items-center gap-1 opacity-40 cursor-not-allowed"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
+    <!-- 搜尋輸入框 -->
+    <div class="relative">
+      <input 
+        type="text" 
+        id="game-search"
+        placeholder="輸入遊戲名稱或關鍵字..." 
+        class="w-full bg-table-form-bg text-table-form-on-primary placeholder-placeholder-on-minor pl-12 pr-4 py-3.5 rounded-xl border border-placeholder-normal focus:outline-none focus:border-selected-bg-to focus:ring-1 focus:ring-selected-bg-to transition-all"
+      />
+      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-placeholder-on-minor">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <!-- 熱門標籤 / 推薦店家 -->
+  <div class="max-w-4xl mx-auto mb-10">
+    <h3 class="text-sm font-semibold text-surface-on-minor uppercase tracking-wider mb-3">熱門推薦</h3>
+    <div class="flex flex-wrap gap-2.5" id="tag-container">
+      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-selected-bg-from to-selected-bg-to text-selected-on transition-all shadow-md">
+        全部遊戲
+      </button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-table-form-bg text-table-form-on-minor hover:bg-table-form-hover hover:text-table-form-on-primary transition-all">
+        CardGini 嚴選
+      </button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-table-form-bg text-table-form-on-minor hover:bg-table-form-hover hover:text-table-form-on-primary transition-all">
+        高爆擊率
+      </button>
+      <button class="px-4 py-2 rounded-lg text-sm font-medium bg-table-form-bg text-table-form-on-minor hover:bg-table-form-hover hover:text-table-form-on-primary transition-all">
+        最新上架
+      </button>
+    </div>
+  </div>
+
+  <!-- 遊戲結果網格 -->
+  <div class="max-w-4xl mx-auto">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="game-grid">
+      
+      <!-- 遊戲卡片 1 (範例：帶有 Hot 標籤) -->
+      <div class="group bg-primary-bg rounded-xl overflow-hidden border border-placeholder-normal hover:border-selected-bg-to transition-all duration-300 flex flex-col cursor-pointer" data-tags="全部遊戲,CardGini 嚴選,高爆擊率">
+        <div class="relative aspect-[4/3] bg-neutral-800 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+          <!-- 標籤套用 icontag.hot 的漸層色 -->
+          <span class="absolute top-2 left-2 z-20 px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-gradient-to-r from-icontag-hot-bg-from to-icontag-hot-bg-to text-icontag-hot-on-primary shadow">
+            HOT
+          </span>
+          <div class="absolute bottom-2 right-2 z-20 bg-jackpot-bg/80 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-mono text-jackpot-on-highlight font-bold">
+            97.8% RTP
+          </div>
         </div>
-    </div>`;
-    lucide.createIcons();
+        <div class="p-3 flex-1 flex flex-col justify-between">
+          <h4 class="font-medium text-primary-on-primary text-sm line-clamp-1 group-hover:text-selected-bg-from transition-colors">
+            宙斯之雷霆
+          </h4>
+          <p class="text-xs text-primary-on-minor mt-1">Pragmatic Play</p>
+        </div>
+      </div>
 
-    function fillStore(name) {
-        document.getElementById('store-input').value = name;
-    }
+      <!-- 遊戲卡片 2 (範例：帶有 New 標籤) -->
+      <div class="group bg-primary-bg rounded-xl overflow-hidden border border-placeholder-normal hover:border-selected-bg-to transition-all duration-300 flex flex-col cursor-pointer" data-tags="全部遊戲,最新上架">
+        <div class="relative aspect-[4/3] bg-neutral-800 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+          <!-- 標籤套用 icontag.new 的漸層色 -->
+          <span class="absolute top-2 left-2 z-20 px-2 py-0.5 text-[10px] font-bold uppercase rounded bg-gradient-to-r from-icontag-new-bg-from to-icontag-new-bg-to text-icontag-new-on-primary shadow">
+            NEW
+          </span>
+          <div class="absolute bottom-2 right-2 z-20 bg-jackpot-bg/80 backdrop-blur-sm px-2 py-0.5 rounded text-[11px] font-mono text-jackpot-on-highlight font-bold">
+            96.5% RTP
+          </div>
+        </div>
+        <div class="p-3 flex-1 flex flex-col justify-between">
+          <h4 class="font-medium text-primary-on-primary text-sm line-clamp-1 group-hover:text-selected-bg-from transition-colors">
+            糖果繽紛樂
+          </h4>
+          <p class="text-xs text-primary-on-minor mt-1">Pocket Games Soft</p>
+        </div>
+      </div>
 
-    function startAiSearch() {
-        const store = document.getElementById('store-input').value;
-        if(!store) { alert("請先填寫或點選要消費的店家名稱喔！"); return; }
-        
-        document.getElementById('search-status').classList.remove('hidden');
-        document.getElementById('results-area').innerHTML = '';
+    </div>
+  </div>
+</div>
 
-        setTimeout(() => {
-            document.getElementById('search-status').classList.add('hidden');
-            document.getElementById('results-area').innerHTML = `
-                <div class="glass-panel p-5 rounded-2xl border-l-4 border-[#00F5D4] shadow-lg relative">
-                    <span class="absolute right-4 top-4 bg-[#00F5D4]/10 text-[#00F5D4] text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5">
-                        <i data-lucide="check" class="w-3 h-3"></i> AI 最佳首選
-                    </span>
-                    <h3 class="text-xs text-gray-400 font-medium">在 ${store} 消費建議使用</h3>
-                    <h2 class="text-xl font-bold mt-1 text-white">玉山 Unicard</h2>
-                    <p class="text-sm text-[#00F5D4] font-black mt-2">指定回饋率：4.5% e point</p>
-                    <div class="mt-3 pt-3 border-t border-gray-800 text-[11px] text-gray-400">
-                        📌 <span class="text-amber-500 font-medium">支付管道限制：</span>必須綁定 <span class="underline">Line Pay</span> 進行付款才享有加碼。
-                    </div>
-                </div>
-            `;
-            lucide.createIcons();
-        }, 800);
-    }
+<!-- 互動邏輯 JavaScript -->
+<script>
+  document.getElementById('game-search').addEventListener('input', function(e) {
+    const keyword = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll('#game-grid > div');
+    
+    cards.forEach(card => {
+      const title = card.querySelector('h4').textContent.toLowerCase();
+      const provider = card.querySelector('p').textContent.toLowerCase();
+      if (title.includes(keyword) || provider.includes(keyword)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
 </script>
-</html>
