@@ -3,76 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardgini - Add Card</title>
+    <title>Cardgini - Wallet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Outfit', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="bg-[#020205] flex justify-center items-center min-h-screen p-4">
 
     <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
         
-        <!-- FIXED HEADER -->
+        <!-- HEADER -->
         <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
             <div class="flex flex-col gap-1">
                 <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
                 <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
             </div>
-            <div class="w-10 h-10 rounded-full border border-cyan-400/30 shadow-[0_6px_16px_-6px_rgba(0,240,255,0.4)] overflow-hidden bg-slate-800 flex items-center justify-center">
-                <i data-lucide="user" class="w-5 h-5 text-cyan-400"></i>
-            </div>
         </header>
 
         <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3 animate-fade-in">
-            <section class="flex flex-col items-center px-6 pt-2">
-                <div class="bg-white/5 w-[280px] h-[177px] rounded-2xl border-2 border-dashed border-zinc-600 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 shadow-lg">
-                    <div class="bg-white/5 p-2.5 rounded-full"><i data-lucide="camera" class="w-6 h-6 text-zinc-400"></i></div>
-                    <span class="text-xs text-zinc-400">點擊拍攝或上傳實體卡面</span>
-                </div>
+        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3">
+            <section class="flex justify-between items-center px-6">
+                <h1 class="text-lg font-bold text-white">我的卡片</h1>
+                <button onclick="window.location.href='add-card.html'" class="bg-[#161E2E]/60 flex items-center gap-1 px-4 py-2 rounded-full border border-orange-500 text-orange-500 text-sm font-semibold shadow-[0_0_12px_rgba(255,131,0,0.2)]">
+                    <span>+ 新增手牌</span>
+                </button>
             </section>
 
-            <!-- 表單輸入區 -->
-            <section class="px-6 flex flex-col gap-5">
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-zinc-400">卡片名稱</label>
-                    <input type="text" id="card-name" placeholder="例如：富邦 J 卡、台新 @GoGo" class="bg-[#1A1A24] h-11 px-4 rounded-xl border border-[#2A2235] text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-zinc-400">發卡組織</label>
-                    <div class="flex gap-2 w-full" id="org-group">
-                        <div onclick="selectOrg(this)" data-org="Visa" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-orange-500 text-center text-sm font-bold text-white shadow-[0_0_8px_rgba(255,131,0,0.2)] cursor-pointer">Visa</div>
-                        <div onclick="selectOrg(this)" data-org="Mastercard" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer">Mastercard</div>
-                        <div onclick="selectOrg(this)" data-org="JCB" class="org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer">JCB</div>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm font-semibold text-zinc-400">一般消費回饋率 (%)</label>
-                    <input type="number" id="card-rate" placeholder="例如輸入 3 代表 3%" step="0.1" class="bg-[#1A1A24] h-11 px-4 rounded-xl border border-[#2A2235] text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
-                </div>
-
-                <div class="flex flex-col gap-2.5">
-                    <label class="text-sm font-semibold text-zinc-400">這張卡已綁定哪些支付？(可複選)</label>
-                    <div class="flex flex-wrap gap-2" id="pay-group">
-                        <span onclick="togglePayTag(this)" data-pay="Line Pay" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">Line Pay</span>
-                        <span onclick="togglePayTag(this)" data-pay="Apple Pay" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">Apple Pay</span>
-                        <span onclick="togglePayTag(this)" data-pay="街口支付" class="pay-tag bg-[#1A1A24] border border-[#2A2235] text-[#8A99AD] text-xs px-3 py-1.5 rounded-full cursor-pointer transition-all">街口支付</span>
-                    </div>
-                </div>
-
-                <div class="flex gap-3 pt-2">
-                    <button onclick="window.location.href='cards.html'" class="flex-1 bg-white/5 py-3 rounded-xl border border-white/20 text-center text-sm font-semibold text-white/80 active:scale-95">取消</button>
-                    <button onclick="saveCardData()" class="flex-1 bg-gradient-to-r from-teal-400 to-purple-600 py-3 rounded-xl text-center text-sm font-bold text-white shadow-[0_4px_12px_rgba(0,245,212,0.3)] active:scale-95">儲存卡片</button>
-                </div>
+            <!-- 動態渲染卡片皮夾容器 -->
+            <section class="px-4 flex flex-col gap-4" id="wallet-container">
+                <!-- 由 JavaScript 自動繪製 -->
             </section>
         </div>
 
@@ -85,46 +49,68 @@
     </div>
 
     <script>
-        lucide.createIcons();
-        let selectedOrg = "Visa";
-
-        function selectOrg(el) {
-            document.querySelectorAll('.org-btn').forEach(btn => {
-                btn.className = "org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-[#2A2235] text-center text-sm font-medium text-[#8A99AD] cursor-pointer";
-                btn.style.boxShadow = "none";
-            });
-            el.className = "org-btn flex-1 bg-[#1A1A24] py-2.5 rounded-full border border-orange-500 text-center text-sm font-bold text-white cursor-pointer";
-            el.style.boxShadow = "0 0 8px rgba(255, 131, 0, 0.2)";
-            selectedOrg = el.getAttribute('data-org');
-        }
-
-        function togglePayTag(el) {
-            el.classList.toggle('border-orange-500');
-            el.classList.toggle('text-orange-500');
-            el.classList.toggle('bg-orange-500/15');
-        }
-
-        // 核心資料庫寫入程式碼
-        function saveCardData() {
-            const name = document.getElementById('card-name').value.trim();
-            const rate = parseFloat(document.getElementById('card-rate').value) || 1.0;
-            
-            if(!name) { alert('請填寫卡片名稱！'); return; }
-
-            const pays = [];
-            document.querySelectorAll('.pay-tag.border-orange-500').forEach(el => {
-                pays.push(el.getAttribute('data-pay'));
-            });
-
-            const newCard = { id: Date.now(), name, org: selectedOrg, rate, pays };
-
-            // 從資料庫抓出舊手牌，塞入新手牌，再存回去
+        // 初始化載入並繪製卡片
+        function renderWallet() {
+            const container = document.getElementById('wallet-container');
             const localCards = JSON.parse(localStorage.getItem('user_cards')) || [];
-            localCards.push(newCard);
-            localStorage.setItem('user_cards', JSON.stringify(localCards));
 
-            window.location.href = 'cards.html';
+            if(localCards.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-zinc-500 text-sm flex flex-col items-center gap-2">
+                        <i data-lucide="wallet" class="w-8 h-8 opacity-40"></i>
+                        <span>卡包空空如也，快點擊右上角新增手牌！</span>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = "";
+            localCards.forEach(card => {
+                // 根據組織決定卡片卡面漸層
+                let gradient = "from-cyan-400 to-blue-600";
+                if(card.org === "Mastercard") gradient = "from-purple-500 to-indigo-600";
+                if(card.org === "JCB") gradient = "from-rose-500 to-orange-600";
+
+                const tagHTML = card.pays.map(p => `<span class="bg-white/5 px-2 py-0.5 rounded text-[9px] text-white">${p}</span>`).join('');
+
+                const cardBox = document.createElement('div');
+                cardBox.className = "bg-[#161E2E]/60 p-4 rounded-[20px] border border-white/5 flex flex-col gap-3 relative group";
+                cardBox.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <div class="w-14 h-9 rounded-md bg-gradient-to-tr ${gradient} p-2 flex flex-col justify-between">
+                                <div class="w-2.5 h-2 bg-yellow-400 rounded-sm"></div>
+                                <span class="text-[5px] font-extrabold text-white text-right">${card.org}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold">${card.name}</span>
+                                <span class="text-[10px] text-[#8A99AD]">${card.org}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteCard(${card.id})" class="text-zinc-600 hover:text-rose-500 p-1 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-[#8A99AD]">
+                        <span>一般基本回饋率: ${card.rate}%</span>
+                        <div class="flex gap-1">${tagHTML}</div>
+                    </div>
+                `;
+                container.appendChild(cardBox);
+            });
+            lucide.createIcons();
         }
+
+        function deleteCard(id) {
+            if(!confirm('確定要刪除這張卡片手牌嗎？')) return;
+            let localCards = JSON.parse(localStorage.getItem('user_cards')) || [];
+            localCards = localCards.filter(c => c.id !== id);
+            localStorage.setItem('user_cards', JSON.stringify(localCards));
+            renderWallet();
+        }
+
+        renderWallet();
     </script>
 </body>
 </html>
