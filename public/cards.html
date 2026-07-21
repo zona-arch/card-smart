@@ -19,7 +19,7 @@
     <div class="w-[393px] h-[852px] rounded-[50px] app-bg text-white overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.8)] relative flex flex-col border border-zinc-800">
         
         <!-- HEADER -->
-        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E14]/60 backdrop-blur-md sticky top-0 z-40">
+        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E15]/60 backdrop-blur-md sticky top-0 z-40">
             <div class="flex flex-col">
                 <div class="flex items-baseline gap-0.5">
                     <span class="text-2xl font-extrabold text-orange-500 tracking-wide">C</span>
@@ -32,29 +32,21 @@
             </div>
         </header>
 
-        <!-- CONTENT CONTAINER -->
+        <!-- CONTENT -->
         <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-28 pt-2 flex flex-col gap-4">
-            
             <div class="flex justify-between items-center px-1 mt-1">
                 <h1 class="text-xl font-bold tracking-wide">我的卡片</h1>
-                <button onclick="window.location.href='add-card.html'" class="bg-[#1C1612] border border-orange-500/50 text-orange-400 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 hover:bg-orange-500/10 transition-colors">
-                    <span>+ 新增</span>
+                <button onclick="window.location.href='add-card.html'" class="bg-[#1C1612] border border-orange-500/50 text-orange-400 text-xs font-bold px-3 py-1.5 rounded-full hover:bg-orange-500/10 transition-colors">
+                    + 新增卡片
                 </button>
             </div>
 
-            <!-- 卡片動態清單列表槽 -->
             <div id="figma-cards-list" class="flex flex-col gap-4">
-                <!-- 由 JavaScript 動態生成真卡片 -->
+                <!-- JS 動態生成區 -->
             </div>
-
         </div>
 
-        <!-- 浮動 AI 鈕 -->
-        <div class="absolute bottom-[90px] right-5 w-12 h-12 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(249,115,22,0.5)] border border-white/20 z-40">
-            <i data-lucide="sparkles" class="w-5 h-5 text-white animate-pulse"></i>
-        </div>
-
-        <!-- FOOTER NAV (5選單，Credit Cards 高亮) -->
+        <!-- FOOTER NAV -->
         <footer class="flex h-[76px] px-2 justify-between items-center bg-[#07050F]/95 backdrop-blur-xl border-t border-zinc-900 sticky bottom-0 z-50">
             <button onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="home" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Overview</span></button>
             <button onclick="window.location.href='search.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="search" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Search</span></button>
@@ -73,7 +65,7 @@
                 container.innerHTML = `
                     <div class="bg-[#12121A]/60 border border-zinc-800 rounded-3xl p-8 text-center text-xs text-zinc-500 flex flex-col items-center gap-2 mt-4">
                         <i data-lucide="credit-card" class="w-8 h-8 opacity-20"></i>
-                        <span>皮夾內尚無真實卡片，請點右上角「+ 新增」開始建立。</span>
+                        <span>皮夾內尚無卡片，請點右上角新增！</span>
                     </div>
                 `;
                 lucide.createIcons();
@@ -82,52 +74,36 @@
 
             container.innerHTML = "";
             db.forEach(card => {
-                // 生成綁定支付的小標籤（精緻灰色小底圓角）
-                const payTagsHtml = card.pays && card.pays.length > 0
-                    ? card.pays.map(p => `<span class="bg-[#1C1F2A] text-zinc-400 text-[10px] px-2 py-0.5 rounded-md font-medium">${p}</span>`).join('')
-                    : `<span class="text-zinc-600 text-[10px]">無綁定支付</span>`;
-
-                // 處理卡片預覽圖（如果沒上傳就用高質感預設極光卡面）
                 const cardImgSrc = card.image !== "default" ? card.image : "https://images.unsplash.com/photo-1613243555988-441166d4d6fd?w=150&auto=format&fit=crop&q=60";
+                
+                // 動態生成通路權益晶片標籤
+                const benefitsHtml = card.benefits.map(b => 
+                    `<span class="bg-[#1C1F2A] border border-zinc-800 text-zinc-300 text-[10px] px-2 py-0.5 rounded-md">${b.channel} <b class="text-[#00F3A2]">${b.rate}%</b></span>`
+                ).join('');
 
                 const cardBox = document.createElement('div');
-                cardBox.className = "bg-[#111422]/90 border border-zinc-800/80 rounded-[24px] p-4 flex flex-col gap-3 relative shadow-xl hover:border-zinc-700 transition-all";
+                cardBox.className = "bg-[#111422]/90 border border-zinc-800/80 rounded-[24px] p-4 flex flex-col gap-3 relative shadow-xl";
                 
                 cardBox.innerHTML = `
-                    <!-- 上半部：實體卡圖與名稱資訊 -->
-                    <div class="flex gap-4 items-center">
-                        <div class="w-[96px] h-[60px] rounded-lg overflow-hidden border border-zinc-700/50 shadow-md bg-zinc-900 flex-shrink-0">
+                    <div class="flex gap-3 items-center">
+                        <div class="w-[80px] h-[50px] rounded-lg overflow-hidden border border-zinc-700/50 bg-zinc-900 flex-shrink-0">
                             <img src="${cardImgSrc}" class="w-full h-full object-cover">
                         </div>
                         <div class="flex flex-col flex-1">
-                            <h3 class="text-sm font-bold text-white tracking-wide">${card.name}</h3>
-                            <span class="text-[10px] text-zinc-500 font-medium mt-0.5">${card.org}</span>
+                            <h3 class="text-sm font-bold text-white">${card.name}</h3>
+                            <span class="text-[10px] text-zinc-500">${card.org} • 上限 NT$ ${card.limit}</span>
                         </div>
-                        <button onclick="deleteFigmaCard(${card.id})" class="text-zinc-600 hover:text-rose-400 absolute top-4 right-4 transition-colors">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
+                        <button onclick="deleteFigmaCard(${card.id})" class="text-zinc-600 hover:text-rose-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
 
-                    <!-- 下半部：詳細欄位資訊 (100% 復刻 Figma 細節排版) -->
-                    <div class="flex flex-col gap-1.5 pt-1 border-t border-zinc-900">
-                        <div class="flex justify-between items-center text-[11px]">
-                            <span class="text-zinc-400 font-medium">上限: NT$ ${card.limit} / 月</span>
-                            <div class="flex gap-1">${payTagsHtml}</div>
+                    <div class="flex flex-col gap-1.5 pt-2 border-t border-zinc-900">
+                        <div class="flex justify-between items-center text-[10px] text-zinc-400">
+                            <span>支付工具: <b class="text-orange-400">${card.payTool || '無'}</b></span>
                         </div>
-
-                        <div class="text-[11px] text-zinc-400 mt-0.5">${card.benefitName}</div>
-                        
-                        <div class="flex justify-between items-baseline -mt-1">
-                            <span class="text-[11px] text-zinc-500 font-bold">卡片權益</span>
-                            <!-- 翠綠色強烈發光感回饋率字體 -->
-                            <span class="text-sm font-extrabold text-[#00F3A2] drop-shadow-[0_0_10px_rgba(0,243,162,0.4)] tracking-tight">${card.rewardDesc}</span>
+                        <div class="flex flex-wrap gap-1.5 mt-0.5">
+                            ${benefitsHtml}
                         </div>
-
-                        <!-- 串接 AI 智慧分析展示區 -->
-                        <div class="bg-[#090B15] border border-cyan-500/10 p-2 rounded-xl mt-1 flex items-center gap-1.5">
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400 flex-shrink-0"></i>
-                            <span class="text-[10px] text-zinc-300 font-medium leading-tight">${card.aiHighlight}</span>
-                        </div>
+                        ${card.memo ? `<div class="text-[10px] text-zinc-500 mt-1">備註: ${card.memo}</div>` : ''}
                     </div>
                 `;
                 container.appendChild(cardBox);
