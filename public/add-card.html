@@ -19,7 +19,7 @@
     <div class="w-[393px] h-[852px] rounded-[50px] app-bg text-white overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.8)] relative flex flex-col border border-zinc-800">
         
         <!-- HEADER -->
-        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E14]/60 backdrop-blur-md sticky top-0 z-40">
+        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E15]/60 backdrop-blur-md sticky top-0 z-40">
             <div class="flex flex-col">
                 <div class="flex items-baseline gap-0.5">
                     <span class="text-2xl font-extrabold text-orange-500 tracking-wide">C</span>
@@ -38,7 +38,7 @@
             <!-- 卡片上傳區 -->
             <section class="flex flex-col items-center justify-center mt-1">
                 <input type="file" id="card-image-input" accept="image/*" class="hidden" onchange="previewCardImage(this)">
-                <div onclick="document.getElementById('card-image-input').click()" id="upload-box" class="w-full h-[160px] rounded-2xl border border-dashed border-zinc-700 bg-[#12121A]/60 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 transition-all group relative overflow-hidden">
+                <div onclick="document.getElementById('card-image-input').click()" id="upload-box" class="w-full h-[140px] rounded-2xl border border-dashed border-zinc-700 bg-[#12121A]/60 flex flex-col justify-center items-center gap-2 cursor-pointer hover:border-orange-500/50 transition-all group relative overflow-hidden">
                     <div id="upload-placeholder" class="flex flex-col items-center gap-2 text-center">
                         <i data-lucide="camera" class="w-6 h-6 text-zinc-500 group-hover:text-orange-500 transition-colors"></i>
                         <span class="text-xs text-zinc-400 font-medium">點擊拍攝或上傳實體卡面</span>
@@ -47,58 +47,53 @@
                 </div>
             </section>
 
-            <!-- 卡片名稱 -->
+            <!-- 基本欄位 -->
             <section class="flex flex-col gap-1.5">
-                <label class="text-xs font-bold text-zinc-300 tracking-wide">卡片名稱</label>
-                <input type="text" id="inp-name" placeholder="請輸入銀行與卡片名稱" class="w-full bg-[#14141F] h-11 px-4 rounded-xl border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-orange-500/40">
+                <label class="text-xs font-bold text-zinc-300">卡片名稱</label>
+                <input type="text" id="inp-name" placeholder="例如：國泰 CUBE 卡" class="w-full bg-[#14141F] h-10 px-4 rounded-xl border border-zinc-800 text-sm text-white placeholder-zinc-600 focus:outline-none">
             </section>
 
-            <!-- 發卡組織 -->
-            <section class="flex flex-col gap-1.5">
-                <label class="text-xs font-bold text-zinc-300 tracking-wide">發卡組織</label>
-                <div class="flex gap-2 w-full text-xs font-bold">
-                    <div onclick="selectOrg(this, 'Visa')" class="org-btn flex-1 bg-[#1A1A26] py-2.5 rounded-full border border-orange-500 text-center text-white shadow-[0_0_10px_rgba(249,115,22,0.15)] cursor-pointer">Visa</div>
-                    <div onclick="selectOrg(this, 'Mastercard')" class="org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer">Mastercard</div>
-                    <div onclick="selectOrg(this, 'JCB')" class="org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer">JCB</div>
-                    <div onclick="selectOrg(this, '其他')" class="org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer">其他</div>
-                </div>
-            </section>
-
-            <!-- 刷卡上限與預設一般回饋率 -->
             <section class="grid grid-cols-2 gap-3">
                 <div class="flex flex-col gap-1.5">
-                    <label class="text-xs font-bold text-zinc-300">刷卡上限 / 月 (NT$)</label>
-                    <input type="number" id="inp-limit" placeholder="例如: 50000" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                    <label class="text-xs font-bold text-zinc-300">發卡組織</label>
+                    <select id="inp-org" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                        <option value="Visa">Visa</option>
+                        <option value="Mastercard">Mastercard</option>
+                        <option value="JCB">JCB</option>
+                        <option value="其他">其他</option>
+                    </select>
                 </div>
                 <div class="flex flex-col gap-1.5">
-                    <label class="text-xs font-bold text-zinc-300">基本權益名稱</label>
-                    <input type="text" id="inp-benefit-name" placeholder="例如: 一般回饋" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                    <label class="text-xs font-bold text-zinc-300">支付工具</label>
+                    <select id="inp-pay-tool" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                        <option value="Line Pay">Line Pay</option>
+                        <option value="Apple Pay">Apple Pay</option>
+                        <option value="街口支付">街口支付</option>
+                        <option value="Google Pay">Google Pay</option>
+                    </select>
                 </div>
             </section>
 
             <section class="flex flex-col gap-1.5">
-                <label class="text-xs font-bold text-zinc-300">自訂刷卡回饋敘述 (會顯示在卡片右側)</label>
-                <input type="text" id="inp-reward-desc" placeholder="例如: 3% 現金回饋" class="w-full bg-[#14141F] h-10 px-4 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+                <label class="text-xs font-bold text-zinc-300">刷卡上限 / 月 (NT$)</label>
+                <input type="number" id="inp-limit" placeholder="例如: 50000" class="w-full bg-[#14141F] h-10 px-3 rounded-xl border border-zinc-800 text-sm text-white focus:outline-none">
+            </section>
+
+            <!-- 動態多通路權益 -->
+            <section class="flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold text-zinc-300">通路權益 (最多 5 組)</label>
+                    <button type="button" onclick="addBenefitRow()" class="text-xs text-orange-400 hover:text-orange-300 font-bold">+ 新增通路</button>
+                </div>
+                <div id="benefits-container" class="flex flex-col gap-2">
+                    <!-- 動態生成區 -->
+                </div>
             </section>
 
             <!-- 權益方案備忘錄 -->
             <section class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-zinc-300 tracking-wide">權益方案備忘錄</label>
-                <span class="text-[10px] text-orange-500 font-medium">直接複製官網權益貼在下方，AI 搜尋時會自動閱讀！</span>
-                <textarea id="inp-memo" placeholder="請在此處直接複製貼上官方權益，例如：&#10;【CUBE卡】日本消費 3%&#10;【聯名卡】綁定街口支付外送消費 2%" class="w-full bg-[#0D0D15] h-24 p-3 rounded-xl border border-zinc-800/80 text-xs text-white placeholder-zinc-700 focus:outline-none resize-none leading-relaxed"></textarea>
-            </section>
-
-            <!-- 綁定支付方式 -->
-            <section class="flex flex-col gap-2">
-                <label class="text-xs font-bold text-zinc-300 tracking-wide">這張卡已綁定哪些支付？</label>
-                <div class="flex flex-wrap gap-1.5 text-[11px] font-semibold">
-                    <span onclick="togglePayTag(this, 'line pay')" class="pay-tag flex items-center gap-1 bg-[#1A1A26] border border-orange-500 text-white px-3 py-1.5 rounded-full cursor-pointer shadow-[0_0_8px_rgba(249,115,22,0.1)]">line pay</span>
-                    <span onclick="togglePayTag(this, 'Apple Pay')" class="pay-tag flex items-center gap-1 bg-[#1A1A26] border border-orange-500 text-white px-3 py-1.5 rounded-full cursor-pointer shadow-[0_0_8px_rgba(249,115,22,0.1)]">Apple Pay</span>
-                    <span onclick="togglePayTag(this, '街口支付')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">街口支付</span>
-                    <span onclick="togglePayTag(this, 'Google Pay')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">Google Pay</span>
-                    <span onclick="togglePayTag(this, '全支付')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">全支付</span>
-                    <span onclick="togglePayTag(this, '悠遊付')" class="pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer">悠遊付</span>
-                </div>
+                <label class="text-xs font-bold text-zinc-300">備註說明</label>
+                <textarea id="inp-memo" placeholder="額外注意事項備忘..." class="w-full bg-[#0D0D15] h-16 p-3 rounded-xl border border-zinc-800 text-xs text-white placeholder-zinc-700 focus:outline-none resize-none"></textarea>
             </section>
 
             <!-- 按鈕操控組 -->
@@ -106,11 +101,6 @@
                 <button onclick="window.location.href='cards.html'" class="flex-1 bg-[#14141F] py-3 rounded-xl border border-zinc-800 text-center text-sm font-bold text-zinc-400">取消</button>
                 <button onclick="saveFigmaCard()" class="flex-1 bg-gradient-to-r from-[#00F0FF] via-[#7000FF] to-[#FF00F5] py-3 rounded-xl text-center text-sm font-black text-white shadow-[0_4px_20px_rgba(112,0,255,0.4)]">儲存卡片</button>
             </div>
-        </div>
-
-        <!-- 浮動 AI 鈕 -->
-        <div class="absolute bottom-[90px] right-5 w-12 h-12 rounded-full bg-gradient-to-tr from-orange-600 to-amber-400 flex items-center justify-center cursor-pointer shadow-[0_0_20px_rgba(249,115,22,0.5)] border border-white/20 z-40">
-            <i data-lucide="sparkles" class="w-5 h-5 text-white animate-pulse"></i>
         </div>
 
         <!-- FOOTER NAV -->
@@ -125,9 +115,34 @@
 
     <script>
         lucide.createIcons();
-        let selectedOrg = "Visa";
         let uploadedImageBase64 = "";
-        let activePays = ["line pay", "Apple Pay"];
+
+        // 預設給一組通路權益輸入框
+        window.onload = () => {
+            addBenefitRow("一般", 1);
+            addBenefitRow("網購", 3);
+        };
+
+        function addBenefitRow(defaultChannel = "", defaultRate = "") {
+            const container = document.getElementById('benefits-container');
+            if (container.children.length >= 5) {
+                alert('最多新增 5 組通路權益！');
+                return;
+            }
+
+            const row = document.createElement('div');
+            row.className = "flex gap-2 items-center benefit-row";
+            row.innerHTML = `
+                <input type="text" placeholder="通路(例: 餐飲/網購)" value="${defaultChannel}" class="flex-1 bg-[#14141F] h-9 px-3 rounded-lg border border-zinc-800 text-xs text-white focus:outline-none channel-input">
+                <div class="flex items-center gap-1 bg-[#14141F] h-9 px-2 rounded-lg border border-zinc-800 w-24">
+                    <input type="number" step="0.1" placeholder="3" value="${defaultRate}" class="w-full bg-transparent text-xs text-white focus:outline-none text-right rate-input">
+                    <span class="text-xs text-zinc-400">%</span>
+                </div>
+                <button type="button" onclick="this.parentElement.remove()" class="text-zinc-600 hover:text-rose-400 p-1"><i data-lucide="x" class="w-4 h-4"></i></button>
+            `;
+            container.appendChild(row);
+            lucide.createIcons();
+        }
 
         function previewCardImage(input) {
             if (input.files && input.files[0]) {
@@ -142,54 +157,42 @@
             }
         }
 
-        function selectOrg(el, org) {
-            document.querySelectorAll('.org-btn').forEach(btn => btn.className = "org-btn flex-1 bg-[#14141F] py-2.5 rounded-full border border-zinc-800 text-center text-zinc-500 cursor-pointer");
-            el.className = "org-btn flex-1 bg-[#1A1A26] py-2.5 rounded-full border border-orange-500 text-center text-white cursor-pointer";
-            selectedOrg = org;
-        }
-
-        function togglePayTag(el, payName) {
-            if (activePays.includes(payName)) {
-                activePays = activePays.filter(p => p !== payName);
-                el.className = "pay-tag flex items-center gap-1 bg-[#14141F] border border-zinc-800 text-zinc-500 px-3 py-1.5 rounded-full cursor-pointer";
-            } else {
-                activePays.push(payName);
-                el.className = "pay-tag flex items-center gap-1 bg-[#1A1A26] border border-orange-500 text-white px-3 py-1.5 rounded-full cursor-pointer shadow-[0_0_8px_rgba(249,115,22,0.1)]";
-            }
-        }
-
         function saveFigmaCard() {
             const name = document.getElementById('inp-name').value.trim();
-            const limit = document.getElementById('inp-limit').value || "50,000";
-            const benefitName = document.getElementById('inp-benefit-name').value || "一般回饋";
-            const rewardDesc = document.getElementById('inp-reward-desc').value || "3% 現金回饋";
+            const org = document.getElementById('inp-org').value;
+            const payTool = document.getElementById('inp-pay-tool').value;
+            const limit = document.getElementById('inp-limit').value || "50000";
             const memo = document.getElementById('inp-memo').value;
 
-            if(!name) { alert('請輸入卡片名稱！'); return; }
+            if (!name) { alert('請輸入卡片名稱！'); return; }
 
-            // 🤖 輕量前端 AI 分析器（模擬從備忘錄中抓出亮點）
-            let aiHighlight = "由卡片基本權益提供高額加碼";
-            if (memo.includes("最高")) {
-                const match = memo.match(/通路.*?\d+%/);
-                if (match) aiHighlight = `目前最頂：${match[0]}回饋`;
-            } else if (memo.length > 5) {
-                // 如果有填備忘錄，取前 18 個字作為 AI 分析亮點
-                aiHighlight = `目前最頂：${memo.substring(0, 18).replace(/\n/g, ' ')}...`;
+            // 收集多組通路權益
+            const benefits = [];
+            document.querySelectorAll('.benefit-row').forEach(row => {
+                const channel = row.querySelector('.channel-input').value.trim();
+                const rate = parseFloat(row.querySelector('.rate-input').value) || 0;
+                if (channel) {
+                    benefits.push({ channel, rate });
+                }
+            });
+
+            if (benefits.length === 0) {
+                alert('請至少填寫一組通路權益！');
+                return;
             }
 
             const figmaCard = {
                 id: Date.now(),
-                name: name,
-                org: selectedOrg,
-                image: uploadedImageBase64 || "default", 
+                name,
+                org,
+                payTool,
                 limit: parseFloat(limit).toLocaleString(),
-                benefitName: benefitName,
-                rewardDesc: rewardDesc,
-                memo: memo,
-                pays: activePays,
-                aiHighlight: aiHighlight
+                memo,
+                benefits,
+                image: uploadedImageBase64 || "default"
             };
 
+            // 統一 key: figma_wallet
             const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
             db.push(figmaCard);
             localStorage.setItem('figma_wallet', JSON.stringify(db));
