@@ -3,56 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardgini - Dashboard</title>
+    <title>CardGini - Overview</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'Outfit', sans-serif; background-color: #020205; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .app-bg { background: linear-gradient(180deg, #0C0E14 0%, #0E0B1E 50%, #07050F 100%); }
     </style>
 </head>
-<body class="bg-[#020205] flex justify-center items-center min-h-screen p-4">
+<body class="flex justify-center items-center min-h-screen p-2 select-none">
 
-    <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
+    <div class="w-[393px] h-[852px] rounded-[50px] app-bg text-white overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.8)] relative flex flex-col border border-zinc-800">
         
         <!-- HEADER -->
-        <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
-            <div class="flex flex-col gap-1">
-                <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
-                <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
+        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E15]/60 backdrop-blur-md sticky top-0 z-40">
+            <div class="flex flex-col">
+                <div class="flex items-baseline gap-0.5">
+                    <span class="text-2xl font-extrabold text-orange-500 tracking-wide">C</span>
+                    <span class="text-xl font-bold text-white tracking-wide -ml-0.5">ardGini</span>
+                </div>
+                <span class="text-[10px] text-[#5A6E85] tracking-wider font-medium mt-0.5">Smart Spending, Elite Saving</span>
+            </div>
+            <div class="w-9 h-9 rounded-full border border-orange-400/40 bg-[#FFF9E6] overflow-hidden flex items-center justify-center shadow-lg">
+                <span class="text-lg">⚡️</span>
             </div>
         </header>
 
-        <!-- CONTENT -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-[22px] pt-3 px-6">
-            <section class="flex flex-col gap-1.5 mt-2">
-                <h1 class="text-2xl font-bold text-white">Hello, Zona 👋</h1>
-                <p class="text-xs text-[#8A99AD]">今天想賺取多少刷卡回饋呢？🔥</p>
+        <!-- MAIN CONTENT -->
+        <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-28 pt-2 flex flex-col gap-5">
+            
+            <section class="flex flex-col gap-1 px-1">
+                <h1 class="text-xl font-bold text-white">Hello, Zona 👋</h1>
+                <p class="text-xs text-[#8A99AD]">即時試算您最優惠的信用卡權益！✨</p>
             </section>
 
-            <!-- 智慧引導區 -->
-            <section class="flex flex-col gap-3">
-                <div class="bg-[#161E2E]/60 backdrop-blur-[10px] rounded-[24px] p-5 border border-white/5 flex flex-col gap-4">
-                    <h3 class="text-sm font-bold text-orange-500">⚡️ 快速神算精算入口</h3>
-                    <p class="text-xs text-zinc-400 leading-relaxed">我們已經為您的應用程式裝上了 LocalStorage 在地資料庫大腦！現在點擊下方按鈕即可開始精算。</p>
-                    
-                    <button onclick="window.location.href='search.html'" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 h-11 rounded-xl text-center text-xs font-bold text-white shadow-lg active:scale-95 transition-transform">
-                        立即前往 Search 頁面體驗真搜尋
-                    </button>
+            <!-- 1. 哪張卡最划算 (即時計算區塊) -->
+            <section class="bg-[#111422]/90 border border-zinc-800 rounded-[24px] p-4 flex flex-col gap-3">
+                <h2 class="text-sm font-bold text-orange-400">⚡️ 哪張卡最划算？(即時算)</h2>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] text-zinc-400">消費通路/店家</label>
+                        <!-- 選項監聽 onchange -->
+                        <select id="calc-channel" onchange="calculateBestCard()" class="bg-[#0B0E14] h-9 px-2 rounded-lg border border-zinc-800 text-xs text-white focus:outline-none">
+                            <!-- JS 動態填入所有出現過的通路，預設含一般/網購/餐飲 -->
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[10px] text-zinc-400">金額 (NT$)</label>
+                        <!-- 輸入框監聽 oninput 即時計算 -->
+                        <input type="number" id="calc-amount" value="1000" oninput="calculateBestCard()" class="bg-[#0B0E14] h-9 px-3 rounded-lg border border-zinc-800 text-xs text-white focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- 即時計算出來的最佳結果 -->
+                <div id="calc-result" class="bg-[#07050F] p-3 rounded-xl border border-orange-500/20 flex items-center justify-between mt-1">
+                    <!-- JS 動態渲染 -->
+                </div>
+            </section>
+
+            <!-- 2. 行動支付區塊 -->
+            <section class="flex flex-col gap-2">
+                <h2 class="text-xs font-bold text-zinc-400 px-1">已綁定行動支付</h2>
+                <div id="pay-tools-list" class="flex flex-wrap gap-2">
+                    <!-- JS 動態生成 -->
+                </div>
+            </section>
+
+            <!-- 3. 我的卡片列表 -->
+            <section class="flex flex-col gap-2">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="text-xs font-bold text-zinc-400">我的卡片手牌</h2>
+                    <a href="cards.html" class="text-[10px] text-orange-400">管理皮夾 ></a>
+                </div>
+                <div id="overview-cards-list" class="flex flex-col gap-2">
+                    <!-- JS 動態生成 -->
                 </div>
             </section>
         </div>
 
         <!-- FOOTER NAV -->
-        <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Overview</span><div class="w-4 h-[2px] bg-orange-500 rounded-full"></div></button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px]">Search</span></button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px]">Cards</span></button>
+        <footer class="flex h-[76px] px-2 justify-between items-center bg-[#07050F]/95 backdrop-blur-xl border-t border-zinc-900 sticky bottom-0 z-50">
+            <button onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 w-16 text-orange-500"><i data-lucide="home" class="w-[22px] h-[22px]"></i><span class="text-[9px] font-bold">Overview</span><div class="w-4 h-[2px] bg-orange-500 rounded-full mt-0.5"></div></button>
+            <button onclick="window.location.href='search.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="search" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Search</span></button>
+            <button onclick="window.location.href='cards.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="credit-card" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Credit Cards</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="landmark" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Bank Rate</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="settings" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Settings</span></button>
         </footer>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+
+        function initOverview() {
+            const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
+
+            // 1. 初始化「通路選單」
+            const channelSelect = document.getElementById('calc-channel');
+            const channelsSet = new Set(["一般", "網購", "餐飲"]);
+            db.forEach(c => c.benefits?.forEach(b => channelsSet.add(b.channel)));
+            
+            channelSelect.innerHTML = Array.from(channelsSet).map(ch => `<option value="${ch}">${ch}</option>`).join('');
+
+            // 2. 渲染行動支付區塊
+            const payToolsList = document.getElementById('pay-tools-list');
+            if (db.length === 0) {
+                payToolsList.innerHTML = `<span class="text-xs text-zinc-600">暫無卡片資料</span>`;
+            } else {
+                payToolsList.innerHTML = db.map(c => `
+                    <div class="bg-[#111422] border border-zinc-800 px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-xs text-zinc-300">
+                        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-orange-400"></i>
+                        <span>${c.payTool || '無'}</span>
+                        <span class="text-[10px] text-zinc-500">(${c.name})</span>
+                    </div>
+                `).join('');
+            }
+
+            // 3. 渲染我的卡片列表
+            const overviewCards = document.getElementById('overview-cards-list');
+            if (db.length === 0) {
+                overviewCards.innerHTML = `<div class="text-xs text-zinc-600 p-2">皮夾空白，請先前往新增卡片！</div>`;
+            } else {
+                overviewCards.innerHTML = db.map(c => `
+                    <div class="bg-[#111422] p-3 rounded-xl border border-zinc-800/80 flex justify-between items-center text-xs">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-white">${c.name}</span>
+                            <span class="text-[10px] text-zinc-500">${c.memo || '無備註'}</span>
+                        </div>
+                        <span class="text-[10px] text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded">${c.org}</span>
+                    </div>
+                `).join('');
+            }
+
+            lucide.createIcons();
+            calculateBestCard(); // 初次即時計算一次
+        }
+
+        // 即時計算邏輯
+        function calculateBestCard() {
+            const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
+            const resultBox = document.getElementById('calc-result');
+            const selectedChannel = document.getElementById('calc-channel').value;
+            const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
+
+            if (db.length === 0) {
+                resultBox.innerHTML = `<span class="text-xs text-zinc-500">請先新增卡片再進行試算</span>`;
+                return;
+            }
+
+            let bestCard = null;
+            let maxRate = -1;
+
+            // 遍歷所有卡片的 benefits 陣列，找尋最高回饋率的卡片
+            db.forEach(card => {
+                let currentRate = 0;
+                if (card.benefits) {
+                    const matched = card.benefits.find(b => b.channel === selectedChannel);
+                    if (matched) {
+                        currentRate = matched.rate;
+                    } else {
+                        // 沒對到特定通路就找一般通路回饋
+                        const general = card.benefits.find(b => b.channel === "一般");
+                        if (general) currentRate = general.rate;
+                    }
+                }
+                
+                if (currentRate > maxRate) {
+                    maxRate = currentRate;
+                    bestCard = { name: card.name, rate: currentRate };
+                }
+            });
+
+            if (bestCard && maxRate >= 0) {
+                const earn = Math.round(amount * (maxRate / 100));
+                resultBox.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="award" class="w-5 h-5 text-orange-400"></i>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-zinc-400">建議使用</span>
+                            <span class="text-xs font-bold text-white">${bestCard.name}</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-black text-[#00F3A2]">+ NT$ ${earn}</div>
+                        <div class="text-[10px] text-zinc-500">回饋率 ${maxRate}%</div>
+                    </div>
+                `;
+            } else {
+                resultBox.innerHTML = `<span class="text-xs text-zinc-500">無符合該通路的權益資訊</span>`;
+            }
+            lucide.createIcons();
+        }
+
+        initOverview();
+    </script>
 </body>
 </html>
