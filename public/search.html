@@ -3,143 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardgini - Search</title>
+    <title>CardGini - Search</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'Outfit', sans-serif; background-color: #020205; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .app-bg { background: linear-gradient(180deg, #0C0E14 0%, #0E0B1E 50%, #07050F 100%); }
     </style>
 </head>
-<body class="bg-[#020205] flex justify-center items-center min-h-screen p-4">
+<body class="flex justify-center items-center min-h-screen p-2 select-none">
 
-    <div class="w-[393px] h-[852px] rounded-[44px] bg-gradient-to-b from-[#0B0E14] to-[#110A25] text-white overflow-hidden shadow-2xl relative flex flex-col border border-white/10">
+    <div class="w-[393px] h-[852px] rounded-[50px] app-bg text-white overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.8)] relative flex flex-col border border-zinc-800">
         
         <!-- HEADER -->
-        <header class="flex w-[393px] pt-6 px-6 pb-4 justify-between items-center bg-[#0C0E15]/40 backdrop-blur-[5px] sticky top-0 z-50 border-b border-white/5">
-            <div class="flex flex-col gap-1">
-                <img src="logo.png" alt="Cardgini Logo" class="w-[111px] h-[24px] object-contain">
-                <span class="text-[12px] text-[#8A99AD]">Smart Spending, Elite Saving</span>
+        <header class="flex w-full pt-6 px-6 pb-3 justify-between items-center bg-[#0C0E15]/60 backdrop-blur-md sticky top-0 z-40">
+            <div class="flex flex-col">
+                <div class="flex items-baseline gap-0.5">
+                    <span class="text-2xl font-extrabold text-orange-500 tracking-wide">C</span>
+                    <span class="text-xl font-bold text-white tracking-wide -ml-0.5">ardGini</span>
+                </div>
+                <span class="text-[10px] text-[#5A6E85] tracking-wider font-medium mt-0.5">Smart Spending, Elite Saving</span>
+            </div>
+            <div class="w-9 h-9 rounded-full border border-orange-400/40 bg-[#FFF9E6] overflow-hidden flex items-center justify-center shadow-lg">
+                <span class="text-lg">⚡️</span>
             </div>
         </header>
 
-        <!-- MAIN -->
-        <div class="flex-1 overflow-y-auto no-scrollbar pb-24 flex flex-col gap-5 pt-3">
+        <!-- MAIN CONTENT -->
+        <div class="flex-1 overflow-y-auto no-scrollbar px-5 pb-28 pt-2 flex flex-col gap-4">
             
-            <!-- 搜尋輸入列 -->
-            <section class="px-4">
-                <div class="bg-[#161E2E]/60 h-12 px-4 rounded-xl border border-white/5 flex items-center gap-3 focus-within:border-orange-500/40">
-                    <i data-lucide="search" class="w-5 h-5 text-[#8A99AD]"></i>
-                    <input type="text" id="store-query" oninput="runEngine()" placeholder="請輸入您想刷的店家（例如：蝦皮、日本）..." class="bg-transparent text-sm text-white placeholder-zinc-600 w-full focus:outline-none">
-                </div>
-            </section>
+            <h1 class="text-xl font-bold tracking-wide">通路比較搜尋</h1>
 
-            <!-- 消費金額輸入 -->
-            <section class="px-4">
-                <div class="bg-[#161E2E]/40 rounded-[20px] p-4 border border-white/5 flex flex-col gap-2">
-                    <span class="text-xs font-semibold text-[#8A99AD]">預估消費金額</span>
-                    <div class="flex items-center text-xl font-extrabold text-orange-500">
-                        <span class="mr-1">NT$</span>
-                        <input type="number" id="spend-amt" value="2000" oninput="runEngine()" class="bg-transparent w-full focus:outline-none font-extrabold text-orange-500">
-                    </div>
+            <div class="flex flex-col gap-2 bg-[#111422] p-4 rounded-2xl border border-zinc-800">
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs text-zinc-400">選擇消費通路</label>
+                    <select id="search-channel" onchange="runSearch()" class="bg-[#0B0E14] h-10 px-3 rounded-xl border border-zinc-800 text-xs text-white focus:outline-none">
+                        <!-- 動態填充 -->
+                    </select>
                 </div>
-            </section>
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs text-zinc-400">預估消費金額 (NT$)</label>
+                    <input type="number" id="search-amt" value="2000" oninput="runSearch()" class="bg-[#0B0E14] h-10 px-3 rounded-xl border border-zinc-800 text-xs text-white focus:outline-none">
+                </div>
+            </div>
 
-            <!-- 智慧精算核心看板 -->
-            <section class="px-4 flex flex-col gap-3">
-                <h2 class="text-sm font-bold text-[#8A99AD] px-1">🏆 依據皮夾算出的最優排序結果</h2>
-                <div id="search-engine-output" class="flex flex-col gap-3">
-                    <!-- JS 動態運算渲染 -->
+            <div class="flex flex-col gap-2 mt-2">
+                <h2 class="text-xs font-bold text-zinc-400 px-1">🏆 所有卡片優惠排序</h2>
+                <div id="search-results" class="flex flex-col gap-3">
+                    <!-- 比較結果清單 -->
                 </div>
-            </section>
+            </div>
         </div>
 
         <!-- FOOTER NAV -->
-        <footer class="flex h-[72px] px-4 justify-between items-center bg-[#161E2E]/80 backdrop-blur-[10px] border-t border-white/5 sticky bottom-0 z-50">
-            <button onclick="window.location.href='index.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="home" class="w-5 h-5"></i><span class="text-[10px]">Overview</span></button>
-            <button onclick="window.location.href='search.html'" class="flex w-[72px] flex-col items-center gap-1 text-orange-500"><i data-lucide="search" class="w-5 h-5"></i><span class="text-[10px] font-semibold">Search</span><div class="w-4 h-[2px] bg-orange-500 rounded-full"></div></button>
-            <button onclick="window.location.href='cards.html'" class="flex w-[72px] flex-col items-center gap-1 text-[#8A99AD]"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="text-[10px]">Cards</span></button>
+        <footer class="flex h-[76px] px-2 justify-between items-center bg-[#07050F]/95 backdrop-blur-xl border-t border-zinc-900 sticky bottom-0 z-50">
+            <button onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="home" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Overview</span></button>
+            <button onclick="window.location.href='search.html'" class="flex flex-col items-center gap-1 w-16 text-orange-500"><i data-lucide="search" class="w-[22px] h-[22px]"></i><span class="text-[9px] font-bold">Search</span><div class="w-4 h-[2px] bg-orange-500 rounded-full mt-0.5"></div></button>
+            <button onclick="window.location.href='cards.html'" class="flex flex-col items-center gap-1 w-16 text-[#5A6E85]"><i data-lucide="credit-card" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Credit Cards</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="landmark" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Bank Rate</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 text-zinc-700 cursor-not-allowed" disabled><i data-lucide="settings" class="w-[22px] h-[22px]"></i><span class="text-[9px]">Settings</span></button>
         </footer>
     </div>
 
     <script>
         lucide.createIcons();
 
-        function runEngine() {
-            const query = document.getElementById('store-query').value.trim().toLowerCase();
-            const amt = parseFloat(document.getElementById('spend-amt').value) || 0;
-            const output = document.getElementById('search-engine-output');
+        function initSearchPage() {
+            // 修復點 1：改為讀取 figma_wallet
+            const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
+            const select = document.getElementById('search-channel');
 
-            const localCards = JSON.parse(localStorage.getItem('smart_cards')) || [];
+            const channels = new Set(["一般", "網購", "餐飲"]);
+            db.forEach(c => c.benefits?.forEach(b => channels.add(b.channel)));
 
-            if (localCards.length === 0) {
-                output.innerHTML = `
-                    <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-sm text-amber-400 text-center">
-                        ⚠️ 您的皮夾裡目前沒有任何卡片！請先至「Cards」頁面新增卡片，大腦才能為您做計算排序。
-                    </div>
-                `;
+            select.innerHTML = Array.from(channels).map(ch => `<option value="${ch}">${ch}</option>`).join('');
+            runSearch();
+        }
+
+        function runSearch() {
+            // 修復點 1： key 統一為 figma_wallet
+            const db = JSON.parse(localStorage.getItem('figma_wallet')) || [];
+            const resultsBox = document.getElementById('search-results');
+            const targetChannel = document.getElementById('search-channel').value;
+            const amt = parseFloat(document.getElementById('search-amt').value) || 0;
+
+            if (db.length === 0) {
+                resultsBox.innerHTML = `<div class="text-xs text-zinc-500 p-4 border border-zinc-800 rounded-xl">皮夾內尚無卡片！請前往新增卡片。</div>`;
                 return;
             }
 
-            // 比對排序系統
-            const scoredCards = localCards.map(card => {
-                let finalRate = card.rate;
-                let trigger加碼 = false;
-
-                // 如果使用者有打字，且卡片的通路關鍵字有對上的話，判定為指定通路加碼（模擬 AI 核心邏輯額外 +2% 網購回饋）
-                if (query.length > 0 && card.keywords) {
-                    const matched = card.keywords.some(k => query.includes(k.toLowerCase()) || k.toLowerCase().includes(query));
-                    if (matched) {
-                        finalRate += 2.0; 
-                        trigger加碼 = true;
+            // 修復點 5：多通路 benefits 比較排序邏輯
+            const scored = db.map(card => {
+                let matchedRate = 0;
+                if (card.benefits) {
+                    const target = card.benefits.find(b => b.channel === targetChannel);
+                    if (target) {
+                        matchedRate = target.rate;
+                    } else {
+                        const general = card.benefits.find(b => b.channel === "一般");
+                        if (general) matchedRate = general.rate;
                     }
                 }
-                
-                return { ...card, finalRate, trigger加碼 };
+                return { ...card, matchedRate };
             });
 
-            // 回饋率由高到低排序
-            scoredCards.sort((a, b) => b.finalRate - a.finalRate);
+            // 依回饋率由大到小排序
+            scored.sort((a, b) => b.matchedRate - a.matchedRate);
 
-            output.innerHTML = "";
-            scoredCards.forEach((card, index) => {
-                const estEarn = Math.round(amt * (card.finalRate / 100));
-                let cardStyle = "from-cyan-400 to-blue-600";
-                if(card.org === "Mastercard") cardStyle = "from-purple-500 to-indigo-600";
-                if(card.org === "JCB") cardStyle = "from-rose-500 to-orange-600";
+            resultsBox.innerHTML = scored.map((card, idx) => {
+                const earn = Math.round(amt * (card.matchedRate / 100));
+                const isTop = idx === 0;
 
-                const isBest = index === 0;
-
-                const item = document.createElement('div');
-                item.className = isBest 
-                    ? "bg-[#161E2E]/90 rounded-[22px] p-[16px] border-2 border-cyan-400/30 shadow-[0_4px_16px_rgba(0,240,255,0.15)] flex flex-col gap-3"
-                    : "bg-[#161E2E]/40 rounded-[18px] p-[14px] border border-white/5 opacity-70 flex flex-col gap-2";
-
-                item.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div class="w-11 h-7 rounded bg-gradient-to-tr ${cardStyle} p-1 flex flex-col justify-between">
-                                <span class="text-[5px] text-white font-bold">${card.org}</span>
+                return `
+                    <div class="bg-[#111422] p-4 rounded-xl border ${isTop ? 'border-orange-500/50 shadow-[0_0_15px_rgba(249,115,22,0.15)]' : 'border-zinc-800'} flex justify-between items-center">
+                        <div class="flex flex-col">
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-sm font-bold text-white">${card.name}</span>
+                                ${isTop ? '<span class="bg-orange-500/20 text-orange-400 text-[9px] px-1.5 py-0.5 rounded font-bold">最高</span>' : ''}
                             </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold text-white">${card.name} ${isBest ? '🏆 首選' : ''}</span>
-                                <span class="text-[10px] text-[#8A99AD]">${card.trigger加碼 ? '🔥 已觸發指定通路加碼 (+2%)' : '適用基本回饋'}</span>
-                            </div>
+                            <span class="text-[10px] text-zinc-500">支付: ${card.payTool || '通用'}</span>
                         </div>
                         <div class="text-right">
-                            <div class="text-sm font-black text-emerald-400">+ NT$ ${estEarn.toLocaleString()}</div>
-                            <div class="text-[10px] text-zinc-500">回饋率 ${card.finalRate}%</div>
+                            <div class="text-sm font-black text-[#00F3A2]">+ NT$ ${earn}</div>
+                            <div class="text-[10px] text-zinc-400">${targetChannel} ${card.matchedRate}%</div>
                         </div>
                     </div>
                 `;
-                output.appendChild(item);
-            });
+            }).join('');
         }
 
-        // 預先執行一次
-        runEngine();
+        initSearchPage();
     </script>
 </body>
 </html>
